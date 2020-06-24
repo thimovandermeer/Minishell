@@ -1,2 +1,0 @@
-# Minishell
-our minishell project
