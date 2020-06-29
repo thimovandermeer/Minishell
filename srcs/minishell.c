@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/24 13:16:03 by rpet          #+#    #+#                 */
-/*   Updated: 2020/06/26 09:56:54 by rpet          ########   odam.nl         */
+/*   Updated: 2020/06/26 13:48:04 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int		main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	tmp = env;
-	/*while (*tmp)				//environment variables
+	while (*tmp)				//environment variables
 	{
 		printf("[%s]\n", *tmp);
 		tmp++;
-	}*/
+	}
 	i = 1;
 	tmp2[0] = "ls";
 	tmp2[1] = ".";
