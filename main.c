@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/06/29 13:28:36 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/06/29 14:10:54 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ void	ft_error(char *str)
 	exit(1);
 }
 
+void 	ft_create_token()
+{
+	
+	ft_lstadd_back()
+}
+
 void    ft_found_quot(char **line, int  quote)
 {
 	int i;
@@ -37,7 +43,19 @@ void    ft_found_quot(char **line, int  quote)
 	{
 
 	}
+	ft_create_token()
+}
 
+void 	ft_new_command()
+{
+
+	ft_create_token()
+}
+
+void 	ft_check_redirect(line)
+{
+	
+	ft_create_token()
 }
 
 void    ft_parse_line(char **line)
@@ -57,6 +75,9 @@ void    ft_parse_line(char **line)
 			quote = '\'';
             ft_found_quot(line, quote);
 		}
+		if (*line == ';')
+			ft_new_command(line);
+		ft_check_redirect(line);
     }
 }
 
@@ -73,7 +94,7 @@ int main(int argc, char **argv, char **env)
         i = get_next_line(0, &line);
         if (i == -1)
             ft_error("Something went wrong reading the line\n");
-        ft_parse_line(&line)
+        ft_parse_line(&line);
     }
 
 }
