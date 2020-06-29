@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/24 13:16:03 by rpet          #+#    #+#                 */
-/*   Updated: 2020/06/26 09:56:54 by rpet          ########   odam.nl         */
+/*   Updated: 2020/06/29 11:09:32 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int		main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	tmp = env;
-	/*while (*tmp)				//environment variables
+	while (*tmp)				//environment variables
 	{
 		printf("[%s]\n", *tmp);
 		tmp++;
-	}*/
+	}
 	i = 1;
 	tmp2[0] = "ls";
 	tmp2[1] = ".";
@@ -39,11 +39,11 @@ int		main(int argc, char **argv, char **env)
 	{
 		ft_putstr_fd("minishell: ", 1);
 		i = get_next_line(0, &line);
-		int id = fork();
+	/*	int id = fork();
 		if (id != 0)
 			wait(NULL);
 		else
-			execve("/bin/ls", tmp2, env);
+			execve("/bin/ls", tmp2, env);*/
 		free(line);
 	}
 	return (0);
