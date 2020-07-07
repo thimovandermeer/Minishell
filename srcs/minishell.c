@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/01 10:06:12 by rpet          ########   odam.nl         */
+/*   Updated: 2020/07/07 12:01:15 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,32 +23,45 @@ void	ft_error(char *str)
 	exit(1);
 }
 
-void	create_token(char *str)
-{
-	
-}
-
 void    ft_parse_line(char *line)
 {
-	int			quote;
-	int			i;
-	int			token_len;
+	int		quote;
 
 	quote = 0; // 0 is geen 1 is single 2 is double
-	i = 0;
-    token_len = 0;
-	if (line[i] == '\\')
-		ft_error("Command not found");
-	while (line[i] != '\0')
+    while(*line != '\0')
     {
-		if ((line[i] == '\'' || line[i] == '\"') && quote == 0)
+		int i;
+		i = 1;
+		char *quot_token;
+        if (*line == '\'')
 		{
-			if (line[i - 1] == '\\')
-
+			line++;
+            while(*line != '\'')
+			{
+				i++;
+				line++;
 			}
-			quote = 1;
+			quot_token = ft_substr(line - i, 0, i + 1);
 		}
-		i++;
+        if (*line == '\"')
+		{
+			line++;
+			while(*line != '\"')
+			{
+				if (*line == '\\')
+				{	
+					line += 2;
+					i += 2;
+				}
+				i++;
+				line++;
+			}
+			quot_token = ft_substr(line - i, 0, i + 1);
+			printf("Quot = %s\n", quot_token);
+		}
+		if (ft_st("NSEAW", *line))
+			ft_split_chars();
+		line++;
     }
 }
 
@@ -56,9 +69,11 @@ int		main(int argc, char **argv, char **env)
 {
     int     i;
     char    *line;
-    int     fd;
 
     i = 1;
+	(void) argc;
+	(void) argv;
+	(void) env;
     while (i)
     {
         i = get_next_line(0, &line);
