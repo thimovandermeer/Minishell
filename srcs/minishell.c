@@ -23,61 +23,46 @@ void	ft_error(char *str)
 	exit(1);
 }
 
-void 	ft_create_token()
+
+void    ft_parse_line(char *line)
 {
-	
-	ft_lstadd_back()
-}
+	int		quote;
 
-void    ft_found_quot(char **line, int  quote)
-{
-	int i;
-
-	i = 0;
-	if (line[i] -1 == '\\' && quote ==  '0')
-		ft_error("Multiline command not handled by our program\n");
-	else if (line[i] -1 == '\\' && quote ==  '\"')
-		
-		
-	while(line[i] != quote)
-	{
-
-	}
-	ft_create_token()
-}
-
-void 	ft_new_command()
-{
-
-	ft_create_token()
-}
-
-void 	ft_check_redirect(line)
-{
-	
-	ft_create_token()
-}
-
-void    ft_parse_line(char **line)
-{
-	char		quote;
-
-	quote = '0'; // 0 is geen 1 is single 2 is double
+	quote = 0; // 0 is geen 1 is single 2 is double
     while(*line != '\0')
     {
-        if (*line == '\"' && quote == '0')
+		int i;
+		i = 1;
+		char *quot_token;
+        if (*line == '\'')
 		{
-			quote = '\"';
-            ft_found_quot(line, quote);
+			line++;
+            while(*line != '\'')
+			{
+				i++;
+				line++;
+			}
+			quot_token = ft_substr(line - i, 0, i + 1);
 		}
-        if (*line == '\'' && quote == '0')
+        if (*line == '\"')
 		{
-			quote = '\'';
-            ft_found_quot(line, quote);
+			line++;
+			while(*line != '\"')
+			{
+				if (*line == '\\')
+				{	
+					line += 2;
+					i += 2;
+				}
+				i++;
+				line++;
+			}
+			quot_token = ft_substr(line - i, 0, i + 1);
+			printf("Quot = %s\n", quot_token);
 		}
-		if (*line == ';')
-			ft_new_command(line);
-		ft_check_redirect(line);
+		if (ft_st("NSEAW", *line))
+			ft_split_chars();
+		line++;
     }
 }
 
@@ -85,16 +70,17 @@ int main(int argc, char **argv, char **env)
 {
     int     i;
     char    *line;
-    int     fd;
 
     i = 1;
-
+	(void) argc;
+	(void) argv;
+	(void) env;
     while (i)
     {
         i = get_next_line(0, &line);
         if (i == -1)
             ft_error("Something went wrong reading the line\n");
-        ft_parse_line(&line);
+        ft_parse_line(line);
     }
 
 }
