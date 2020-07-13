@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/13 08:53:06 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/13 09:04:58 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ void 	ft_parse_line_new(char *line)
 	}
 }
 
-int main(int argc, char **argv, char **env)
+int		main(int argc, char **argv, char **env)
 {
     int     	i;
 	int 		j;
