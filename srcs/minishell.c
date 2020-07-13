@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/09 16:50:57 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/13 08:53:06 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void 	ft_executable(char *bin_path, struct stat f, char **command,char **argv, c
 	// wat zijn de return values van fork ? kan hier ook iets in fout gaan? zo ja hoe ga ik dit fixen?
 	// inprincipe als ik geen error krijg op fork kan ik execve aanroepen
 	printf("p_id= %d\n\n", p_id);
-
 }
 
 void  check_bins(char **command,char **argv, char **env)
