@@ -6,7 +6,7 @@
 #    By: rpet <marvin@codam.nl>                       +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/06/24 11:54:19 by rpet          #+#    #+#                  #
-#    Updated: 2020/06/25 08:44:20 by rpet          ########   odam.nl          #
+#    Updated: 2020/07/14 16:07:16 by thimovander   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = minishell
 FLAGS = -Wall -Werror -Wextra
 SRCSDIR = srcs/
 OBJSDIR = objs/
-_OBJS = minishell.o
+_OBJS = minishell.o cd_func.o echo_func.o env_func.o exit_func.o export_func.o \
+pwd_func.o unset_func.o
 OBJS = $(addprefix $(OBJSDIR),$(_OBJS))
 LIBFTDIR = libft/
 LIBFT = libft.a

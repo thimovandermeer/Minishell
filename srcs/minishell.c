@@ -6,20 +6,15 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/13 09:04:58 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/14 16:20:30 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/wait.h>
 #include "minishell.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 
 char 	**get_envv;
 char 	**tokens;
+char	**command;
 
 void	ft_error(char *str)
 {
@@ -108,26 +103,24 @@ void	init_envv(int argc, char **argv, char **envv)
 	}
 }
 
-void 	ft_executable(char *bin_path, struct stat f, char **command,char **argv, char **env)
+int 	ft_executable(char *bin_path, struct stat f,char **tokens, char **env)
 {
 	pid_t p_id;
 
-	(void)bin_path;
 	(void)f;
-	(void)command;
 	p_id = fork();
 
 	if (p_id == 0)
-		execve(bin_path, argv, env);
+		return (execve(bin_path, tokens, env));
 	else if (p_id < 0)
 		ft_error("failed to create child process\n");
 	// signal handling ???? hier zometeen nog naar kijken
 	// wat zijn de return values van fork ? kan hier ook iets in fout gaan? zo ja hoe ga ik dit fixen?
 	// inprincipe als ik geen error krijg op fork kan ik execve aanroepen
-	printf("p_id= %d\n\n", p_id);
+	return (0);
 }
 
-void  check_bins(char **command,char **argv, char **env)
+int  check_bins(char **tokens, char **env)
 {
 	char 			**tmp;
 	char 			**path;
@@ -147,21 +140,18 @@ void  check_bins(char **command,char **argv, char **env)
 			while(path[j])
 			{
 				path[j] = ft_strjoin(path[j], "/");
-				printf("path = %s\n", path[j]);
-				bin_path = ft_strjoin(path[j], command[0]);
+				bin_path = ft_strjoin(path[j], tokens[0]);
 				printf("bin_path = %s\n", bin_path);
-				int x = lstat(bin_path, &f);
-				printf("return value = %i\n",x);
 				if (lstat(bin_path, &f) == -1)
 					free(bin_path);
 				else
-					ft_executable(bin_path, f, command,argv, env); // vervolgend executable opstarten he met fork en de hele tering zooi
-				printf("path[%i] %s\n",j, path[j]);
+					return (ft_executable(bin_path, f, tokens, env)); // vervolgend executable opstarten he met fork en de hele tering zooi
 				j++;
 			}
 		}
 		i++;
 	}
+	return (-1);
 }
 
 int 	ft_occurence(char *line, char c)
@@ -180,34 +170,64 @@ int 	ft_occurence(char *line, char c)
 	return (occ);
 }
 
-void 	ft_parse_line_new(char *line)
+void 	ft_free_array(char **arr)
 {
-	char	**command;
-	
-	
+	int i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while(arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free (arr);
+	arr = NULL;
+}
+
+int 	is_builtin(char **tokens)
+{
+	if(ft_strncmp(tokens[0], "echo", ft_strlen("echo")) == 0)
+		return (echo_func(tokens[1])); // all deze funcites 1 laten returen als het goed gaat
+	if(ft_strncmp(tokens[0], "echo", ft_strlen("echo")) == 0)
+		return (echo_func(tokens[1]));
+	if(ft_strncmp(tokens[0], "cd", ft_strlen("cd")) == 0)
+		return (cd_func(tokens[1]));
+	if(ft_strncmp(tokens[0], "pwd", ft_strlen("pwd")) == 0)
+		return(pwd_func(tokens[1]));
+	if(ft_strncmp(tokens[0], "export", ft_strlen("export")) == 0)
+		return(export_func(tokens[1]));
+	if(ft_strncmp(tokens[0], "unset", ft_strlen("unset")) == 0)
+		return(unset_func(tokens[1]));
+	if(ft_strncmp(tokens[0], "env", ft_strlen("env")) == 0)
+		return(env_func(tokens[1]));
+	if(ft_strncmp(tokens[0], "exit", ft_strlen("exit")) == 0)
+		return(exit_func(tokens[1]));
+
+	return (0);
+
+
+}
+
+void 	ft_parse_line_new(char *line, char **env)
+{
 	int		i;
-	int		j;
 	command = (char **)malloc(sizeof(char*) * ft_occurence(line, ';') + 1);
 	if (!command)
 		ft_error("malloc error\n");
 	command = ft_split(line, ';');
-	
 	i = 0;
-
+	// vanaf hier moet het blijven staan zoals het staat dus die commands moeten de structuur zijn en die tokens[0] moeten daaronder gehakt worden.
 	while(command[i])
 	{
-		j = 0;
 		tokens = (char **)malloc(sizeof(char*) * ft_occurence(line, ' ') + 1);
 		if (!tokens)
 			ft_error("malloc error\n");
-		printf("command[%i] = %s\n", i, command[i]);
 		tokens = ft_split(command[i], ' ');
-		while(tokens[j])
-		{
-			printf("tokens[%i] = %s\n",j , tokens[j]);
-			// ft_lstadd_back(list) // hier moeten ze toegevoegd worden :)
-			j++;
-		}
+		if (is_builtin(tokens) == 0 && check_bins(tokens, env) == -1)
+			ft_error("Some sort of error message\n"); // deze nog even goed maken 
+		ft_free_array(tokens);
 		i++;
 	}
 }
@@ -215,7 +235,6 @@ void 	ft_parse_line_new(char *line)
 int		main(int argc, char **argv, char **env)
 {
     int     	i;
-	int 		j;
     char    	*line;
 	// t_tokens 	**list; // hier ben ik gebleven bij het maken van een linked list voor onze verschillende commands
 
@@ -227,13 +246,6 @@ int		main(int argc, char **argv, char **env)
         if (i == -1)
             ft_error("Something went wrong reading the line\n");
         // ft_parse_line(line);
-		ft_parse_line_new(line);
-		
-		j = 0;
-		while(tokens[j])
-		{
-			check_bins(tokens, argv, env);
-			j++;
-		}
+		ft_parse_line_new(line, env);
 	}
 }
