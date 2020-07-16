@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/14 16:20:30 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/16 10:59:59 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ int  check_bins(char **tokens, char **env)
 			{
 				path[j] = ft_strjoin(path[j], "/");
 				bin_path = ft_strjoin(path[j], tokens[0]);
-				printf("bin_path = %s\n", bin_path);
 				if (lstat(bin_path, &f) == -1)
 					free(bin_path);
 				else
@@ -242,6 +241,7 @@ int		main(int argc, char **argv, char **env)
 	init_envv(argc, argv, env);
     while (i)
     {
+		command_prompt();
         i = get_next_line(0, &line);
         if (i == -1)
             ft_error("Something went wrong reading the line\n");
