@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/14 16:08:03 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/16 13:28:34 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ int 	exit_func(char *token);
 int 	export_func(char *token);
 int 	pwd_func(char *token);
 int 	unset_func(char *token);
+void 	command_prompt();
+void    command_handler(int sig_num);
+void    fork_handler(int sig_num);
 
+char 	**get_envv;
+char 	**tokens;
+char	**command;
 
 #endif
