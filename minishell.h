@@ -6,7 +6,11 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2020/07/20 13:18:09 by rpet          ########   odam.nl         */
+=======
+/*   Updated: 2020/07/16 13:28:34 by thimovander   ########   odam.nl         */
+>>>>>>> 411ade586232a20e9ae6b2e273b492071af55b8a
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +53,12 @@ int 	exit_func(char *token);
 int 	export_func(char *token);
 int 	pwd_func(char *token);
 int 	unset_func(char *token);
+void 	command_prompt();
+void    command_handler(int sig_num);
+void    fork_handler(int sig_num);
 
+char 	**get_envv;
+char 	**tokens;
+char	**command;
 
 #endif

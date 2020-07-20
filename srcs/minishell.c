@@ -6,15 +6,15 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
+<<<<<<< HEAD
 /*   Updated: 2020/07/20 13:19:11 by rpet          ########   odam.nl         */
+=======
+/*   Updated: 2020/07/16 15:26:41 by thimovander   ########   odam.nl         */
+>>>>>>> 411ade586232a20e9ae6b2e273b492071af55b8a
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char 	**get_envv;
-char 	**tokens;
-char	**command;
 
 void	ft_error(char *str)
 {
@@ -34,15 +34,14 @@ size_t 	ft_env_len(char **envv)
 	return (i);
 }
 
-void	init_envv(int argc, char **argv, char **envv)
+void	init_envv(char **envv)
 {
 	int i;
 
-	(void)argc;
-	(void)argv;
+	
 	get_envv = (char **)malloc(sizeof(char*) * (ft_env_len(envv)+ 1));
 	i = 0;
-	while(envv[i])
+	while (envv[i])
 	{
 		if (!(get_envv[i] = ft_strdup(envv[i])))
 			ft_error("Something went wrong with environment var's"); // dit moet nog aangepast worden naar een goeie error message
@@ -56,11 +55,12 @@ int 	ft_executable(char *bin_path, struct stat f,char **tokens, char **env)
 
 	(void)f;
 	p_id = fork();
-
+	printf("binpath = %s\n", bin_path);
 	if (p_id == 0)
 		return (execve(bin_path, tokens, env));
 	else if (p_id < 0)
 		ft_error("failed to create child process\n");
+	wait(&p_id); // dit zorgt ervoor dat the main proces niet door gaat totdat the child proces klaar is
 	// signal handling ???? hier zometeen nog naar kijken
 	// wat zijn de return values van fork ? kan hier ook iets in fout gaan? zo ja hoe ga ik dit fixen?
 	// inprincipe als ik geen error krijg op fork kan ik execve aanroepen
@@ -76,7 +76,7 @@ int  check_bins(char **tokens, char **env)
 	int 			i;
 	i = 0;
 	//  int lstat(const char *pathname, struct stat *statbuf);
-	while(get_envv[i] != '\0')
+	while (get_envv[i] != '\0')
 	{
 		tmp = ft_split(get_envv[i], '=');
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
@@ -84,7 +84,7 @@ int  check_bins(char **tokens, char **env)
 			int j;
 			j = 0;
 			path = ft_split(tmp[1], ':');
-			while(path[j])
+			while (path[j])
 			{
 				path[j] = ft_strjoin(path[j], "/");
 				bin_path = ft_strjoin(path[j], tokens[0]);
@@ -107,7 +107,7 @@ int 	ft_occurence(char *line, char c)
 
 	i = 0;
 	occ = 0;
-	while(line[i] != '\0')
+	while (line[i] != '\0')
 	{
 		if (line[i] == c)
 			occ++;
@@ -136,7 +136,7 @@ int 	is_builtin(char **tokens)
 {
 	if(ft_strncmp(tokens[0], "echo", ft_strlen("echo")) == 0)
 		return (echo_func(tokens[1])); // all deze funcites 1 laten returen als het goed gaat
-	if(ft_strncmp(tokens[0], "echo", ft_strlen("echo")) == 0)
+	if(ft_strncmp(tokens[0], "ECHO", ft_strlen("echo")) == 0)
 		return (echo_func(tokens[1]));
 	if(ft_strncmp(tokens[0], "cd", ft_strlen("cd")) == 0)
 		return (cd_func(tokens[1]));
@@ -185,6 +185,7 @@ void 	parse_line(t_list *list, char **env)
 
 void    print_list(t_list *list)
 {
+<<<<<<< HEAD
     int        i;
 
     i = 1;
@@ -387,6 +388,20 @@ int			main(int argc, char **argv, char **env)
 			str_error("Something went wrong during the lexer\n");
 		print_list(list);
 		//parse_line(list, env);
+=======
+    char    	*line;
+	int 		ret;
+	(void)		argc;
+	(void)		argv;
+	init_envv(env);
+    while (1)
+    {
+		command_prompt();
+        ret = get_next_line(0, &line);
+        if (ret == -1)
+            ft_error("Something went wrong reading the line\n");
+		ft_parse_line_new(line, env);
+>>>>>>> 411ade586232a20e9ae6b2e273b492071af55b8a
 	}
 	return (0);
 }
