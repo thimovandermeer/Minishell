@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/16 10:59:59 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/20 13:19:11 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,59 +22,6 @@ void	ft_error(char *str)
 	write(1, "\e[33m", 5);
 	write(1, str, ft_strlen(str) + 1);
 	exit(1);
-}
-
-void 	ft_split_chars(char *line, int bool, int i)
-{
-	char *split_token;
-	char *token;
-	split_token = NULL;
-	if (bool == 0)
-	{
-		printf("test\n");
-		// if(*line == '>' && *line + 1 == '>')
-		// 	split_token = ">>";
-		// else
-		// 	split_token[0] = *line;
-		printf("split_token = %s\n", split_token);
-		token = ft_substr(line, 0, i);
-		printf("token = %s\n", token);
-	}
-}
-
-void    ft_parse_line(char *line)
-{
-	int		quote;
-
-	quote = 0; // 0 is geen 1 is single 2 is double
-    while(*line != '\0')
-    {
-		int i;
-		i = 1;
-		char *quot_token;
-        if (line[i] == '\'')
-		{
-			i++;
-            while(line[i] != '\'')
-				i++;
-			quot_token = ft_substr(line - i, 0, i + 1);
-		}
-        if (line[i] == '\"')
-		{
-			i++;
-			while(line[i] != '\"')
-			{
-				if (line[i] == '\\')
-					i += 2;
-				i++;
-			}
-			quot_token = ft_substr(line - i, 0, i + 1);
-		}
-		if (ft_strrchr(";|<>", line[i]))
-			ft_split_chars(line, quote, i);
-		i++;
-    }
-	
 }
 
 size_t 	ft_env_len(char **envv)
@@ -209,9 +156,12 @@ int 	is_builtin(char **tokens)
 
 }
 
-void 	ft_parse_line_new(char *line, char **env)
+void 	parse_line(t_list *list, char **env)
 {
 	int		i;
+	char	*line = NULL;
+
+	(void) list;
 	command = (char **)malloc(sizeof(char*) * ft_occurence(line, ';') + 1);
 	if (!command)
 		ft_error("malloc error\n");
@@ -231,21 +181,212 @@ void 	ft_parse_line_new(char *line, char **env)
 	}
 }
 
-int		main(int argc, char **argv, char **env)
+// Lexer \/
+
+void    print_list(t_list *list)
 {
-    int     	i;
-    char    	*line;
-	// t_tokens 	**list; // hier ben ik gebleven bij het maken van een linked list voor onze verschillende commands
+    int        i;
 
     i = 1;
+    while (list)
+    {
+        printf("Token%i: [%s]\n", i, list->content);
+        list = list->next;
+        i++;
+    }
+}
+
+void    str_error(char *str)
+{
+    write(1, "\e[31mERROR\n", 13);
+    write(1, "\e[33m", 5);
+    write(1, str, ft_strlen(str) + 1);
+    exit(1);
+}
+
+void    found_double_quote(char *line, t_lexer *lexer)
+{
+    if (lexer->quote == DOUBLE_QUOTE)
+        lexer->quote = NO_QUOTE;
+    else
+    {
+        lexer->quote = DOUBLE_QUOTE;
+        if (lexer->token == NOT_ACTIVE)
+        {
+            lexer->token = ACTIVE;
+            lexer->token_len = 0;
+            lexer->token_str = line;
+        }
+    }
+}
+
+void    found_single_quote(char *line, t_lexer *lexer)
+{
+    if (lexer->quote == SINGLE_QUOTE)
+        lexer->quote = NO_QUOTE;
+    else
+    {
+        lexer->quote = SINGLE_QUOTE;
+        if (lexer->token == NOT_ACTIVE)
+        {
+            lexer->token = ACTIVE;
+            lexer->token_len = 0;
+            lexer->token_str = line;
+        }
+    }
+}
+
+int			check_metachar(char *line)
+{
+    char    meta_str[5];
+    int        i;
+
+    if (*line == '>' && *line + 1 == '>')
+        return (1);
+    ft_strlcpy(meta_str, ";|><", 5);
+    i = 0;
+    while (meta_str[i])
+    {
+        if (*line == meta_str[i])
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+/*
+**    Adds a token to the list.
+*/
+
+int			create_token_for_list(t_lexer *lexer, t_list **list)
+{
+    t_list        *tmp;
+
+    tmp = ft_lstnew(ft_substr(lexer->token_str, 0, lexer->token_len));
+    if (!tmp)
+        return (0);
+    ft_lstadd_back(list, tmp);
+    return (1);
+}
+
+/*
+**    While not in a token, checks if it should start a new token.
+*/
+
+void		check_new_token1(char *line, t_lexer *lexer)
+{
+    if (check_metachar(line))
+    {
+        lexer->token = METACHAR;
+        lexer->token_len = 0;
+        lexer->token_str = line;
+    }
+    else if (*line != ' ' && *line != '\t')
+    {
+        lexer->token = ACTIVE;
+        lexer->token_len = 0;
+        lexer->token_str = line;
+    }
+}
+
+/*
+**    While in a token, checks if it should start a new token.
+*/
+
+int			check_new_token2(char *line, t_lexer *lexer, t_list **list)
+{
+    if (check_metachar(line))
+    {
+        if (!create_token_for_list(lexer, list))
+            return (0);
+        lexer->token = METACHAR;
+        lexer->token_len = 0;
+        lexer->token_str = line;
+    }
+    else if (*line == ' ' || *line == '\t')
+    {
+        if (!create_token_for_list(lexer, list))
+            return (0);
+        lexer->token = NOT_ACTIVE;
+    }
+    return (1);
+}
+
+/*
+**    Checks where to split for tokens.
+*/
+
+char		*lexer_loop(char *line, t_lexer *lexer, t_list **list)
+{
+	if (*line == '\'' && lexer->quote != DOUBLE_QUOTE)
+		found_single_quote(line, lexer);
+	if (*line == '\"' && lexer->quote != SINGLE_QUOTE)
+		found_double_quote(line, lexer);
+	if (lexer->token == NOT_ACTIVE)
+		check_new_token1(line, lexer);
+	else if (lexer->token == ACTIVE && lexer->quote == NO_QUOTE)
+	{
+		if (!check_new_token2(line, lexer, list))
+			return (NULL);
+	}
+	else if (lexer->token == METACHAR && lexer->quote == NO_QUOTE)
+	{
+		if (!create_token_for_list(lexer, list))
+			return (NULL);
+		lexer->token = NOT_ACTIVE;
+	}
+	if (lexer->token != NOT_ACTIVE)
+		lexer->token_len++;
+	return (line + 1);
+}
+
+/*
+**    Calls the loop for the lexer.
+*/
+
+t_list		*lexer_line(char *line)
+{
+    t_lexer		lexer;
+	t_list		*list;
+
+	lexer.quote = NO_QUOTE;
+	lexer.token = NOT_ACTIVE;
+	lexer.token_len = 0;
+	lexer.token_str = NULL;
+	list = NULL;
+	while (*line)
+	{
+		line = lexer_loop(line, &lexer, &list);
+		if (!line)
+			return (NULL);
+		if (*line == '\0')
+		{
+			if (!create_token_for_list(&lexer, &list))
+				return (NULL);
+		}
+	}
+	return (list);
+}
+
+int			main(int argc, char **argv, char **env)
+{
+	int     	i;
+	char    	*line;
+	t_list		*list;
+
+	i = 1;
 	init_envv(argc, argv, env);
     while (i)
     {
-		command_prompt();
+		//command_prompt();
         i = get_next_line(0, &line);
         if (i == -1)
             ft_error("Something went wrong reading the line\n");
-        // ft_parse_line(line);
-		ft_parse_line_new(line, env);
+		list = lexer_line(line);
+		if (list == NULL)
+			str_error("Something went wrong during the lexer\n");
+		print_list(list);
+		//parse_line(list, env);
 	}
+	return (0);
 }
