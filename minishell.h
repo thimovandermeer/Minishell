@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/14 16:08:03 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/20 13:18:09 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,26 @@
 # include <sys/stat.h>
 # include <unistd.h>
 
-typedef	struct	s_tokens {
-	char	*data;
-	void	*next;
+typedef enum	e_token {
+	NOT_ACTIVE,
+	ACTIVE,
+	METACHAR
+}				t_token;
 
-}				t_tokens;
+typedef enum	e_quote {
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE
+}				t_quote;
+
+typedef	struct	s_lexer {
+	//int			quote;
+	//int			in_token;
+	int			token_len;
+	char		*token_str;
+	t_quote		quote;
+	t_token		token;
+}				t_lexer;
 
 int 	cd_func(char *token);
 int 	echo_func(char *token);
