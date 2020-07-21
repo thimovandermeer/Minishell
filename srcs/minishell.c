@@ -6,11 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/07/20 13:19:11 by rpet          ########   odam.nl         */
-=======
-/*   Updated: 2020/07/16 15:26:41 by thimovander   ########   odam.nl         */
->>>>>>> 411ade586232a20e9ae6b2e273b492071af55b8a
+/*   Updated: 2020/07/21 12:49:44 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +71,7 @@ int  check_bins(char **tokens, char **env)
 	struct stat		f; // check https://man7.org/linux/man-pages/man2/stat.2.html voor uitleg
 	int 			i;
 	i = 0;
+	printf("allemaal biins heeee\n");
 	//  int lstat(const char *pathname, struct stat *statbuf);
 	while (get_envv[i] != '\0')
 	{
@@ -134,7 +131,7 @@ void 	ft_free_array(char **arr)
 
 int 	is_builtin(char **tokens)
 {
-	if(ft_strncmp(tokens[0], "echo", ft_strlen("echo")) == 0)
+	if (ft_strncmp(tokens[0], "echo", ft_strlen("echo")) == 0)
 		return (echo_func(tokens[1])); // all deze funcites 1 laten returen als het goed gaat
 	if(ft_strncmp(tokens[0], "ECHO", ft_strlen("echo")) == 0)
 		return (echo_func(tokens[1]));
@@ -152,32 +149,85 @@ int 	is_builtin(char **tokens)
 		return(exit_func(tokens[1]));
 
 	return (0);
-
-
 }
 
-void 	parse_line(t_list *list, char **env)
-{
-	int		i;
-	char	*line = NULL;
+// void    print_commands(t_list *command_list)
+// {
+//     int        i;
 
-	(void) list;
-	command = (char **)malloc(sizeof(char*) * ft_occurence(line, ';') + 1);
-	if (!command)
-		ft_error("malloc error\n");
-	command = ft_split(line, ';');
-	i = 0;
-	// vanaf hier moet het blijven staan zoals het staat dus die commands moeten de structuur zijn en die tokens[0] moeten daaronder gehakt worden.
-	while(command[i])
+//     i = 1;
+//     while (list)
+//     {
+//         printf("Token%i: [%s]\n", i, list->content);
+//         list = list->next;
+//         i++;
+//     }
+// }
+
+t_list 	*parse_line(t_list *list) // return value aanpassen naar linkedlist
+{
+	int			arg_count;
+	int 		j;
+	t_list  	*command_list;
+	t_command 	command;
+	t_list 		*tmp;
+	t_list		*head_command;
+
+	command_list = NULL;
+	// command = NULL;
+	arg_count = 1;
+	head_command = list;
+	// iterate totdat je een pipe of een puntkomma tegenkomt
+	// seperater bouwen en ook redirections checken 
+	// 
+	while (list)
 	{
-		tokens = (char **)malloc(sizeof(char*) * ft_occurence(line, ' ') + 1);
-		if (!tokens)
-			ft_error("malloc error\n");
-		tokens = ft_split(command[i], ' ');
-		if (is_builtin(tokens) == 0 && check_bins(tokens, env) == -1)
+		printf("list->content: [%s]\n", list->content);
+		if (!ft_strncmp(list->content, ";", 1) || !ft_strncmp(list->content, "|", 1) || list->next == NULL)
+		{
+			j = 0;
+			printf("i = %i\n", arg_count);
+			command.args = (char**)malloc(sizeof(char*) * (arg_count));
+			if (!command.args)
+				return (NULL);
+			while (j + 1 < arg_count)
+			{
+				command.args[j] = head_command->content;
+				head_command = head_command->next;
+				printf("command arg: [%s]\n", command.args[j]);
+				j++;
+			}
+			arg_count = 1;
+			printf("j: [%i]\n", j);
+			command.args[j] = NULL;
+			printf("laatste command: [%s]\n", command.args[j]);
+			command.pipe = 0;
+			tmp = ft_lstnew(&command);
+			if (!tmp) //check malloc succes
+				return (NULL);
+			ft_lstadd_back(&command_list, tmp);
+			if (!ft_strncmp(head_command->content ,";", 1))
+				head_command = head_command->next;
+		}
+		list = list->next;
+		arg_count++;
+	}
+	printf("command in parse line = %s\n", ((t_command*)command_list->content)->args[0]);
+	printf("command in parse line = %s\n", ((t_command*)command_list->content)->args[1]);
+	printf("command in parse line = %s\n", ((t_command*)command_list->content)->args[2]);
+	return (command_list);
+}
+
+void iterate_command(t_list *command_list, char **env)
+{
+
+	// printf("command = %s\n", ((t_command*)command_list->content)->args[0]);
+	// vanaf hier moet het blijven staan zoals het staat dus die commands moeten de structuur zijn en die tokens[0] moeten daaronder gehakt worden.
+	while (command_list)
+	{
+		if (is_builtin(((t_command*)command_list->content)->args) == 0 && check_bins(((t_command*)command_list->content)->args, env) == -1)
 			ft_error("Some sort of error message\n"); // deze nog even goed maken 
-		ft_free_array(tokens);
-		i++;
+		command_list = command_list->next;
 	}
 }
 
@@ -185,7 +235,6 @@ void 	parse_line(t_list *list, char **env)
 
 void    print_list(t_list *list)
 {
-<<<<<<< HEAD
     int        i;
 
     i = 1;
@@ -374,34 +423,24 @@ int			main(int argc, char **argv, char **env)
 	int     	i;
 	char    	*line;
 	t_list		*list;
+	t_list 		*command_list;
 
+	(void)argv;
+	(void)argc;
 	i = 1;
-	init_envv(argc, argv, env);
+	init_envv(env);
     while (i)
     {
-		//command_prompt();
+		command_prompt();
         i = get_next_line(0, &line);
         if (i == -1)
             ft_error("Something went wrong reading the line\n");
 		list = lexer_line(line);
 		if (list == NULL)
 			str_error("Something went wrong during the lexer\n");
-		print_list(list);
-		//parse_line(list, env);
-=======
-    char    	*line;
-	int 		ret;
-	(void)		argc;
-	(void)		argv;
-	init_envv(env);
-    while (1)
-    {
-		command_prompt();
-        ret = get_next_line(0, &line);
-        if (ret == -1)
-            ft_error("Something went wrong reading the line\n");
-		ft_parse_line_new(line, env);
->>>>>>> 411ade586232a20e9ae6b2e273b492071af55b8a
+		// print_list(list);
+		command_list = parse_line(list);
+		iterate_command(command_list, env);
 	}
 	return (0);
 }

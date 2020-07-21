@@ -6,11 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-<<<<<<< HEAD
-/*   Updated: 2020/07/20 13:18:09 by rpet          ########   odam.nl         */
-=======
-/*   Updated: 2020/07/16 13:28:34 by thimovander   ########   odam.nl         */
->>>>>>> 411ade586232a20e9ae6b2e273b492071af55b8a
+/*   Updated: 2020/07/20 14:42:15 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +34,16 @@ typedef enum	e_quote {
 }				t_quote;
 
 typedef	struct	s_lexer {
-	//int			quote;
-	//int			in_token;
 	int			token_len;
 	char		*token_str;
 	t_quote		quote;
 	t_token		token;
 }				t_lexer;
+
+typedef struct s_command {
+	char 	**args;
+	int 	pipe;
+}				t_command;
 
 int 	cd_func(char *token);
 int 	echo_func(char *token);
