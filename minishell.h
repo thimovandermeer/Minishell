@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/23 12:00:53 by rpet          ########   odam.nl         */
+/*   Updated: 2020/07/23 15:08:58 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,41 @@ int		lexer_loop(char *line, t_lexer *lexer, t_list **list);
 void	init_lexer(t_lexer *lexer);
 t_list	*lexer_line(char *line);
 
+/*
+**		exec functions
+*/
+
+int  	check_bins(char **tokens, char **env);
+int 	ft_executable(char *bin_path, struct stat f,char **tokens, char **env);
+void 	iterate_command(t_list *command_list, char **env);
+
+/*
+**		util functions
+*/
+
+void	ft_error(char *str);
+int 	ft_occurence(char *line, char c);
+void 	ft_free_array(char **arr);
+void    print_list(t_list *list);
+void    str_error(char *str);
+void    print_commands(t_list *command_list);
+
+/*
+**		parse functions
+*/
+
+int		check_seperator(char *str);
+t_list 	*parse_line(t_list *list);
+
+
+/*
+**		init env  functions
+*/
+
+size_t 	ft_env_len(char **envv);
+void	init_envv(char **envv);
+
+
 int 	cd_func(char *token);
 int 	echo_func(char *token);
 int 	env_func(char *token);
@@ -69,7 +104,7 @@ int 	unset_func(char *token);
 void 	command_prompt();
 void    command_handler(int sig_num);
 void    fork_handler(int sig_num);
-
+int 	is_builtin(char **tokens);
 char 	**get_envv;
 char 	**tokens;
 char	**command;
