@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/23 15:08:18 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/23 16:14:03 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,8 @@ int			main(int argc, char **argv, char **env)
 		list = lexer_line(line);
 		if (list == NULL)
 			str_error("Something went wrong during the lexer\n");
-		print_list(list);
 		command_list = parse_line(list);
-		//print_commands(command_list);
-		//iterate_command(command_list, env);
+		iterate_command(command_list, env);
 	}
 	return (0);
 }

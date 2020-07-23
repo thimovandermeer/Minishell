@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/23 15:05:26 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/23 16:12:58 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_list 	*parse_line(t_list *list) // return value aanpassen naar linkedlist
 	int			arg_count;
 	int 		j;
 	t_list  	*command_list;
-	t_command 	command;
+	t_command 	*command;
 	t_list 		*tmp;
 	t_list		*head_command;
 
@@ -44,19 +44,20 @@ t_list 	*parse_line(t_list *list) // return value aanpassen naar linkedlist
 			arg_count++;
 			list = list->next;
 		}
-		command.args = (char**)malloc(sizeof(char *) * (arg_count + 1));
-		if (!command.args)
+		command = malloc(sizeof(t_command*));
+		command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
+		if (!command->args)
 			return (NULL);
 		j = 0;
 		while (j < arg_count)
 		{
-			command.args[j] = head_command->content;
+			command->args[j] = head_command->content;
 			head_command = head_command->next;
 			j++;
 		}
-		command.args[j] = NULL;
-		command.pipe = 0; //is stierenschijt, moet nog worden gedaan.
-		tmp = ft_lstnew(&command);
+		command->args[j] = NULL;
+		command->pipe = 0; //is stierenschijt, moet nog worden gedaan.
+		tmp = ft_lstnew(command);
 		if (!tmp)
 			return (NULL);
 		ft_lstadd_back(&command_list, tmp);

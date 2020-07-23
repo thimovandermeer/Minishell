@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 09:19:48 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/23 12:00:50 by rpet          ########   odam.nl         */
+/*   Updated: 2020/07/23 16:14:44 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ int            check_new_token2(char *line, t_lexer *lexer, t_list **list)
 
 int			lexer_loop(char *line, t_lexer *lexer, t_list **list)
 {
-	printf("line start: [%s]\n", line);
     if (*line == '\'' && lexer->quote != DOUBLE_QUOTE)
         found_single_quote(line, lexer);
     if (*line == '\"' && lexer->quote != SINGLE_QUOTE)
@@ -139,7 +138,6 @@ int			lexer_loop(char *line, t_lexer *lexer, t_list **list)
     }
 	else if (lexer->token == METACHAR && lexer->quote == NO_QUOTE)
     {
-		printf("line metachar check1: [%s]\n", line);
         if (!add_token_to_list(lexer, list))
             return (0);
         lexer->token = NOT_ACTIVE;

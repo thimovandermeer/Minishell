@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:00:03 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/23 15:01:12 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/23 16:14:14 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int  check_bins(char **tokens, char **env)
 	struct stat		f; // check https://man7.org/linux/man-pages/man2/stat.2.html voor uitleg
 	int 			i;
 	i = 0;
-	printf("allemaal biins heeee\n");
 	//  int lstat(const char *pathname, struct stat *statbuf);
 	while (get_envv[i] != '\0')
 	{
@@ -52,7 +51,6 @@ int 	ft_executable(char *bin_path, struct stat f,char **tokens, char **env)
 
 	(void)f;
 	p_id = fork();
-	printf("binpath = %s\n", bin_path);
 	if (p_id == 0)
 		return (execve(bin_path, tokens, env));
 	else if (p_id < 0)
@@ -66,8 +64,6 @@ int 	ft_executable(char *bin_path, struct stat f,char **tokens, char **env)
 
 void iterate_command(t_list *command_list, char **env)
 {
-
-	// printf("command = %s\n", ((t_command*)command_list->content)->args[0]);
 	// vanaf hier moet het blijven staan zoals het staat dus die commands moeten de structuur zijn en die tokens[0] moeten daaronder gehakt worden.
 	while (command_list)
 	{
