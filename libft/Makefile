@@ -6,11 +6,7 @@
 #    By: rpet <marvin@codam.nl>                       +#+                      #
 #                                                    +#+                       #
 #    Created: 2019/10/28 14:42:36 by rpet          #+#    #+#                  #
-<<<<<<< HEAD
-#    Updated: 2020/07/13 11:16:33 by rpet          ########   odam.nl          #
-=======
-#    Updated: 2020/07/20 13:37:30 by thvan-de      ########   odam.nl          #
->>>>>>> 7f1c73becb35e1cf2f656a4566ef2209076ea3fd
+#    Updated: 2020/07/21 13:30:25 by rpet          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +18,7 @@ SRCS = ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c \
 	   ft_toupper.c ft_tolower.c ft_calloc.c ft_strdup.c ft_substr.c \
 	   ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c \
 	   ft_strmapi.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c \
-	   ft_putnbr_fd.c get_next_line.c get_next_line_utils.c \
+	   ft_putnbr_fd.c ft_strcmp.c get_next_line.c get_next_line_utils.c \
 	   ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
 	   ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
 	   ft_lstclear_bonus.c ft_lstiter_bonus.c ft_lstmap_bonus.c

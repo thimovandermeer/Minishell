@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/21 12:49:44 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/07/23 10:44:49 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,18 +151,30 @@ int 	is_builtin(char **tokens)
 	return (0);
 }
 
-// void    print_commands(t_list *command_list)
-// {
-//     int        i;
+void    print_commands(t_list *command_list)
+{
+	int		i;
 
-//     i = 1;
-//     while (list)
-//     {
-//         printf("Token%i: [%s]\n", i, list->content);
-//         list = list->next;
-//         i++;
-//     }
-// }
+	while (command_list)
+	{
+		i = 0;
+		while (((t_command*)command_list->content)->args[i] != '\0')
+		{
+			printf("args: [%s]\n", ((t_command*)command_list->content)->args[i]);
+			i++;
+		}
+		command_list = command_list->next;
+	}
+}
+
+int		check_seperator(char *str)
+{
+	if (!ft_strcmp(str, ";"))
+		return (1);
+	if (!ft_strcmp(str, "|"))
+		return (1);
+	return (0);
+}
 
 t_list 	*parse_line(t_list *list) // return value aanpassen naar linkedlist
 {
@@ -174,47 +186,38 @@ t_list 	*parse_line(t_list *list) // return value aanpassen naar linkedlist
 	t_list		*head_command;
 
 	command_list = NULL;
-	// command = NULL;
-	arg_count = 1;
 	head_command = list;
 	// iterate totdat je een pipe of een puntkomma tegenkomt
 	// seperater bouwen en ook redirections checken 
 	// 
 	while (list)
 	{
-		printf("list->content: [%s]\n", list->content);
-		if (!ft_strncmp(list->content, ";", 1) || !ft_strncmp(list->content, "|", 1) || list->next == NULL)
+		head_command = list;
+		arg_count = 0;
+		while (list && !check_seperator(list->content))
 		{
-			j = 0;
-			printf("i = %i\n", arg_count);
-			command.args = (char**)malloc(sizeof(char*) * (arg_count));
-			if (!command.args)
-				return (NULL);
-			while (j + 1 < arg_count)
-			{
-				command.args[j] = head_command->content;
-				head_command = head_command->next;
-				printf("command arg: [%s]\n", command.args[j]);
-				j++;
-			}
-			arg_count = 1;
-			printf("j: [%i]\n", j);
-			command.args[j] = NULL;
-			printf("laatste command: [%s]\n", command.args[j]);
-			command.pipe = 0;
-			tmp = ft_lstnew(&command);
-			if (!tmp) //check malloc succes
-				return (NULL);
-			ft_lstadd_back(&command_list, tmp);
-			if (!ft_strncmp(head_command->content ,";", 1))
-				head_command = head_command->next;
+			arg_count++;
+			list = list->next;
 		}
-		list = list->next;
-		arg_count++;
+		command.args = (char**)malloc(sizeof(char *) * (arg_count + 1));
+		if (!command.args)
+			return (NULL);
+		j = 0;
+		while (j < arg_count)
+		{
+			command.args[j] = head_command->content;
+			head_command = head_command->next;
+			j++;
+		}
+		command.args[j] = NULL;
+		command.pipe = 0; //is stierenschijt, moet nog worden gedaan.
+		tmp = ft_lstnew(&command);
+		if (!tmp)
+			return (NULL);
+		ft_lstadd_back(&command_list, tmp);
+		if (list)
+			list = list->next;
 	}
-	printf("command in parse line = %s\n", ((t_command*)command_list->content)->args[0]);
-	printf("command in parse line = %s\n", ((t_command*)command_list->content)->args[1]);
-	printf("command in parse line = %s\n", ((t_command*)command_list->content)->args[2]);
 	return (command_list);
 }
 
@@ -230,8 +233,6 @@ void iterate_command(t_list *command_list, char **env)
 		command_list = command_list->next;
 	}
 }
-
-// Lexer \/
 
 void    print_list(t_list *list)
 {
@@ -254,170 +255,6 @@ void    str_error(char *str)
     exit(1);
 }
 
-void    found_double_quote(char *line, t_lexer *lexer)
-{
-    if (lexer->quote == DOUBLE_QUOTE)
-        lexer->quote = NO_QUOTE;
-    else
-    {
-        lexer->quote = DOUBLE_QUOTE;
-        if (lexer->token == NOT_ACTIVE)
-        {
-            lexer->token = ACTIVE;
-            lexer->token_len = 0;
-            lexer->token_str = line;
-        }
-    }
-}
-
-void    found_single_quote(char *line, t_lexer *lexer)
-{
-    if (lexer->quote == SINGLE_QUOTE)
-        lexer->quote = NO_QUOTE;
-    else
-    {
-        lexer->quote = SINGLE_QUOTE;
-        if (lexer->token == NOT_ACTIVE)
-        {
-            lexer->token = ACTIVE;
-            lexer->token_len = 0;
-            lexer->token_str = line;
-        }
-    }
-}
-
-int			check_metachar(char *line)
-{
-    char    meta_str[5];
-    int        i;
-
-    if (*line == '>' && *line + 1 == '>')
-        return (1);
-    ft_strlcpy(meta_str, ";|><", 5);
-    i = 0;
-    while (meta_str[i])
-    {
-        if (*line == meta_str[i])
-            return (1);
-        i++;
-    }
-    return (0);
-}
-
-/*
-**    Adds a token to the list.
-*/
-
-int			create_token_for_list(t_lexer *lexer, t_list **list)
-{
-    t_list        *tmp;
-
-    tmp = ft_lstnew(ft_substr(lexer->token_str, 0, lexer->token_len));
-    if (!tmp)
-        return (0);
-    ft_lstadd_back(list, tmp);
-    return (1);
-}
-
-/*
-**    While not in a token, checks if it should start a new token.
-*/
-
-void		check_new_token1(char *line, t_lexer *lexer)
-{
-    if (check_metachar(line))
-    {
-        lexer->token = METACHAR;
-        lexer->token_len = 0;
-        lexer->token_str = line;
-    }
-    else if (*line != ' ' && *line != '\t')
-    {
-        lexer->token = ACTIVE;
-        lexer->token_len = 0;
-        lexer->token_str = line;
-    }
-}
-
-/*
-**    While in a token, checks if it should start a new token.
-*/
-
-int			check_new_token2(char *line, t_lexer *lexer, t_list **list)
-{
-    if (check_metachar(line))
-    {
-        if (!create_token_for_list(lexer, list))
-            return (0);
-        lexer->token = METACHAR;
-        lexer->token_len = 0;
-        lexer->token_str = line;
-    }
-    else if (*line == ' ' || *line == '\t')
-    {
-        if (!create_token_for_list(lexer, list))
-            return (0);
-        lexer->token = NOT_ACTIVE;
-    }
-    return (1);
-}
-
-/*
-**    Checks where to split for tokens.
-*/
-
-char		*lexer_loop(char *line, t_lexer *lexer, t_list **list)
-{
-	if (*line == '\'' && lexer->quote != DOUBLE_QUOTE)
-		found_single_quote(line, lexer);
-	if (*line == '\"' && lexer->quote != SINGLE_QUOTE)
-		found_double_quote(line, lexer);
-	if (lexer->token == NOT_ACTIVE)
-		check_new_token1(line, lexer);
-	else if (lexer->token == ACTIVE && lexer->quote == NO_QUOTE)
-	{
-		if (!check_new_token2(line, lexer, list))
-			return (NULL);
-	}
-	else if (lexer->token == METACHAR && lexer->quote == NO_QUOTE)
-	{
-		if (!create_token_for_list(lexer, list))
-			return (NULL);
-		lexer->token = NOT_ACTIVE;
-	}
-	if (lexer->token != NOT_ACTIVE)
-		lexer->token_len++;
-	return (line + 1);
-}
-
-/*
-**    Calls the loop for the lexer.
-*/
-
-t_list		*lexer_line(char *line)
-{
-    t_lexer		lexer;
-	t_list		*list;
-
-	lexer.quote = NO_QUOTE;
-	lexer.token = NOT_ACTIVE;
-	lexer.token_len = 0;
-	lexer.token_str = NULL;
-	list = NULL;
-	while (*line)
-	{
-		line = lexer_loop(line, &lexer, &list);
-		if (!line)
-			return (NULL);
-		if (*line == '\0')
-		{
-			if (!create_token_for_list(&lexer, &list))
-				return (NULL);
-		}
-	}
-	return (list);
-}
-
 int			main(int argc, char **argv, char **env)
 {
 	int     	i;
@@ -438,9 +275,10 @@ int			main(int argc, char **argv, char **env)
 		list = lexer_line(line);
 		if (list == NULL)
 			str_error("Something went wrong during the lexer\n");
-		// print_list(list);
+		print_list(list);
 		command_list = parse_line(list);
-		iterate_command(command_list, env);
+		//print_commands(command_list);
+		//iterate_command(command_list, env);
 	}
 	return (0);
 }

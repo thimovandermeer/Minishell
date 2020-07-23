@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/20 14:42:15 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/07/23 11:07:35 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,20 @@ typedef struct s_command {
 	char 	**args;
 	int 	pipe;
 }				t_command;
+
+/*
+**		Lexer functions
+*/
+
+void	found_double_quote(char *line, t_lexer *lexer);
+void	found_single_quote(char *line, t_lexer *lexer);
+int		check_metachar(char *line);
+int		create_token_for_list(t_lexer *lexer, t_list **list);
+void	check_new_token1(char *line, t_lexer *lexer);
+int		check_new_token2(char *line, t_lexer *lexer, t_list **list);
+char	*lexer_loop(char *line, t_lexer *lexer, t_list **list);
+void	init_lexer(t_lexer *lexer);
+t_list	*lexer_line(char *line);
 
 int 	cd_func(char *token);
 int 	echo_func(char *token);

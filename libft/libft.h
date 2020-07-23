@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/31 12:26:25 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/21 07:19:42 by rpet          ########   odam.nl         */
+/*   Updated: 2020/07/21 13:32:05 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
+int					ft_strcmp(const char *s1, const char *s2);
+
 
 /*
 ** BONUS LIBFT
