@@ -6,63 +6,97 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/23 16:12:58 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/27 11:48:55 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		check_seperator(char *str)
+t_separator		check_seperator(char *str)
 {
 	if (!ft_strcmp(str, ";"))
-		return (1);
+		return (SEMICOLON);
 	if (!ft_strcmp(str, "|"))
-		return (1);
-	return (0);
+		return (PIPE);
+	return (NO_SEP);
 }
 
-t_list 	*parse_line(t_list *list) // return value aanpassen naar linkedlist
+int				get_length(t_parsing *parser)
 {
 	int			arg_count;
-	int 		j;
-	t_list  	*command_list;
-	t_command 	*command;
-	t_list 		*tmp;
-	t_list		*head_command;
+	t_list		*tmp;
+
+	tmp = parser->list;
+	arg_count = 0;
+	while (tmp != NULL && !check_seperator(tmp->content))
+	{
+		arg_count++;
+		tmp = tmp->next;
+	}
+	return (arg_count);
+}
+
+t_list			*make_item(int arg_count)
+{
+	t_command	*command;
+	t_list		*tmp;
+
+	command = malloc(sizeof(t_command));
+	tmp = ft_lstnew(command);
+	command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
+	if (!command->args)
+		ft_error("something went wrong creating args\n");
+	command->pipe = NO_PIPE;
+	return (tmp);
+}
+
+void			create_command(t_parsing *parser, t_list **command_list)
+{
+	int			arg_count;
+	t_list		*item;
+	int			j;
+
+	arg_count = get_length(parser);
+	item = make_item(arg_count);
+	if (!item)
+		ft_error("something went wrong creating link in list\n");
+	j = 0;
+	while (parser->list &&
+	check_seperator((char *)parser->list->content) == NO_SEP)
+	{
+		((t_command*)item->content)->args[j] = parser->list->content;
+		parser->list = parser->list->next;
+		j++;
+	}
+	if (parser->cur_sep == PIPE)
+		((t_command*)item->content)->pipe = PIPE_OUT;
+	if (parser->prev_sep == PIPE)
+		((t_command*)item->content)->pipe = PIPE_IN;
+	if (parser->prev_sep == PIPE && parser->cur_sep == PIPE)
+		((t_command*)item->content)->pipe = PIPE_BOTH;
+	ft_lstadd_back(command_list, item);
+}
+
+t_list			*parse_line(t_list *list)
+{
+	t_parsing	parsing;
+	t_list		*command_list;
 
 	command_list = NULL;
-	head_command = list;
-	// iterate totdat je een pipe of een puntkomma tegenkomt
-	// seperater bouwen en ook redirections checken 
-	// 
+	parsing.list = list;
+	parsing.prev_sep = NO_SEP;
 	while (list)
 	{
-		head_command = list;
-		arg_count = 0;
-		while (list && !check_seperator(list->content))
+		parsing.cur_sep = check_seperator(list->content);
+		if (parsing.cur_sep)
 		{
-			arg_count++;
-			list = list->next;
+			create_command(&parsing, &command_list);
+			parsing.prev_sep = parsing.cur_sep;
+			parsing.list = list->next;
 		}
-		command = malloc(sizeof(t_command*));
-		command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
-		if (!command->args)
-			return (NULL);
-		j = 0;
-		while (j < arg_count)
-		{
-			command->args[j] = head_command->content;
-			head_command = head_command->next;
-			j++;
-		}
-		command->args[j] = NULL;
-		command->pipe = 0; //is stierenschijt, moet nog worden gedaan.
-		tmp = ft_lstnew(command);
-		if (!tmp)
-			return (NULL);
-		ft_lstadd_back(&command_list, tmp);
-		if (list)
-			list = list->next;
+		list = list->next;
 	}
+	if (parsing.list != NULL)
+		create_command(&parsing, &command_list);
 	return (command_list);
 }

@@ -6,68 +6,92 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:00:03 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/23 16:14:14 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/28 14:29:31 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int  check_bins(char **tokens, char **env)
+char	*get_bin_path(char *tmp, char *token)
 {
-	char 			**tmp;
-	char 			**path;
-	char 			*bin_path;
-	struct stat		f; // check https://man7.org/linux/man-pages/man2/stat.2.html voor uitleg
-	int 			i;
+	char			**path;
+	int				i;
+	char			*bin_path;
+	struct stat		f;
+
 	i = 0;
-	//  int lstat(const char *pathname, struct stat *statbuf);
-	while (get_envv[i] != '\0')
+	path = ft_split(tmp, ':');
+	while (path[i])
 	{
-		tmp = ft_split(get_envv[i], '=');
+		path[i] = ft_strjoin(path[i], "/");
+		bin_path = ft_strjoin(path[i], token);
+		if (lstat(bin_path, &f) == -1)
+			free(bin_path);
+		else
+			return (bin_path);
+		i++;
+	}
+	return (NULL);
+}
+
+int		check_bins(t_command *command, char **env)
+{
+	char			**tmp;
+	char			*bin_path;
+	int				i;
+
+	i = 0;
+	while (env[i] != '\0')
+	{
+		tmp = ft_split(env[i], '=');
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
 		{
-			int j;
-			j = 0;
-			path = ft_split(tmp[1], ':');
-			while (path[j])
-			{
-				path[j] = ft_strjoin(path[j], "/");
-				bin_path = ft_strjoin(path[j], tokens[0]);
-				if (lstat(bin_path, &f) == -1)
-					free(bin_path);
-				else
-					return (ft_executable(bin_path, f, tokens, env)); // vervolgend executable opstarten he met fork en de hele tering zooi
-				j++;
-			}
+			bin_path = get_bin_path(tmp[1], command->args[0]);
+			if (bin_path != NULL)
+				return (ft_executable(bin_path, command, env));
+			else
+				return (-1);
 		}
 		i++;
 	}
 	return (-1);
 }
 
-int 	ft_executable(char *bin_path, struct stat f,char **tokens, char **env)
+void 	redirections(t_command *command)
+{
+	pipe(command->fd);
+	if (command->pipe == PIPE_IN)
+	{
+		dup2(command->fd[1], 1);
+		close(command->fd[0]);
+	}
+	if (command->pipe == PIPE_OUT)
+	{
+		close(command->fd[1]);
+		dup2(command->fd[0], 0);
+	}
+}
+
+int 	ft_executable(char *bin_path, t_command *command, char **env)
 {
 	pid_t p_id;
 
-	(void)f;
+	// redirection handling and pipe handling
+	// redirections(command);
 	p_id = fork();
 	if (p_id == 0)
-		return (execve(bin_path, tokens, env));
+		return (execve(bin_path, command->args, env));
 	else if (p_id < 0)
 		ft_error("failed to create child process\n");
-	wait(&p_id); // dit zorgt ervoor dat the main proces niet door gaat totdat the child proces klaar is
-	// signal handling ???? hier zometeen nog naar kijken
-	// wat zijn de return values van fork ? kan hier ook iets in fout gaan? zo ja hoe ga ik dit fixen?
-	// inprincipe als ik geen error krijg op fork kan ik execve aanroepen
+	wait(&p_id);
 	return (0);
 }
 
 void iterate_command(t_list *command_list, char **env)
 {
-	// vanaf hier moet het blijven staan zoals het staat dus die commands moeten de structuur zijn en die tokens[0] moeten daaronder gehakt worden.
 	while (command_list)
 	{
-		if (is_builtin(((t_command*)command_list->content)->args) == 0 && check_bins(((t_command*)command_list->content)->args, env) == -1)
+		if (is_builtin(((t_command*)command_list->content)) == 0 && check_bins(((t_command*)command_list->content), env) == -1)
 			ft_error("Some sort of error message\n"); // deze nog even goed maken 
 		command_list = command_list->next;
 	}

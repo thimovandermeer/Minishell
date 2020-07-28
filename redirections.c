@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/20 08:50:29 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/20 14:07:30 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/07/28 11:02:04 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
-
 int		main(int argc, char **argv, char **envp)
 {
 	pid_t	pid;
@@ -32,13 +31,8 @@ int		main(int argc, char **argv, char **envp)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (struct->pipe == 1)
-		{
-			dup2(fd[1], 1);
-			close(fd[0]);
-		}
-		
-	
+		dup2(fd[1], 1);
+		close(fd[0]);
 		execve("/bin/ls", vars1, envp);
 	}
 	wait(NULL);
