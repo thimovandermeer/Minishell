@@ -6,51 +6,11 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/16 10:59:33 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/16 13:29:38 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/27 12:38:19 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char 	*get_env_var(char *str)
-{
-    char **tmp;
-    char **path;
-    char *home_path;
-    struct stat		f;
-    int i;
-
-    i = 0;
-	while(get_envv[i] != '\0')
-	{
-        printf("hier\n");
-		tmp = ft_split(get_envv[i], '=');
-		if (ft_strncmp(tmp[0], str, ft_strlen(tmp[0])) == 0)
-		{
-            printf("vindt hij een home ?\n");
-			int j;
-			j = 0;
-			path = ft_split(tmp[1], ':');
-			while(path[j])
-			{
-                printf("binnen path loop?\n");
-				path[j] = ft_strjoin(path[j], "/");
-                printf("doet mijn join het ?\n");
-                printf("path = %s\n", path[j]);
-                printf("tokens = %s\n", tokens[0]);
-				home_path = ft_strjoin(path[j], tokens[0]);
-                
-				if (lstat(home_path, &f) == -1)
-					free(home_path);
-				else
-					return (home_path);
-				j++;
-			}
-		}
-		i++;
-	}
-    return (NULL);
-}
 
 void    command_handler(int sig_num)
 {

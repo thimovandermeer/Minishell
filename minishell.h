@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/23 13:23:23 by rpet          ########   odam.nl         */
+/*   Updated: 2020/07/30 11:49:42 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/stat.h>
 # include <unistd.h>
 
+// int fd[2];
 typedef enum	e_token {
 	NOT_ACTIVE,
 	ACTIVE,
@@ -33,6 +34,13 @@ typedef enum	e_quote {
 	DOUBLE_QUOTE
 }				t_quote;
 
+typedef enum	e_separator
+{
+	NO_SEP,
+	SEMICOLON,
+	PIPE
+}				t_separator;
+
 typedef	struct	s_lexer {
 	int			token_len;
 	char		*token_str;
@@ -40,10 +48,28 @@ typedef	struct	s_lexer {
 	t_token		token;
 }				t_lexer;
 
+typedef enum 	e_pipe
+{
+	NO_PIPE,
+	PIPE_IN,
+	PIPE_OUT,
+	PIPE_BOTH
+}				t_pipe;
+
+typedef struct s_parsing {
+	t_list 			*list;
+	t_separator 	cur_sep;
+	t_separator 	prev_sep;
+}				t_parsing;
+
 typedef struct s_command {
-	char 	**args;
-	int 	pipe;
+	char	**args;
+	t_pipe	pipe;
 }				t_command;
+
+typedef struct	s_vars {
+	int		fd[2];
+}				t_vars;
 
 /*
 **		Lexer functions
@@ -60,6 +86,45 @@ int		lexer_loop(char *line, t_lexer *lexer, t_list **list);
 void	init_lexer(t_lexer *lexer);
 t_list	*lexer_line(char *line);
 
+/*
+**		exec functions
+*/
+
+int  	check_bins(t_command *command, char **env, t_vars *vars);
+int 	ft_executable(char *bin_path, t_command *command, char **env, t_vars *vars);
+void 	iterate_command(t_list *command_list, char **env);
+
+/*
+**		util functions
+*/
+
+void	ft_error(char *str);
+int 	ft_occurence(char *line, char c);
+void 	ft_free_array(char **arr);
+void    print_list(t_list *list);
+void    str_error(char *str);
+void    print_commands(t_list *command_list);
+
+/*
+**		parse functions
+*/
+
+t_separator		check_seperator(char *str);
+t_list 	*parse_line(t_list *list);
+
+
+/*
+**		init env  functions
+*/
+
+size_t 	ft_env_len(char **envv);
+// void	init_envv(char **envv, t_vars *vars);
+
+/*
+**		pipe handling functions
+*/
+void 	pipe_handling(t_command *command, char *bin_path, char **env, pid_t p_id);
+
 int 	cd_func(char *token);
 int 	echo_func(char *token);
 int 	env_func(char *token);
@@ -70,9 +135,6 @@ int 	unset_func(char *token);
 void 	command_prompt();
 void    command_handler(int sig_num);
 void    fork_handler(int sig_num);
-
-char 	**get_envv;
-char 	**tokens;
-char	**command;
+int 	is_builtin(t_command *command);
 
 #endif
