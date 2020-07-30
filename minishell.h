@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/30 11:38:54 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/30 12:06:39 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 # include <sys/stat.h>
 # include <unistd.h>
 
-// int fd[2];
 typedef enum	e_token {
 	NOT_ACTIVE,
 	ACTIVE,
@@ -40,6 +39,14 @@ typedef enum	e_separator
 	SEMICOLON,
 	PIPE
 }				t_separator;
+
+typedef enum	e_redirection
+{
+	NO_REDIR,
+	REDIR_IN,
+	REDIR_OUT_APPEND,
+	REDIR_OUT_NEW
+}				t_redirection;
 
 typedef	struct	s_lexer {
 	int			token_len;
