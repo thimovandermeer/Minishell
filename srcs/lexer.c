@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 09:19:48 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/23 12:00:50 by rpet          ########   odam.nl         */
+/*   Updated: 2020/07/23 13:37:15 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int            add_token_to_list(t_lexer *lexer, t_list **list)
 **    While not in a token, checks if it should start a new token.
 */
 
-void        check_new_token1(char *line, t_lexer *lexer)
+void		outside_token(char *line, t_lexer *lexer)
 {
     if (check_metachar(line))
     {
@@ -99,7 +99,7 @@ void        check_new_token1(char *line, t_lexer *lexer)
 **    While in a token, checks if it should start a new token.
 */
 
-int            check_new_token2(char *line, t_lexer *lexer, t_list **list)
+int			in_active_token(char *line, t_lexer *lexer, t_list **list)
 {
     if (check_metachar(line))
     {
@@ -118,32 +118,44 @@ int            check_new_token2(char *line, t_lexer *lexer, t_list **list)
     return (1);
 }
 
+int			in_metachar_token(char *line, t_lexer* lexer, t_list **list)
+{
+	if (!add_token_to_list(lexer, list))
+		return (0);
+	if (*line == ' ' || *line == '\t')
+		lexer->token = NOT_ACTIVE;
+	else
+	{
+		lexer->token_str = line;
+		lexer->token_len = 0;
+		if (!check_metachar(line))
+			lexer->token = ACTIVE;
+	}
+	return (1);
+}
+
 /*
 **    Checks where to split for tokens.
 */
 
 int			lexer_loop(char *line, t_lexer *lexer, t_list **list)
 {
-	printf("line start: [%s]\n", line);
     if (*line == '\'' && lexer->quote != DOUBLE_QUOTE)
         found_single_quote(line, lexer);
     if (*line == '\"' && lexer->quote != SINGLE_QUOTE)
         found_double_quote(line, lexer);
 	if (lexer->token == NOT_ACTIVE)
-        check_new_token1(line, lexer);
+        outside_token(line, lexer);
 	else if (lexer->token == ACTIVE && lexer->quote == NO_QUOTE)
     {
-		//printf("line active check: [%s]\n", line);
-        if (!check_new_token2(line, lexer, list))
+        if (!in_active_token(line, lexer, list))
             return (0);
     }
 	else if (lexer->token == METACHAR && lexer->quote == NO_QUOTE)
     {
-		printf("line metachar check1: [%s]\n", line);
-        if (!add_token_to_list(lexer, list))
-            return (0);
-        lexer->token = NOT_ACTIVE;
-    }
+		if (!in_metachar_token(line, lexer, list))
+			return (0);
+	}
     if (lexer->token != NOT_ACTIVE)
         lexer->token_len++;
     return (1);
@@ -161,23 +173,20 @@ void		init_lexer(t_lexer *lexer)
 **    Calls the loop for the lexer.
 */
 
-t_list        *lexer_line(char *line)
+t_list		*lexer_line(char *line)
 {
-    t_lexer        lexer;
-    t_list        *list;
-
+	t_lexer		lexer;
+	t_list		*list;
+	
 	init_lexer(&lexer);
-    list = NULL;
-    while (*line)
-    {
+	list = NULL;
+	while (*line)
+	{
 		if (!lexer_loop(line, &lexer, &list))
 			return (NULL);
 		line++;
-		if (*line == '\0')
-		{
-			if (!add_token_to_list(&lexer, &list))
-				return (NULL);
-		}
-    }
+	}
+	if (!add_token_to_list(&lexer, &list))
+		return (NULL);
     return (list);
 }
