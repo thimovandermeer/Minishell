@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:00:03 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/28 14:29:31 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/30 11:38:37 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*get_bin_path(char *tmp, char *token)
 	return (NULL);
 }
 
-int		check_bins(t_command *command, char **env)
+int		check_bins(t_command *command, char **env, t_vars *vars)
 {
 	char			**tmp;
 	char			*bin_path;
@@ -48,7 +48,7 @@ int		check_bins(t_command *command, char **env)
 		{
 			bin_path = get_bin_path(tmp[1], command->args[0]);
 			if (bin_path != NULL)
-				return (ft_executable(bin_path, command, env));
+				return (ft_executable(bin_path, command, env, vars));
 			else
 				return (-1);
 		}
@@ -57,41 +57,41 @@ int		check_bins(t_command *command, char **env)
 	return (-1);
 }
 
-void 	redirections(t_command *command)
-{
-	pipe(command->fd);
-	if (command->pipe == PIPE_IN)
-	{
-		dup2(command->fd[1], 1);
-		close(command->fd[0]);
-	}
-	if (command->pipe == PIPE_OUT)
-	{
-		close(command->fd[1]);
-		dup2(command->fd[0], 0);
-	}
-}
-
-int 	ft_executable(char *bin_path, t_command *command, char **env)
+int 	ft_executable(char *bin_path, t_command *command, char **env, t_vars *vars)
 {
 	pid_t p_id;
 
-	// redirection handling and pipe handling
-	// redirections(command);
 	p_id = fork();
 	if (p_id == 0)
-		return (execve(bin_path, command->args, env));
+	{
+		if (command->pipe == PIPE_OUT)
+		{
+			dup2(vars->fd[1], 1);
+			close(vars->fd[0]);
+			return (execve(bin_path, command->args, env));
+		}
+		else if (command->pipe == PIPE_IN)
+		{
+			dup2(vars->fd[0], 0);
+			return (execve(bin_path, command->args, env));
+		}
+		else
+			return (execve(bin_path, command->args, env));
+	}
 	else if (p_id < 0)
 		ft_error("failed to create child process\n");
-	wait(&p_id);
+	wait(NULL);
+	close(vars->fd[1]);
 	return (0);
 }
 
 void iterate_command(t_list *command_list, char **env)
 {
+	t_vars 	vars;
+	pipe(vars.fd);
 	while (command_list)
 	{
-		if (is_builtin(((t_command*)command_list->content)) == 0 && check_bins(((t_command*)command_list->content), env) == -1)
+		if (is_builtin(((t_command*)command_list->content)) == 0 && check_bins(((t_command*)command_list->content), env, &vars) == -1)
 			ft_error("Some sort of error message\n"); // deze nog even goed maken 
 		command_list = command_list->next;
 	}

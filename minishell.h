@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/28 14:13:37 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/30 11:38:54 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sys/stat.h>
 # include <unistd.h>
 
+// int fd[2];
 typedef enum	e_token {
 	NOT_ACTIVE,
 	ACTIVE,
@@ -64,14 +65,11 @@ typedef struct s_parsing {
 typedef struct s_command {
 	char	**args;
 	t_pipe	pipe;
-	int		fd[2]; 	
 }				t_command;
 
-// typedef struct	s_vars {
-// 	char		**get_envv;
-// 	char		*bin_path;
-// 	struct stat f;
-// }				t_vars;
+typedef struct	s_vars {
+	int		fd[2];
+}				t_vars;
 
 /*
 **		Lexer functions
@@ -91,8 +89,8 @@ t_list	*lexer_line(char *line);
 **		exec functions
 */
 
-int  	check_bins(t_command *command, char **env);
-int 	ft_executable(char *bin_path, t_command *command, char **env);
+int  	check_bins(t_command *command, char **env, t_vars *vars);
+int 	ft_executable(char *bin_path, t_command *command, char **env, t_vars *vars);
 void 	iterate_command(t_list *command_list, char **env);
 
 /*
