@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/30 12:12:32 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/30 12:26:18 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_parsing {
 	t_list 			*list;
 	t_separator 	cur_sep;
 	t_separator 	prev_sep;
+	t_redirection 	redir;
 }				t_parsing;
 
 typedef struct s_command {

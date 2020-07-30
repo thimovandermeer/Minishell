@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/27 11:48:55 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/30 12:39:34 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void			create_command(t_parsing *parser, t_list **command_list)
 	while (parser->list &&
 	check_seperator((char *)parser->list->content) == NO_SEP)
 	{
+		check_redir();
 		((t_command*)item->content)->args[j] = parser->list->content;
 		parser->list = parser->list->next;
 		j++;
@@ -75,6 +76,11 @@ void			create_command(t_parsing *parser, t_list **command_list)
 	if (parser->prev_sep == PIPE && parser->cur_sep == PIPE)
 		((t_command*)item->content)->pipe = PIPE_BOTH;
 	ft_lstadd_back(command_list, item);
+}
+
+void 			check_redir()
+{
+	
 }
 
 t_list			*parse_line(t_list *list)
