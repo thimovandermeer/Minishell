@@ -6,10 +6,10 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 09:19:48 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/30 11:48:03 by rpet          ########   odam.nl         */
-/*   Updated: 2020/07/23 16:14:44 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/30 12:13:59 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -156,7 +156,6 @@ int			lexer_loop(char *line, t_lexer *lexer, t_list **list)
     {
 		if (!in_metachar_token(line, lexer, list))
 			return (0);
-	}
         if (!add_token_to_list(lexer, list))
             return (0);
         lexer->token = NOT_ACTIVE;
