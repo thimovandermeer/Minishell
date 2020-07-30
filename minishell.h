@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/30 12:06:39 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/07/30 12:12:32 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ void	found_double_quote(char *line, t_lexer *lexer);
 void	found_single_quote(char *line, t_lexer *lexer);
 int		check_metachar(char *line);
 int		add_token_to_list(t_lexer *lexer, t_list **list);
-void	check_new_token1(char *line, t_lexer *lexer);
-int		check_new_token2(char *line, t_lexer *lexer, t_list **list);
+void	outside_token(char *line, t_lexer *lexer);
+int		in_active_token(char *line, t_lexer *lexer, t_list **list);
+int		in_metachar_token(char *line, t_lexer *lexer, t_list **list);
 int		lexer_loop(char *line, t_lexer *lexer, t_list **list);
 void	init_lexer(t_lexer *lexer);
 t_list	*lexer_line(char *line);
