@@ -6,11 +6,12 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:00:03 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/30 11:38:37 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/03 13:49:21 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
 
 char	*get_bin_path(char *tmp, char *token)
 {
@@ -57,7 +58,8 @@ int		check_bins(t_command *command, char **env, t_vars *vars)
 	return (-1);
 }
 
-int 	ft_executable(char *bin_path, t_command *command, char **env, t_vars *vars)
+int		ft_executable(char *bin_path, t_command *command,
+char **env, t_vars *vars)
 {
 	pid_t p_id;
 
@@ -75,6 +77,15 @@ int 	ft_executable(char *bin_path, t_command *command, char **env, t_vars *vars)
 			dup2(vars->fd[0], 0);
 			return (execve(bin_path, command->args, env));
 		}
+		else if (command->redir != NO_REDIR)
+		{
+			printf("kom ik hierin ?\n");
+			if (command->redir == REDIR_IN)
+				dup2(vars->fd[0], 0);
+			if (command->redir == REDIR_OUT_APPEND || command->redir == REDIR_OUT_NEW)
+				dup2(vars->fd[1], 1);
+			return (execve(bin_path, command->args, env));
+		}
 		else
 			return (execve(bin_path, command->args, env));
 	}
@@ -85,13 +96,27 @@ int 	ft_executable(char *bin_path, t_command *command, char **env, t_vars *vars)
 	return (0);
 }
 
-void iterate_command(t_list *command_list, char **env)
+void	open_files(t_command *command, t_vars *vars)
 {
-	t_vars 	vars;
+	if (command->redir == REDIR_IN)
+		vars->fd[0] = open(command->file_in, O_RDONLY);
+	if (command->redir == REDIR_OUT_NEW)
+		vars->fd[1] = open(command->file_out, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	if (command->redir == REDIR_OUT_APPEND)
+		vars->fd[1] = open(command->file_out, O_CREAT | O_APPEND | O_RDWR, 0644);
+}
+
+void	iterate_command(t_list *command_list, char **env)
+{
+	t_vars	vars;
+
 	pipe(vars.fd);
+	if (((t_command*)command_list->content)->redir != NO_REDIR)
+		open_files(((t_command*)command_list->content), &vars);
 	while (command_list)
 	{
-		if (is_builtin(((t_command*)command_list->content)) == 0 && check_bins(((t_command*)command_list->content), env, &vars) == -1)
+		if (is_builtin(((t_command*)command_list->content)) == 0 &&
+		check_bins(((t_command*)command_list->content), env, &vars) == -1)
 			ft_error("Some sort of error message\n"); // deze nog even goed maken 
 		command_list = command_list->next;
 	}

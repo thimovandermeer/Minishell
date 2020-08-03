@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/30 12:26:18 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/03 13:43:23 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,14 @@ typedef struct s_parsing {
 	t_redirection 	redir;
 }				t_parsing;
 
-typedef struct s_command {
-	char	**args;
-	t_pipe	pipe;
+typedef struct	s_command {
+	char			**args;
+	t_pipe			pipe;
+	t_redirection 	redir;
+	char			*file_in;
+	char			*file_out;
+	int				in;
+	int				out;
 }				t_command;
 
 typedef struct	s_vars {
@@ -118,8 +123,8 @@ void    print_commands(t_list *command_list);
 */
 
 t_separator		check_seperator(char *str);
-t_list 	*parse_line(t_list *list);
-
+t_list 					*parse_line(t_list *list);
+t_redirection			check_redir(char *str);
 
 /*
 **		init env  functions

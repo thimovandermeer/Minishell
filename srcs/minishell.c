@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/07/30 12:09:05 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/03 11:46:06 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int			main(int argc, char **argv, char **env)
 	t_list		*list;
 	t_list 		*command_list;
 	// t_vars		vars;
-
 	(void)argv;
 	(void)argc;
 	i = 1;
@@ -48,9 +47,9 @@ int			main(int argc, char **argv, char **env)
     while (i)
     {
 		command_prompt();
-        i = get_next_line(0, &line);
-        if (i == -1)
-            ft_error("Something went wrong reading the line\n");
+		i = get_next_line(0, &line);
+		if (i == -1)
+			ft_error("Something went wrong reading the line\n");
 		list = lexer_line(line);
 		print_list(list);
 		if (list == NULL)
