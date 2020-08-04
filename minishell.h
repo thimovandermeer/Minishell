@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/08/03 13:43:23 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/03 16:30:57 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ typedef struct	s_command {
 	t_redirection 	redir;
 	char			*file_in;
 	char			*file_out;
-	int				in;
-	int				out;
+	int				ret;
 }				t_command;
 
 typedef struct	s_vars {
@@ -138,13 +137,13 @@ size_t 	ft_env_len(char **envv);
 */
 void 	pipe_handling(t_command *command, char *bin_path, char **env, pid_t p_id);
 
-int 	cd_func(char *token);
-int 	echo_func(char *token);
-int 	env_func(char *token);
-int 	exit_func(char *token);
-int 	export_func(char *token);
-int 	pwd_func(char *token);
-int 	unset_func(char *token);
+int 	cd_func(t_command *command);
+int 	echo_func(t_command *command);
+int 	env_func(t_command *command);
+int 	exit_func(t_command *command);
+int 	export_func(t_command *command);
+int 	pwd_func(t_command *command);
+int 	unset_func(t_command *command);
 void 	command_prompt();
 void    command_handler(int sig_num);
 void    fork_handler(int sig_num);

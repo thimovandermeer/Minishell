@@ -6,23 +6,37 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:49:42 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/16 15:21:03 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/03 16:27:28 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		echo_func(char *token)
+char	*create_string(char **tokens)
 {
-	int i;
+	char	*result;
+	int		i;
 
-	i = 0;
-	if (token == NULL)
+	i = 1;
+	while (tokens[i])
+	{
+		// if (ft_strcmp(tokens[i], "$"))
+			
+		tokens[i] = ft_strtrim(tokens[i], "\' \"");
+		result = ft_strjoin(tokens[i], tokens[i + 1]);
+		i++;
+	}
+	return (result);
+}
+
+int		echo_func(t_command *command)
+{
+	char *str;
+
+	str = create_string(command->args);
+	if (command->args == NULL)
 		write(1, "\n", 1);
 	else
-	{
-		ft_putstr_fd(token, 1);
-		write(1, "\n", 1);
-	}
-	return (1);
+		ft_putstr_fd(str, 1);
+	return (0);
 }

@@ -6,15 +6,14 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/14 16:08:55 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/03 16:30:17 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     export_func(char *token)
+int     export_func(t_command *command)
 {
-    printf("made it here\n");
-    printf("token = %s\n", token);
+   
     return (0);
 }

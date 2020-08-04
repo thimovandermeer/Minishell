@@ -1,0 +1,12 @@
+Makefile
+flowchart
+libft
+libft.a
+minishell
+minishell.h
+objs
+pipe_test.c
+redirections.c
+srcs
+test.txt
+utils

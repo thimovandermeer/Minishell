@@ -6,15 +6,14 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:50:06 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/07/14 16:08:59 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/03 16:30:13 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int     pwd_func(char *token)
+int     pwd_func(t_command *command)
 {
-    printf("made it here\n");
-    printf("token = %s\n", token);
+    
     return (0);
 }
