@@ -1,0 +1,16 @@
+total 272
+drwxr-xr-x  15 thvan-de  piscine    510 Aug  4 12:50 .
+drwxr-xr-x  20 thvan-de  piscine    680 Jul  3 16:23 ..
+drwxr-xr-x  15 thvan-de  piscine    510 Aug  4 12:50 .git
+-rw-r--r--   1 thvan-de  piscine   1472 Aug  4 10:18 Makefile
+-rw-r--r--   1 thvan-de  piscine  44147 Jul 13 09:12 flowchart
+drwxr-xr-x  97 thvan-de  piscine   3298 Aug  4 12:50 libft
+-rw-r--r--   1 thvan-de  piscine  47816 Aug  4 12:50 libft.a
+-rwxr-xr-x   1 thvan-de  piscine  25004 Aug  4 12:50 minishell
+-rw-r--r--   1 thvan-de  piscine   3732 Aug  4 10:45 minishell.h
+drwxr-xr-x  17 thvan-de  piscine    578 Aug  4 12:50 objs
+-rw-r--r--   1 thvan-de  piscine   2267 Aug  4 10:18 pipe_test.c
+-rw-r--r--   1 thvan-de  piscine   1490 Aug  4 10:18 redirections.c
+drwxr-xr-x  17 thvan-de  piscine    578 Aug  4 10:20 srcs
+-rw-r--r--   1 thvan-de  piscine      0 Aug  4 12:50 today.txt
+drwxr-xr-x   3 thvan-de  piscine    102 Aug  4 10:18 utils

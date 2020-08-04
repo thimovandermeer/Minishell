@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/08/03 16:30:57 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/04 14:18:26 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct	s_command {
 
 typedef struct	s_vars {
 	int		fd[2];
+	char 	**get_envv;
 }				t_vars;
 
 /*
@@ -104,7 +105,7 @@ t_list	*lexer_line(char *line);
 
 int  	check_bins(t_command *command, char **env, t_vars *vars);
 int 	ft_executable(char *bin_path, t_command *command, char **env, t_vars *vars);
-void 	iterate_command(t_list *command_list, char **env);
+void 	iterate_command(t_list *command_list, char **env, t_vars *vars);
 
 /*
 **		util functions
@@ -130,7 +131,7 @@ t_redirection			check_redir(char *str);
 */
 
 size_t 	ft_env_len(char **envv);
-// void	init_envv(char **envv, t_vars *vars);
+void	init_envv(char **envv, t_vars *vars);
 
 /*
 **		pipe handling functions

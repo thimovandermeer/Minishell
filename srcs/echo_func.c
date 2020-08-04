@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:49:42 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/03 16:27:28 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/04 11:09:37 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ char	*create_string(char **tokens)
 	i = 1;
 	while (tokens[i])
 	{
-		// if (ft_strcmp(tokens[i], "$"))
-			
+		if (ft_strcmp(tokens[i], "$"))
 		tokens[i] = ft_strtrim(tokens[i], "\' \"");
 		result = ft_strjoin(tokens[i], tokens[i + 1]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:00:03 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/03 15:29:43 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/04 10:47:04 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,15 @@ void	open_files(t_command *command, t_vars *vars)
 		vars->fd[1] = open(command->file_out, O_CREAT | O_APPEND | O_RDWR, 0644);
 }
 
-void	iterate_command(t_list *command_list, char **env)
+void	iterate_command(t_list *command_list, char **env, t_vars *vars)
 {
-	t_vars	vars;
-
-	pipe(vars.fd);
+	pipe(vars->fd);
 	if (((t_command*)command_list->content)->redir != NO_REDIR)
-		open_files(((t_command*)command_list->content), &vars);
+		open_files(((t_command*)command_list->content), vars);
 	while (command_list)
 	{
 		if (is_builtin(((t_command*)command_list->content)) == 0 &&
-		check_bins(((t_command*)command_list->content), env, &vars) == -1)
+		check_bins(((t_command*)command_list->content), env, vars) == -1)
 			ft_error("Some sort of error message\n"); // deze nog even goed maken 
 		command_list = command_list->next;
 	}

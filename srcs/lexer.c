@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 09:19:48 by rpet          #+#    #+#                 */
-/*   Updated: 2020/07/30 12:27:43 by rpet          ########   odam.nl         */
+/*   Updated: 2020/08/04 13:46:36 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ t_list		*lexer_line(char *line)
 {
 	t_lexer		lexer;
 	t_list		*list;
-	
+
 	init_lexer(&lexer);
 	list = NULL;
 	while (*line)
@@ -189,5 +189,5 @@ t_list		*lexer_line(char *line)
 	}
 	if (!add_token_to_list(&lexer, &list))
 		return (NULL);
-    return (list);
+	return (list);
 }
