@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   exec_func.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/23 15:00:03 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/04 10:47:04 by thvan-de      ########   odam.nl         */
+/*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/08/05 14:05:10 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,24 +70,18 @@ char **env, t_vars *vars)
 		{
 			dup2(vars->fd[1], 1);
 			close(vars->fd[0]);
-			return (execve(bin_path, command->args, env));
 		}
 		else if (command->pipe == PIPE_IN)
-		{
 			dup2(vars->fd[0], 0);
-			return (execve(bin_path, command->args, env));
-		}
 		else if (command->redir != NO_REDIR)
 		{
-			printf("kom ik hierin ?\n");
 			if (command->redir == REDIR_IN)
 				dup2(vars->fd[0], 0);
-			if (command->redir == REDIR_OUT_APPEND || command->redir == REDIR_OUT_NEW)
+			if (command->redir == REDIR_OUT_APPEND ||
+			command->redir == REDIR_OUT_NEW)
 				dup2(vars->fd[1], 1);
-			return (execve(bin_path, command->args, env));
 		}
-		else
-			return (execve(bin_path, command->args, env));
+		return (execve(bin_path, command->args, env));
 	}
 	else if (p_id < 0)
 		ft_error("failed to create child process\n");
@@ -103,7 +97,8 @@ void	open_files(t_command *command, t_vars *vars)
 	if (command->redir == REDIR_OUT_NEW)
 		vars->fd[1] = open(command->file_out, O_CREAT | O_TRUNC | O_RDWR, 0644);
 	if (command->redir == REDIR_OUT_APPEND)
-		vars->fd[1] = open(command->file_out, O_CREAT | O_APPEND | O_RDWR, 0644);
+		vars->fd[1] = open(command->file_out, O_CREAT |
+		O_APPEND | O_RDWR, 0644);
 }
 
 void	iterate_command(t_list *command_list, char **env, t_vars *vars)
@@ -113,9 +108,9 @@ void	iterate_command(t_list *command_list, char **env, t_vars *vars)
 		open_files(((t_command*)command_list->content), vars);
 	while (command_list)
 	{
-		if (is_builtin(((t_command*)command_list->content)) == 0 &&
+		if (is_builtin(((t_command*)command_list->content), vars) == 0 &&
 		check_bins(((t_command*)command_list->content), env, vars) == -1)
-			ft_error("Some sort of error message\n"); // deze nog even goed maken 
+			vars->ret = 127;
 		command_list = command_list->next;
 	}
 }

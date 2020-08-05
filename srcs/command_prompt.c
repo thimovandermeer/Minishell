@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   command_prompt.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/16 10:59:33 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/03 16:33:07 by thimovander   ########   odam.nl         */
+/*   Created: 2020/08/05 14:03:50 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/08/05 14:03:54 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

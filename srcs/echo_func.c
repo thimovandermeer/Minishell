@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   echo_func.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/14 15:49:42 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/04 11:09:37 by thvan-de      ########   odam.nl         */
+/*   Created: 2020/08/05 14:04:34 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/08/05 14:04:36 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ char	*create_string(char **tokens)
 	i = 1;
 	while (tokens[i])
 	{
-		if (ft_strcmp(tokens[i], "$"))
 		tokens[i] = ft_strtrim(tokens[i], "\' \"");
 		result = ft_strjoin(tokens[i], tokens[i + 1]);
 		i++;
