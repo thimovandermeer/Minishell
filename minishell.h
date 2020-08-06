@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/08/05 14:12:42 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/08/06 14:05:21 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,15 @@ typedef struct	s_command {
 	t_redirection	redir;
 	char			*file_in;
 	char			*file_out;
+	int				in;
+	int				out;
 }				t_command;
 
 typedef struct	s_vars {
-	int		fd[2];
+	int		**fd;
 	char	**get_envv;
 	int		ret;
+	int		commands;
 }				t_vars;
 
 /*
@@ -103,9 +106,9 @@ t_list			*lexer_line(char *line);
 **		exec functions
 */
 
-int				check_bins(t_command *command, char **env, t_vars *vars);
+int				check_bins(t_command *command, char **env, t_vars *vars, int i);
 int				ft_executable(char *bin_path, t_command *command,
-				char **env, t_vars *vars);
+				char **env, t_vars *vars, int command_num);
 void			iterate_command(t_list *command_list, char **env, t_vars *vars);
 
 /*
@@ -124,7 +127,7 @@ void			print_commands(t_list *command_list);
 */
 
 t_separator		check_seperator(char *str);
-t_list			*parse_line(t_list *list);
+t_list			*parse_line(t_list **list);
 t_redirection	check_redir(char *str);
 
 /*
@@ -160,6 +163,6 @@ int				unset_func(t_command *command);
 void			command_prompt();
 void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
-int				is_builtin(t_command *command, t_vars *vars);
+int				is_builtin(t_command *command, t_vars *vars, int i);
 
 #endif

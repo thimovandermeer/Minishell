@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/03 11:25:23 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/08/06 11:29:27 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,26 +139,28 @@ void			create_command(t_parsing *parser, t_list **command_list)
 	ft_lstadd_back(command_list, item);
 }
 
-t_list			*parse_line(t_list *list)
+t_list			*parse_line(t_list **list)
 {
 	t_parsing	parsing;
 	t_list		*command_list;
 
 	command_list = NULL;
-	parsing.list = list;
+	parsing.list = *list;
 	parsing.prev_sep = NO_SEP;
-	while (list)
+	while ((*list) != NULL && ft_strcmp((*list)->content, ";"))
 	{
-		parsing.cur_sep = check_seperator(list->content);
+		parsing.cur_sep = check_seperator((*list)->content);
 		if (parsing.cur_sep)
 		{
 			create_command(&parsing, &command_list);
 			parsing.prev_sep = parsing.cur_sep;
-			parsing.list = list->next;
+			parsing.list = (*list)->next;
 		}
-		list = list->next;
+		(*list) = (*list)->next;
 	}
 	if (parsing.list != NULL)
 		create_command(&parsing, &command_list);
+	if ((*list) != NULL)
+		(*list) = (*list)->next;
 	return (command_list);
 }

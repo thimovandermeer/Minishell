@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:49:40 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/08/05 13:52:44 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/08/06 11:24:12 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		expand_func(t_list *list, t_vars *vars)
 	t_quote	quote;
 
 	quote = NO_QUOTE;
-	while (list != NULL)
+	while (list != NULL && ft_strcmp(list->content , ";"))
 	{
 		if (ft_strchr(list->content, '\"'))
 			quote = DOUBLE_QUOTE;

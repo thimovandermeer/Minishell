@@ -6,14 +6,15 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/08/05 14:07:31 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/08/06 14:35:27 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int 	is_builtin(t_command *command, t_vars *vars)
+int 	is_builtin(t_command *command, t_vars *vars, int i)
 {
+	(void)i;
 	if (ft_strncmp(command->args[0], "echo", ft_strlen("echo")) == 0)
 		vars->ret = (echo_func(command)); // all deze funcites 0 laten returen als het goed gaat
 	// if (ft_strncmp(command->args[0], "ECHO", ft_strlen("echo")) == 0)
@@ -65,13 +66,15 @@ int			main(int argc, char **argv, char **env)
 		if (i == -1)
 			ft_error("Something went wrong reading the line\n");
 		list = lexer_line(line);
-		// print_list(list);
-		expand_func(list, &vars);
-		// print_list(list);
-		if (list == NULL)
-			str_error("Something went wrong during the lexer\n");
-		command_list = parse_line(list);
-		iterate_command(command_list, env, &vars);
+		while (list)
+		{
+			printf(" list = %s\n", list->content);
+			expand_func(list, &vars);
+			if (list == NULL)
+				str_error("Something went wrong during the lexer\n");
+			command_list = parse_line(&list);
+			iterate_command(command_list, env, &vars);
+		}
 	}
 	return (0);
 }
