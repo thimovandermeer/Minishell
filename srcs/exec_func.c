@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 11:06:15 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 12:46:21 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,32 +183,22 @@ void	count_commands(t_list *command_list, t_vars *vars)
 
 void	iterate_command(t_list *command_list, char **env, t_vars *vars)
 {
-	t_command	*command;
 	int			i;
 
 	i = 0;
-	command = ((t_command*)command_list->content);
-	if(!set_pipes(command_list, vars))
+	if (!set_pipes(command_list, vars))
 		return ;
-	if (command->redir != NO_REDIR)
-		open_files(command, vars, i);
+	if (((t_command*)command_list->content)->redir != NO_REDIR)
+		open_files(((t_command*)command_list->content), vars, i);
 	count_commands(command_list, vars);
 	while (command_list)
 	{
-		if (!is_builtin(command, vars))
+		if (!is_builtin(((t_command*)command_list->content), vars))
 		{
 			if (!vars->status)
 				return ;
-			if (vars->err == ERROR)
-			{
-				if (command->pipe == NO_PIPE)
-					error_syntax(";");
-				else
-					error_syntax("|");
-				return ;
-			}
-			else if (!check_bins(command, env, vars, i))
-				error_invalid_cmd(command->args[0]);
+			else if (!check_bins(((t_command*)command_list->content), env, vars, i))
+				error_invalid_cmd(((t_command*)command_list->content)->args[0]);
 		}
 		command_list = command_list->next;
 		i++;
