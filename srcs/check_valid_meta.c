@@ -1,34 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd_func.c                                         :+:    :+:            */
+/*   check_valid_meta.c                                 :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/01 13:50:00 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/03 09:37:58 by rpet          ########   odam.nl         */
+/*   Created: 2020/08/13 13:14:43 by rpet          #+#    #+#                 */
+/*   Updated: 2020/09/02 14:17:52 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-#include <unistd.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
 
-int		pwd_func(void)
+int		check_valid_meta(t_list *list)
 {
-	char	cwd[PATH_MAX];
+	int		len;
 
-	ft_bzero(cwd, PATH_MAX);
-	if (!getcwd(cwd, sizeof(cwd)))
+	while (list)
 	{
-		ft_putendl_fd(strerror(errno), 2);
-		exit(1); //niet exit
+		if (check_metachar(list->content))
+		{
+			len = ft_strlen(list->content);
+			if (len > 2)
+			{
+				error_syntax(list->content + 2);
+				return (0);
+			}
+			if (!ft_strcmp(list->content, "<") && list->next)
+				if (!ft_strcmp(list->next->content, "<"))
+				{
+					error_syntax("<");
+					return (0);
+				}
+		}
+		list = list->next;
 	}
-	ft_putstr_fd(cwd, 1);
-	ft_putstr_fd("\n", 1);
 	return (1);
 }

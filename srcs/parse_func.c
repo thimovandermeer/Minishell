@@ -6,11 +6,13 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/06 11:29:27 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/02 14:21:19 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
 t_separator		check_seperator(char *str)
 {
@@ -31,7 +33,7 @@ int				get_length(t_parsing *parser)
 	prev = NO_REDIR;
 	tmp = parser->list;
 	arg_count = 0;
-	while (tmp != NULL && !check_seperator(tmp->content))
+	while (tmp && check_seperator(tmp->content) == NO_SEP)
 	{
 		arg_count++;
 		prev = current;
@@ -53,26 +55,28 @@ t_list			*make_item(int arg_count)
 	t_list		*tmp;
 
 	command = malloc(sizeof(t_command));
-	if (command == NULL)
-		return (NULL);
+	if (!command)
+		error_malloc();
 	tmp = ft_lstnew(command);
-	if (tmp == NULL)
+	if (!tmp)
 	{
 		free(command);
-		return (NULL);
+		error_malloc();
 	}
 	command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
-	ft_bzero(command->args, arg_count);
 	if (!command->args)
 	{
 		ft_free_array(command->args);
-		return (NULL);
+		error_malloc();
 	}
+	command->args[arg_count] = NULL;
 	command->pipe = NO_PIPE;
+	command->redir = NO_REDIR;
+	command->err = NO_ERROR;
 	return (tmp);
 }
 
-t_redirection			check_redir(char *str)
+t_redirection	check_redir(char *str)
 {
 	if (!ft_strcmp(str, "<"))
 		return (REDIR_IN);
@@ -110,23 +114,28 @@ void			create_command(t_parsing *parser, t_list **command_list)
 {
 	int			arg_count;
 	t_list		*item;
-	int			j;
+	int			i;
 
 	arg_count = get_length(parser);
 	item = make_item(arg_count);
-	if (!item)
-		ft_error("something went wrong creating link in list\n");
-	j = 0;
+	i = 0;
 	while (parser->list &&
 	check_seperator((char *)parser->list->content) == NO_SEP)
 	{
 		parser->redir = check_redir((char *)parser->list->content);
 		if (parser->redir != NO_REDIR)
+		{
+			if (!parser->list->next)
+			{
+				parser->err = ERROR;
+				return (error_syntax("newline"));
+			}
 			redir_handling(parser, item);
+		}
 		else
 		{
-			((t_command*)item->content)->args[j] = parser->list->content;
-			j++;
+			((t_command*)item->content)->args[i] = parser->list->content;
+			i++;
 		}
 		parser->list = parser->list->next;
 	}
@@ -147,20 +156,23 @@ t_list			*parse_line(t_list **list)
 	command_list = NULL;
 	parsing.list = *list;
 	parsing.prev_sep = NO_SEP;
-	while ((*list) != NULL && ft_strcmp((*list)->content, ";"))
+	parsing.err = NO_ERROR;
+	while (*list && ft_strcmp((*list)->content, ";"))
 	{
 		parsing.cur_sep = check_seperator((*list)->content);
-		if (parsing.cur_sep)
+		if (parsing.cur_sep != NO_SEP)
 		{
 			create_command(&parsing, &command_list);
+			if (parsing.err == ERROR)
+				return (NULL);
 			parsing.prev_sep = parsing.cur_sep;
 			parsing.list = (*list)->next;
 		}
 		(*list) = (*list)->next;
 	}
-	if (parsing.list != NULL)
+	if (parsing.list)
 		create_command(&parsing, &command_list);
-	if ((*list) != NULL)
+	if (*list)
 		(*list) = (*list)->next;
 	return (command_list);
 }

@@ -6,31 +6,34 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:07:32 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/04 10:43:59 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/03 08:44:14 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
-size_t 	ft_env_len(char **envv)
+size_t 	ft_env_len(char **env)
 {
 	int i;
 
 	i = 0;
-	while (envv[i])
+	while (env[i])
 		i++;
 	return (i);
 }
 
-void	init_envv(char **envv, t_vars *vars)
+void	init_env(char **env, t_vars *vars)
 {
 	int i;
-	vars->get_envv = (char **)malloc(sizeof(char*) * (ft_env_len(envv)+ 1));
+
+	vars->get_env = (char **)malloc(sizeof(char *) * (ft_env_len(env) + 1));
 	i = 0;
-	while (envv[i])
+	while (env[i])
 	{
-		if (!(vars->get_envv[i] = ft_strdup(envv[i])))
-			ft_error("Something went wrong with environment var's"); // dit moet nog aangepast worden naar een goeie error message
+		if (!(vars->get_env[i] = ft_strdup(env[i])))
+			error_malloc();
 		i++;
 	}
+	env[i] = NULL;
 }

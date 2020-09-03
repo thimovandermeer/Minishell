@@ -6,11 +6,15 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 14:03:50 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/08/05 14:03:54 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/02 07:39:05 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <signal.h>
 
 void	command_handler(int sig_num)
 {
@@ -44,5 +48,5 @@ void	command_prompt(void)
 	ft_putstr_fd(home_cwd, 1);
 	free(home_cwd);
 	free(test);
-	ft_putstr_fd("\033[32m--->\033[0m$", 1);
+	ft_putstr_fd("\033[32m--->\033[0m$ ", 1);
 }

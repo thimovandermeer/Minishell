@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env_func.c                                         :+:    :+:            */
+/*   signals.c                                          :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
+/*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/14 15:49:47 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/01 12:06:33 by rpet          ########   odam.nl         */
+/*   Created: 2020/09/03 08:24:47 by rpet          #+#    #+#                 */
+/*   Updated: 2020/09/03 08:37:18 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
-// int     env_func(t_command *command)
-// {
-    
-//     return (0);
-// }
+void		ctrl_c(int signal)
+{
+	(void)signal;
+	ft_putendl_fd("\b\b  ", 1);
+	command_prompt();
+}
+
+void		ctrl_esc(int signal)
+{
+	(void)signal;
+	ft_putstr_fd("\b\b  \b\b", 1);
+}

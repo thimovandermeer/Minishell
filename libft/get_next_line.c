@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/01/03 14:35:57 by rpet          #+#    #+#                 */
-/*   Updated: 2020/01/10 10:04:09 by rpet          ########   odam.nl         */
+/*   Updated: 2020/08/25 08:37:36 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,31 @@ static int	ret_value(char **line, char **str, int fd, int error)
 	return (0);
 }
 
+static int	reading_loop(char **line, char **str, int fd)
+{
+	int		ret;
+	int		tmp;
+
+	ret = 1;
+	tmp = 0;
+	while (ret > 0 && strchr_gnl(str[fd]) == -1)
+	{
+		ret = read(fd, str[fd], BUFFER_SIZE);
+		write(0, "  \b\b", 4);
+		if (ret == 0 && tmp != 0)
+		{
+			ret = tmp;
+			continue ;
+		}
+		tmp = ret;
+		str[fd][ret] = '\0';
+		*line = strjoin_gnl(*line, str[fd]);
+		if (*line == NULL)
+			return (ret_value(line, str, fd, -1));
+	}
+	return (ret_value(line, str, fd, 0));
+}
+
 /*
 **	Starting function. Creates line.
 */
@@ -76,7 +101,6 @@ static int	ret_value(char **line, char **str, int fd, int error)
 int			get_next_line(int fd, char **line)
 {
 	static char	*str[OPEN_MAX];
-	int			ret;
 
 	if (fd < 0 || line == NULL || BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
 		return (-1);
@@ -90,14 +114,5 @@ int			get_next_line(int fd, char **line)
 	*line = strdup_gnl(str[fd]);
 	if (*line == NULL)
 		return (ret_value(line, str, fd, -1));
-	ret = 1;
-	while (ret > 0 && strchr_gnl(str[fd]) == -1)
-	{
-		ret = read(fd, str[fd], BUFFER_SIZE);
-		str[fd][ret] = '\0';
-		*line = strjoin_gnl(*line, str[fd]);
-		if (*line == NULL)
-			return (ret_value(line, str, fd, -1));
-	}
-	return (ret_value(line, str, fd, 0));
+	return (reading_loop(line, str, fd));
 }
