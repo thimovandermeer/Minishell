@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/03 11:18:45 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 14:55:20 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ typedef struct	s_command {
 	t_redirection	redir;
 	char			*file_in;
 	char			*file_out;
-	int				in;
-	int				out;
 }				t_command;
 
 typedef struct	s_vars {
 	char		**get_env;
 	int			**fd;
+	int			out;
+	int			in;
 	int			commands;
 	t_status	status;
 	t_error		err;
