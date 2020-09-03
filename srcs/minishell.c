@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 11:13:19 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 12:39:31 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int			main(int argc, char **argv, char **env)
 		list = lexer_line(line);
 		if (!check_valid_meta(list))
 			continue ;
-		print_list(list); //lijst na de lexer
 		process_list(list, &vars, env);
 		free(line);
 	}
