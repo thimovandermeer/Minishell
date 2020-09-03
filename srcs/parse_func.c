@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/02 14:21:19 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 11:05:47 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ t_list			*make_item(int arg_count)
 	command->args[arg_count] = NULL;
 	command->pipe = NO_PIPE;
 	command->redir = NO_REDIR;
-	command->err = NO_ERROR;
 	return (tmp);
 }
 

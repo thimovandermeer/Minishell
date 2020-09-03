@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   cd_func.c                                          :+:    :+:            */
+/*   cd_builtin.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/01 13:50:28 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/02 07:40:38 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 11:15:21 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	cd_home(char **env)
 	}
 }
 
-int		cd_func(t_command *command, char **env)
+int		cd_builtin(t_command *command, char **env)
 {
 	if (!command->args[1])
 		cd_home(env);

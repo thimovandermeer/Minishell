@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 09:24:45 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 11:13:19 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,21 @@ int 	is_builtin(t_command *command, t_vars *vars)
 {
 	(void) vars;
 	if (!command->args[0])
-		command->err = ERROR;
+		vars->err = ERROR;
 	else if (ft_strcmp(command->args[0], "echo") == 0)
-		return (echo_func(command));
+		return (echo_builtin(command));
 	else if (ft_strcmp(command->args[0], "cd") == 0)
-		return (cd_func(command, vars->get_env));
+		return (cd_builtin(command, vars->get_env));
 	else if (ft_strcmp(command->args[0], "pwd") == 0)
-		return (pwd_func());
+		return (pwd_builtin());
 	// else if (ft_strcmp(command->args[0], "export") == 0)
 	// 	vars->ret = (export_func(command));
-	// else if (ft_strcmp(command->args[0], "unset") == 0)
-	// 	vars->ret = (unset_func(command));
+	else if (ft_strcmp(command->args[0], "unset") == 0)
+		return (unset_builtin(vars));
 	// else if (ft_strcmp(command->args[0], "env") == 0)
-	// 	vars->ret = (env_func(command));
+	//	vars->ret = (env_func(command));
 	else if (ft_strcmp(command->args[0], "exit") == 0)
-		return (exit_func(command, vars));
+		return (exit_builtin(command, vars));
 	return (0);
 }
 
@@ -48,7 +48,7 @@ void		process_list(t_list *list, t_vars *vars, char **env)
 		if (!command_list)
 			break ;
 		iterate_command(command_list, env, vars);
-		if (((t_command*)command_list->content)->err == ERROR)
+		if (vars->err == ERROR)
 			break ;
 		if (!vars->status)
 			return ;
@@ -68,8 +68,7 @@ int			main(int argc, char **argv, char **env)
 		return (1);
 	}
 	init_env(env, &vars);
-	vars.status = 1;
-	while (vars.status)
+	while (vars.status == RUNNING)
 	{
 		command_prompt();
 		signal(SIGINT, ctrl_c);

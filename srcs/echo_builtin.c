@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   echo_func.c                                        :+:    :+:            */
+/*   echo_builtin.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 14:04:34 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 09:12:49 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 11:14:55 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*create_string(char **tokens)
 	return (result);
 }
 
-int		echo_func(t_command *command)
+int		echo_builtin(t_command *command)
 {
 	char *str;
 

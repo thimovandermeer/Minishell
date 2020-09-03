@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   export_func.c                                      :+:    :+:            */
+/*   unset_builtin.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/08/04 10:39:09 by thvan-de      ########   odam.nl         */
+/*   Created: 2020/07/14 15:50:10 by thimovander   #+#    #+#                 */
+/*   Updated: 2020/09/03 11:20:17 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
+#include "minishell.h"
 
-// int     export_func(t_command *command)
-// {
-   
-//     return (0);
-// }
+int		unset_builtin(t_vars *vars)
+{
+	(void)vars;
+	return (0);
+}

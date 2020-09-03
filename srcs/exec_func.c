@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 09:33:48 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 11:06:15 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	iterate_command(t_list *command_list, char **env, t_vars *vars)
 		{
 			if (!vars->status)
 				return ;
-			if (command->err == ERROR)
+			if (vars->err == ERROR)
 			{
 				if (command->pipe == NO_PIPE)
 					error_syntax(";");

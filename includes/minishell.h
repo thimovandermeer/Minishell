@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/03 09:06:31 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 11:18:45 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 # include "libft.h"
 # include <stddef.h>
 # include <stdio.h> //norm
+
+typedef enum	e_status {
+	STOP,
+	RUNNING,
+}				t_status;
 
 typedef enum	e_error {
 	NO_ERROR,
@@ -73,7 +78,6 @@ typedef struct	s_parsing {
 }				t_parsing;
 
 typedef struct	s_command {
-	t_error			err;
 	char			**args;
 	t_pipe			pipe;
 	t_redirection	redir;
@@ -84,10 +88,11 @@ typedef struct	s_command {
 }				t_command;
 
 typedef struct	s_vars {
-	int		**fd;
-	char	**get_env;
-	int		status;
-	int		commands;
+	char		**get_env;
+	int			**fd;
+	int			commands;
+	t_status	status;
+	t_error		err;
 }				t_vars;
 
 /*
@@ -164,13 +169,13 @@ char			*create_new_token(char *str1, char *str2, int len);
 char			*expand_var(char *replace, t_vars *vars, t_quote quote);
 void			expand_func(t_list *list, t_vars *vars);
 int				get_length_var_name(char *replace);
-int				cd_func(t_command *command, char **env);
-int				echo_func(t_command *command);
-int				env_func(t_command *command);
-int				exit_func(t_command *command, t_vars *vars);
-int				export_func(t_command *command);
-int				pwd_func(void);
-int				unset_func(t_command *command);
+int				echo_builtin(t_command *command);
+int				cd_builtin(t_command *command, char **env);
+int				pwd_builtin(void);
+int				export_builtin(t_command *command);
+int				unset_builtin(t_vars *vars);
+int				env_builtin(t_command *command);
+int				exit_builtin(t_command *command, t_vars *vars);
 void			command_prompt(void);
 void			command_handler(int sig_num);
 void			fork_handler(int sig_num);

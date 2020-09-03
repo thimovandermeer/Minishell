@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pwd_func.c                                         :+:    :+:            */
+/*   pwd_builtin.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/01 13:50:00 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/03 09:37:58 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 11:15:47 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <string.h>
 #include <errno.h>
 
-int		pwd_func(void)
+int		pwd_builtin(void)
 {
 	char	cwd[PATH_MAX];
 
