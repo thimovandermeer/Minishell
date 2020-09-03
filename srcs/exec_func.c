@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 12:46:21 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/03 16:19:56 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,19 @@ int		ft_executable(char *bin_path, t_command *command,
 		}
 		else if (command->pipe == PIPE_IN && command->redir == NO_REDIR)
 			dup2(vars->fd[command_num - 1][0], 0);
-		else if (command->redir != NO_REDIR)
+		if (command->redir != NO_REDIR)
 		{
 			if (command->redir == REDIR_IN)
-				dup2(vars->fd[command_num][0], 0);
+			{
+				dup2(vars->in, 0);
+				// close(vars->out);
+			}
 			if (command->redir == REDIR_OUT_APPEND ||
 			command->redir == REDIR_OUT_NEW)
-				dup2(vars->fd[command_num][1], 1);
+			{
+				dup2(vars->out, 1);
+				// close(vars->in);
+			}
 		}
 		execve(bin_path, command->args, env);
 		exit(1);
@@ -120,15 +126,16 @@ int		ft_executable(char *bin_path, t_command *command,
 	return (1);
 }
 
-void	open_files(t_command *command, t_vars *vars, int command_num)
+void	open_files(t_command *command, t_vars *vars)
 {
 	if (command->redir == REDIR_IN)
-		vars->fd[command_num][0] = open(command->file_in, O_RDONLY);
+		vars->in = open(command->file_in, O_RDONLY);
 	if (command->redir == REDIR_OUT_NEW)
-		vars->fd[command_num][1] = open(command->file_out,
-										O_CREAT | O_TRUNC | O_RDWR, 0644);
+	{
+		vars->out = open(command->file_out, O_CREAT | O_TRUNC | O_RDWR, 0644);
+	}
 	if (command->redir == REDIR_OUT_APPEND)
-		vars->fd[command_num][1] = open(command->file_out,
+		vars->out = open(command->file_out,
 										O_CREAT | O_APPEND | O_RDWR, 0644);
 }
 
@@ -189,15 +196,15 @@ void	iterate_command(t_list *command_list, char **env, t_vars *vars)
 	if (!set_pipes(command_list, vars))
 		return ;
 	if (((t_command*)command_list->content)->redir != NO_REDIR)
-		open_files(((t_command*)command_list->content), vars, i);
+		open_files(((t_command*)command_list->content), vars);
 	count_commands(command_list, vars);
 	while (command_list)
 	{
 		if (!is_builtin(((t_command*)command_list->content), vars))
 		{
-			if (!vars->status)
+			if (!vars->status) // dit moet als exit af is weer aangepast worden
 				return ;
-			else if (!check_bins(((t_command*)command_list->content), env, vars, i))
+			if (!check_bins(((t_command*)command_list->content), env, vars, i))
 				error_invalid_cmd(((t_command*)command_list->content)->args[0]);
 		}
 		command_list = command_list->next;

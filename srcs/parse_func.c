@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/03 11:05:47 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 14:35:45 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ t_list			*parse_line(t_list **list)
 	parsing.list = *list;
 	parsing.prev_sep = NO_SEP;
 	parsing.err = NO_ERROR;
-	while (*list && ft_strcmp((*list)->content, ";"))
+	while ((*list) && ft_strcmp((*list)->content, ";"))
 	{
 		parsing.cur_sep = check_seperator((*list)->content);
 		if (parsing.cur_sep != NO_SEP)
