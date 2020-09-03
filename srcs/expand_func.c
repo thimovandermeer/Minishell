@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:49:40 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 08:43:03 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/03 18:19:32 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ int			get_length_var_name(char *replace)
 	int i;
 
 	i = 1;
-	while (replace[i] == '_' || ft_isalpha(replace[i]))
+	if (!(ft_isalpha(replace[i]) || replace[i] == '_'))
+	{
+		i++;
+		return (i);
+	}
+	while (replace[i] && (ft_isalnum(replace[i]) || replace[i] == '_'))
 		i++;
 	return (i);
 }
@@ -31,7 +36,7 @@ void		expand_func(t_list *list, t_vars *vars)
 	t_quote		quote;
 
 	quote = NO_QUOTE;
-	while (list && ft_strcmp(list->content , ";"))
+	while (list && ft_strcmp(list->content, ";"))
 	{
 		if (ft_strchr(list->content, '\"'))
 			quote = DOUBLE_QUOTE;
@@ -43,6 +48,8 @@ void		expand_func(t_list *list, t_vars *vars)
 			new = expand_var(token, vars, quote);
 			list->content = new;
 		}
+		else
+			list->content = ft_strdup(token);
 		list = list->next;
 		quote = NO_QUOTE;
 	}
@@ -56,6 +63,7 @@ char		*expand_var(char *replace, t_vars *vars, t_quote quote)
 	char	*var_replace_value;
 
 	length = get_length_var_name(replace);
+	printf("length = %i\n", length);
 	if (quote == SINGLE_QUOTE)
 		return (replace);
 	length_start_str = ft_strlen(replace) - length;
