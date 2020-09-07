@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/03 14:55:20 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/07 13:52:19 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct	s_vars {
 	int			out;
 	int			in;
 	int			commands;
+	int			ret;
 	t_status	status;
 	t_error		err;
 }				t_vars;

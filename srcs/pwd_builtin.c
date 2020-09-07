@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/01 13:50:00 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/03 11:15:47 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/07 13:53:27 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ int		pwd_builtin(void)
 	}
 	ft_putstr_fd(cwd, 1);
 	ft_putstr_fd("\n", 1);
-	return (1);
+	return (0);
 }
