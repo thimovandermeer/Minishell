@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 13:56:11 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/07 13:54:42 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ int 	is_builtin(t_command *command, t_vars *vars)
 	if (!command->args[0])
 		vars->err = ERROR;
 	else if (ft_strcmp(command->args[0], "echo") == 0)
-		return (echo_builtin(command));
+		vars->ret = echo_builtin(command);
 	else if (ft_strcmp(command->args[0], "cd") == 0)
-		return (cd_builtin(command, vars->get_env));
+		vars->ret = cd_builtin(command, vars->get_env);
 	else if (ft_strcmp(command->args[0], "pwd") == 0)
-		return (pwd_builtin());
+		vars->ret = pwd_builtin();
 	// else if (ft_strcmp(command->args[0], "export") == 0)
 	// 	vars->ret = (export_func(command));
 	else if (ft_strcmp(command->args[0], "unset") == 0)
-		return (unset_builtin(vars));
+		vars->ret = unset_builtin(vars);
 	// else if (ft_strcmp(command->args[0], "env") == 0)
 	//	vars->ret = (env_func(command));
 	else if (ft_strcmp(command->args[0], "exit") == 0)
-		return (exit_builtin(command, vars));
+		vars->ret = exit_builtin(command, vars);
 	return (0);
 }
 

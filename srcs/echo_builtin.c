@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 14:04:34 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 11:14:55 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/07 13:50:47 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,24 @@
 #include "libft.h"
 #include <stdlib.h>
 
-char	*create_string(char **tokens)
-{
-	char	*result;
-	int		i;
-
-	i = 1;
-	while (tokens[i])
-	{
-		tokens[i] = ft_strtrim(tokens[i], "\' \"");
-		result = ft_strjoin(tokens[i], tokens[i + 1]);
-		if (!result)
-			error_malloc();
-		i++;
-	}
-	return (result);
-}
-
 int		echo_builtin(t_command *command)
 {
-	char *str;
+	int		i;
+	int		newline;
 
-	str = create_string(command->args);
-	if (command->args[1])
-		ft_putstr_fd(str, 1);
-	return (1);
+	newline = 1;
+	i = 1;
+	if (command->args[i] && ft_strcmp(command->args[i], "-n") == 0)
+	{
+		newline = 0;
+		i++;
+	}
+	while (command->args[i])
+	{
+		ft_putstr_fd(command->args[i], 1);
+		i++;
+	}
+	if (newline == 1)
+		ft_putchar_fd('\n',1);
+	return (0);
 }
