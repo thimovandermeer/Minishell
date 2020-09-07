@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/03 16:19:56 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/07 15:40:08 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <string.h>
 #include <errno.h>
 
-char	*get_bin_path(char *tmp, char *token)
+char	*get_bin_path(char *tmp, char *token, t_vars *vars)
 {
 	char			**path;
 	char			*bin_path;
@@ -30,7 +30,7 @@ char	*get_bin_path(char *tmp, char *token)
 
 	path = ft_split(tmp, ':');
 	if (!path)
-		error_malloc();
+		error_malloc(vars);
 	i = 0;
 	while (path[i])
 	{
@@ -60,10 +60,10 @@ int		check_bins(t_command *cmd, char **env, t_vars *vars, int cmd_num)
 	{
 		tmp = ft_split(env[i], '=');
 		if (!tmp)
-			error_malloc();
+			error_malloc(vars);
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
 		{
-			bin_path = get_bin_path(tmp[1], cmd->args[0]);
+			bin_path = get_bin_path(tmp[1], cmd->args[0], vars);
 			if (bin_path)
 				return (ft_executable(bin_path, cmd, env, vars, cmd_num));
 			else
@@ -115,7 +115,7 @@ int		ft_executable(char *bin_path, t_command *command,
 	}
 	else if (p_id == -1)
 	{
-		error_general(strerror(errno));
+		error_general(strerror(errno), vars);
 		return (0);
 	}
 	wait(NULL);
@@ -162,7 +162,7 @@ int		set_pipes(t_list *command_list, t_vars *vars)
 		return (1);
 	vars->fd = (int**)malloc(sizeof(int*) * pipe_amount);
 	if (!vars->fd)
-		error_malloc();
+		error_malloc(vars);
 	i = 0;
 	while (i < pipe_amount)
 	{
@@ -170,7 +170,7 @@ int		set_pipes(t_list *command_list, t_vars *vars)
 		if (!vars->fd[i])
 		{
 			free_int_array(vars->fd);
-			error_malloc();
+			error_malloc(vars);
 		}
 		pipe(vars->fd[i]);
 		i++;
@@ -200,12 +200,12 @@ void	iterate_command(t_list *command_list, char **env, t_vars *vars)
 	count_commands(command_list, vars);
 	while (command_list)
 	{
-		if (!is_builtin(((t_command*)command_list->content), vars))
+		if (is_builtin(((t_command*)command_list->content), vars))
 		{
 			if (!vars->status) // dit moet als exit af is weer aangepast worden
 				return ;
 			if (!check_bins(((t_command*)command_list->content), env, vars, i))
-				error_invalid_cmd(((t_command*)command_list->content)->args[0]);
+				error_invalid_cmd(((t_command*)command_list->content)->args[0], vars);
 		}
 		command_list = command_list->next;
 		i++;

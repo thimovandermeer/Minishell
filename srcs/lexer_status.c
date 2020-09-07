@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/07 11:06:14 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/02 11:05:43 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/07 14:47:49 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,27 @@ void	outside_token(char *line, t_lexer *lexer)
 **		While in a token, checks if it should start a new token.
 */
 
-void	in_active_token(char *line, t_lexer *lexer, t_list **list)
+void	in_active_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars)
 {
 	if (check_metachar(line))
 	{
-		add_token_to_list(lexer, list);
+		add_token_to_list(lexer, list, vars);
 		lexer->token = METACHAR;
 		lexer->token_len = 0;
 		lexer->token_str = line;
 	}
 	else if (*line == ' ' || *line == '\t')
 	{
-		add_token_to_list(lexer, list);
+		add_token_to_list(lexer, list, vars);
 		lexer->token = NOT_ACTIVE;
 	}
 }
 
-void	in_metachar_token(char *line, t_lexer *lexer, t_list **list)
+void	in_metachar_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars)
 {
 	if (*line == '>')
 		return ;
-	add_token_to_list(lexer, list);
+	add_token_to_list(lexer, list, vars);
 	if (*line == ' ' || *line == '\t')
 		lexer->token = NOT_ACTIVE;
 	else

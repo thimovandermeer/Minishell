@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/07 13:54:42 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/07 15:42:15 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include <signal.h>
 #include <unistd.h>
 
-int 	is_builtin(t_command *command, t_vars *vars)
+int		is_builtin(t_command *command, t_vars *vars)
 {
-	(void) vars;
 	if (!command->args[0])
 		vars->err = ERROR;
 	else if (ft_strcmp(command->args[0], "echo") == 0)
@@ -34,7 +33,9 @@ int 	is_builtin(t_command *command, t_vars *vars)
 	//	vars->ret = (env_func(command));
 	else if (ft_strcmp(command->args[0], "exit") == 0)
 		vars->ret = exit_builtin(command, vars);
-	return (0);
+	else
+		vars->ret = 1;
+	return (vars->ret);
 }
 
 void		process_list(t_list *list, t_vars *vars, char **env)
@@ -44,7 +45,7 @@ void		process_list(t_list *list, t_vars *vars, char **env)
 	while (list)
 	{
 		expand_func(list, vars);
-		command_list = parse_line(&list);
+		command_list = parse_line(&list, vars);
 		if (!command_list)
 			break ;
 		iterate_command(command_list, env, vars);
@@ -64,7 +65,7 @@ int			main(int argc, char **argv, char **env)
 	(void) argv;
 	if (argc != 1)
 	{
-		error_general("scripting is not supported");
+		error_general("scripting is not supported", &vars);
 		return (1);
 	}
 	init_env(env, &vars);
@@ -75,8 +76,8 @@ int			main(int argc, char **argv, char **env)
 		signal(SIGQUIT, ctrl_esc);
 		if (!get_next_line(0, &line))
 			break ;
-		list = lexer_line(line);
-		if (!check_valid_meta(list))
+		list = lexer_line(line, &vars);
+		if (!check_valid_meta(list, &vars))
 			continue ;
 		process_list(list, &vars, env);
 		free(line);

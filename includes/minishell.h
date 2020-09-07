@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/07 13:52:19 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/07 15:16:57 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,14 @@ typedef struct	s_vars {
 void			found_double_quote(char *line, t_lexer *lexer);
 void			found_single_quote(char *line, t_lexer *lexer);
 void			outside_token(char *line, t_lexer *lexer);
-void			in_active_token(char *line, t_lexer *lexer, t_list **list);
-void			in_metachar_token(char *line, t_lexer *lexer, t_list **list);
+void			in_active_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars);
+void			in_metachar_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars);
 int				check_metachar(char *line);
-void			add_token_to_list(t_lexer *lexer, t_list **list);
-void			lexer_loop(char *line, t_lexer *lexer, t_list **list);
+void			add_token_to_list(t_lexer *lexer, t_list **list, t_vars *vars);
+void			lexer_loop(char *line, t_lexer *lexer, t_list **list, t_vars *vars);
 void			init_lexer(t_lexer *lexer);
-t_list			*lexer_line(char *line);
-int				check_valid_meta(t_list *list);
+t_list			*lexer_line(char *line, t_vars *vars);
+int				check_valid_meta(t_list *list, t_vars *vars);
 
 /*
 **		Exec functions
@@ -137,7 +137,7 @@ char			*get_env(char **env, char *key);
 */
 
 t_separator		check_seperator(char *str);
-t_list			*parse_line(t_list **list);
+t_list			*parse_line(t_list **list, t_vars *vars);
 t_redirection	check_redir(char *str);
 
 /*
@@ -186,9 +186,9 @@ int				is_builtin(t_command *command, t_vars *vars);
 **		Error functions
 */
 
-void			error_general(char *error_msg);
-void			error_malloc(void);
-void			error_invalid_cmd(char *arg);
-void			error_syntax(char *arg);
+void			error_general(char *error_msg, t_vars *vars);
+void			error_malloc(t_vars *vars);
+void			error_invalid_cmd(char *arg, t_vars *vars);
+void			error_syntax(char *arg, t_vars *vars);
 
 #endif

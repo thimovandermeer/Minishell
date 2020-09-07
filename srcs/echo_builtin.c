@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 14:04:34 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/07 13:50:47 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/07 15:44:28 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int		echo_builtin(t_command *command)
 	{
 		ft_putstr_fd(command->args[i], 1);
 		i++;
+		if (command->args[i])
+			ft_putchar_fd(' ', 1);
 	}
 	if (newline == 1)
-		ft_putchar_fd('\n',1);
+		ft_putchar_fd('\n', 1);
 	return (0);
 }
