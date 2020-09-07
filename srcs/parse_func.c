@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/03 14:35:45 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/07 14:51:29 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,25 @@ int				get_length(t_parsing *parser)
 	return (arg_count);
 }
 
-t_list			*make_item(int arg_count)
+t_list			*make_item(int arg_count, t_vars *vars)
 {
 	t_command	*command;
 	t_list		*tmp;
 
 	command = malloc(sizeof(t_command));
 	if (!command)
-		error_malloc();
+		error_malloc(vars);
 	tmp = ft_lstnew(command);
 	if (!tmp)
 	{
 		free(command);
-		error_malloc();
+		error_malloc(vars);
 	}
 	command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
 	if (!command->args)
 	{
 		ft_free_array(command->args);
-		error_malloc();
+		error_malloc(vars);
 	}
 	command->args[arg_count] = NULL;
 	command->pipe = NO_PIPE;
@@ -109,14 +109,14 @@ void			redir_handling(t_parsing *parser, t_list *item)
 	parser->list = parser->list->next;
 }
 
-void			create_command(t_parsing *parser, t_list **command_list)
+void			create_command(t_parsing *parser, t_list **command_list, t_vars *vars)
 {
 	int			arg_count;
 	t_list		*item;
 	int			i;
 
 	arg_count = get_length(parser);
-	item = make_item(arg_count);
+	item = make_item(arg_count, vars);
 	i = 0;
 	while (parser->list &&
 	check_seperator((char *)parser->list->content) == NO_SEP)
@@ -127,7 +127,7 @@ void			create_command(t_parsing *parser, t_list **command_list)
 			if (!parser->list->next)
 			{
 				parser->err = ERROR;
-				return (error_syntax("newline"));
+				return (error_syntax("newline", vars));
 			}
 			redir_handling(parser, item);
 		}
@@ -147,7 +147,7 @@ void			create_command(t_parsing *parser, t_list **command_list)
 	ft_lstadd_back(command_list, item);
 }
 
-t_list			*parse_line(t_list **list)
+t_list			*parse_line(t_list **list, t_vars *vars)
 {
 	t_parsing	parsing;
 	t_list		*command_list;
@@ -161,7 +161,7 @@ t_list			*parse_line(t_list **list)
 		parsing.cur_sep = check_seperator((*list)->content);
 		if (parsing.cur_sep != NO_SEP)
 		{
-			create_command(&parsing, &command_list);
+			create_command(&parsing, &command_list, vars);
 			if (parsing.err == ERROR)
 				return (NULL);
 			parsing.prev_sep = parsing.cur_sep;
@@ -170,7 +170,7 @@ t_list			*parse_line(t_list **list)
 		(*list) = (*list)->next;
 	}
 	if (parsing.list)
-		create_command(&parsing, &command_list);
+		create_command(&parsing, &command_list, vars);
 	if (*list)
 		(*list) = (*list)->next;
 	return (command_list);

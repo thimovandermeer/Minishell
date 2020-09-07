@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:49:40 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/07 13:52:36 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/07 15:42:27 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void		expand_func(t_list *list, t_vars *vars)
 				new = exit_status(vars);
 			else
 				new = expand_var(token, vars, quote);
+			printf("new = %s\n", new);
 			list->content = new;
 		}
 		else
