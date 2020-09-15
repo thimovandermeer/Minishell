@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/15 10:56:47 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/15 14:20:54 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void		ft_executable(t_exec *exec, t_command *command, t_vars *vars)
 void	open_files(int *fd, char *file, int type, mode_t mode)
 {
 	*fd = open(file, type, mode);
-	// if (*fd == -1)
-	// 	error_syntax()	// later nog inbouwen
+	if (*fd == -1)
+		printf("gaat fout bij open files\n");
 }
 
 // void	signal_handling(t_exec *exec, )
@@ -42,6 +42,7 @@ void	open_files(int *fd, char *file, int type, mode_t mode)
 void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 {
 	int ret;
+
 	if (check_bins(command, vars, exec) == 0)
 		return ;
 	exec->pid = fork();
@@ -50,7 +51,7 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 	if (exec->pid < 0)
 	{
 		free(exec->bin_path);
-		// error message
+		printf("gaat fout bij exec");		
 		return ;
 	}
 	// signal_handling();
@@ -79,8 +80,10 @@ void	iterate_command(t_list *command_list, t_vars *vars)
 		tmp_fd[READ_END] = dup(STDIN_FILENO);
 		tmp_fd[WRITE_END] = dup(STDOUT_FILENO);
 		set_pipes(&exec, command_list);
-		input_redir(((t_command*)command_list->content));
-		output_redir(((t_command*)command_list->content));
+		if (input_redir(((t_command*)command_list->content)))
+			return ;
+		if (output_redir(((t_command*)command_list->content)))
+			return ;
 		exec_func(((t_command*)command_list->content), vars, &exec);
 		if (command_list->next)
 			exec.in = exec.fd[READ_END];
