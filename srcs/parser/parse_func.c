@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/14 16:26:56 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/15 10:50:21 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,9 @@ void			redir_handling(t_parsing *parser, t_command *command)
 		mode = malloc(sizeof(t_filemode));
 		// if (mode == NULL)
 		// 	shell_error_malloc();
+		printf("redir = %u\n", parser->redir);
 		*mode = (parser->redir == REDIR_OUT_APPEND ? APPEND : TRUNC);
+		printf("mode = %i\n", (int)mode);
 		add_list(&(command->file_out), file);
 		add_list(&(command->out_mode), mode);
 	}
@@ -127,12 +129,14 @@ void	print_command_info(t_command *command)
 	int i;
 	t_list *tmp_out;
 	t_list *tmp_in;
+	t_list *tmp_out_mode;
 
 	tmp_in = command->file_in;
 	tmp_out = command->file_out;
-	
+	tmp_out_mode = command->out_mode;
 	i = 0;
 	printf("-----command info-------\n");
+	printf("command = %s\n", command->args[0]);
 	printf("-----files in-----\n");
 	while (tmp_in)
 	{
@@ -144,6 +148,7 @@ void	print_command_info(t_command *command)
 	{
 		printf("file_out = %s\n", tmp_out->content);
 		tmp_out = tmp_out->next;
+		tmp_out_mode = tmp_out_mode->next;
 	}
 }
 
@@ -175,8 +180,8 @@ void			create_command(t_parsing *parser, t_list **command_list, t_vars *vars)
 			i++;
 		}
 		parser->list = parser->list->next;
-		print_command_info((t_command*)command->content);
 	}
+	print_command_info((t_command*)command->content);
 	if (parser->cur_sep == PIPE)
 		((t_command*)command->content)->pipe = PIPE_OUT;
 	if (parser->prev_sep == PIPE)

@@ -18,6 +18,11 @@ void	input_redir(t_command *command)
 			return ;
 		command->file_in = command->file_in->next;
 	}
+	if (command->fd_in != 0)
+	{
+		dup2(command->fd_in, 0);
+		close(command->fd_in);
+	}
 }
 
 void	output_redir(t_command *command)
@@ -43,6 +48,11 @@ void	output_redir(t_command *command)
 		// error handling
 		tmp_file_out = tmp_file_out->next;
 		tmp_out_mode = tmp_out_mode->next;
+	}
+	if (command->fd_out != 1)
+	{
+		dup2(command->fd_out, 1);
+		close(command->fd_out);
 	}
 }
 

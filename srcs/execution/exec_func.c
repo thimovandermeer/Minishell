@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/14 16:21:35 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/15 10:56:47 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	iterate_command(t_list *command_list, t_vars *vars)
 		set_pipes(&exec, command_list);
 		input_redir(((t_command*)command_list->content));
 		output_redir(((t_command*)command_list->content));
-		exec_func(((t_command*)command_list->content),vars, &exec);
+		exec_func(((t_command*)command_list->content), vars, &exec);
 		if (command_list->next)
 			exec.in = exec.fd[READ_END];
 		dup2(tmp_fd[READ_END], STDIN_FILENO);
