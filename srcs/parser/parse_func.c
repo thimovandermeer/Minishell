@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/07 14:51:29 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/14 16:26:56 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ t_list			*make_item(int arg_count, t_vars *vars)
 	command->args[arg_count] = NULL;
 	command->pipe = NO_PIPE;
 	command->redir = NO_REDIR;
+	command->file_in = NULL;
+	command->file_out = NULL;
 	return (tmp);
 }
 
@@ -86,37 +88,73 @@ t_redirection	check_redir(char *str)
 	return (NO_REDIR);
 }
 
-void			redir_handling(t_parsing *parser, t_list *item)
+void			add_list(t_list **list, void *content)
 {
-	char *file;
+	t_list		*new_item;
+
+	new_item = ft_lstnew(content);
+	// if (new_item == NULL)
+	// 	shell_error_malloc();
+	ft_lstadd_back(list, new_item);
+}
+
+void			redir_handling(t_parsing *parser, t_command *command)
+{
+	char 		*file;
+	t_filemode	*mode;
+	t_list		*tmp;
 
 	file = parser->list->next->content;
 	if (parser->redir == REDIR_IN)
+		add_list(&(command->file_in), file);
+	else
 	{
-		((t_command*)item->content)->file_in = file;
-		((t_command*)item->content)->redir = REDIR_IN;
+		mode = malloc(sizeof(t_filemode));
+		// if (mode == NULL)
+		// 	shell_error_malloc();
+		*mode = (parser->redir == REDIR_OUT_APPEND ? APPEND : TRUNC);
+		add_list(&(command->file_out), file);
+		add_list(&(command->out_mode), mode);
 	}
-	if (parser->redir == REDIR_OUT_NEW)
-	{
-		((t_command*)item->content)->file_out = file;
-		((t_command*)item->content)->redir = REDIR_OUT_NEW;
-	}
-	if (parser->redir == REDIR_OUT_APPEND)
-	{
-		((t_command*)item->content)->file_out = file;
-		((t_command*)item->content)->redir = REDIR_OUT_APPEND;
-	}
+	tmp = parser->list;
 	parser->list = parser->list->next;
+	free(tmp->content);
+	free(tmp);
+}
+
+void	print_command_info(t_command *command)
+{
+	int i;
+	t_list *tmp_out;
+	t_list *tmp_in;
+
+	tmp_in = command->file_in;
+	tmp_out = command->file_out;
+	
+	i = 0;
+	printf("-----command info-------\n");
+	printf("-----files in-----\n");
+	while (tmp_in)
+	{
+		printf("file_in = %s\n", tmp_in->content);
+		tmp_in = tmp_in->next;
+	}
+	printf("-----files out------\n");
+	while (tmp_out)
+	{
+		printf("file_out = %s\n", tmp_out->content);
+		tmp_out = tmp_out->next;
+	}
 }
 
 void			create_command(t_parsing *parser, t_list **command_list, t_vars *vars)
 {
 	int			arg_count;
-	t_list		*item;
+	t_list		*command;
 	int			i;
 
 	arg_count = get_length(parser);
-	item = make_item(arg_count, vars);
+	command = make_item(arg_count, vars);
 	i = 0;
 	while (parser->list &&
 	check_seperator((char *)parser->list->content) == NO_SEP)
@@ -129,22 +167,23 @@ void			create_command(t_parsing *parser, t_list **command_list, t_vars *vars)
 				parser->err = ERROR;
 				return (error_syntax("newline", vars));
 			}
-			redir_handling(parser, item);
+			redir_handling(parser, (t_command*)command->content);
 		}
 		else
 		{
-			((t_command*)item->content)->args[i] = parser->list->content;
+			((t_command*)command->content)->args[i] = parser->list->content;
 			i++;
 		}
 		parser->list = parser->list->next;
+		print_command_info((t_command*)command->content);
 	}
 	if (parser->cur_sep == PIPE)
-		((t_command*)item->content)->pipe = PIPE_OUT;
+		((t_command*)command->content)->pipe = PIPE_OUT;
 	if (parser->prev_sep == PIPE)
-		((t_command*)item->content)->pipe = PIPE_IN;
+		((t_command*)command->content)->pipe = PIPE_IN;
 	if (parser->prev_sep == PIPE && parser->cur_sep == PIPE)
-		((t_command*)item->content)->pipe = PIPE_BOTH;
-	ft_lstadd_back(command_list, item);
+		((t_command*)command->content)->pipe = PIPE_BOTH;
+	ft_lstadd_back(command_list, command);
 }
 
 t_list			*parse_line(t_list **list, t_vars *vars)

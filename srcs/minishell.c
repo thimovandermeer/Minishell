@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/07 15:42:15 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/14 14:18:03 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ int		is_builtin(t_command *command, t_vars *vars)
 	return (vars->ret);
 }
 
-void		process_list(t_list *list, t_vars *vars, char **env)
+
+void		process_list(t_list *list, t_vars *vars)
 {
 	t_list		*command_list;
 
@@ -48,7 +49,7 @@ void		process_list(t_list *list, t_vars *vars, char **env)
 		command_list = parse_line(&list, vars);
 		if (!command_list)
 			break ;
-		iterate_command(command_list, env, vars);
+		iterate_command(command_list, vars);
 		if (vars->err == ERROR)
 			break ;
 		if (!vars->status)
@@ -79,7 +80,7 @@ int			main(int argc, char **argv, char **env)
 		list = lexer_line(line, &vars);
 		if (!check_valid_meta(list, &vars))
 			continue ;
-		process_list(list, &vars, env);
+		process_list(list, &vars);
 		free(line);
 	}
 	ft_putstr_fd("exit\n", 1);

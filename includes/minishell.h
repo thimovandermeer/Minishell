@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/07 15:16:57 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/14 16:18:13 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "libft.h"
 # include <stddef.h>
 # include <stdio.h> //norm
+
+# define READ_END 0
+# define WRITE_END 1
 
 typedef enum	e_status {
 	STOP,
@@ -54,6 +57,12 @@ typedef enum	e_redirection
 	REDIR_OUT_NEW
 }				t_redirection;
 
+typedef	enum	e_filemode
+{
+	APPEND,
+	TRUNC
+}				t_filemode;
+
 typedef	struct	s_lexer {
 	int			token_len;
 	char		*token_str;
@@ -81,20 +90,30 @@ typedef struct	s_command {
 	char			**args;
 	t_pipe			pipe;
 	t_redirection	redir;
-	char			*file_in;
-	char			*file_out;
+	t_list			*file_in;
+	t_list			*file_out;
+	t_list			*out_mode;
+	int				fd_out;
+	int				fd_in;
 }				t_command;
 
 typedef struct	s_vars {
 	char		**get_env;
-	int			**fd;
-	int			out;
-	int			in;
 	int			commands;
 	int			ret;
 	t_status	status;
 	t_error		err;
 }				t_vars;
+
+typedef	struct s_exec
+{
+	pid_t		pid;
+	char		*bin_path;
+	char		**args;
+	int			fd[2];
+	int 		in;
+}				t_exec;
+
 
 /*
 **		Lexer functions
@@ -113,13 +132,28 @@ t_list			*lexer_line(char *line, t_vars *vars);
 int				check_valid_meta(t_list *list, t_vars *vars);
 
 /*
+**		get_path.c functions
+*/
+char			*get_bin_path(char *tmp, char *token, t_vars *vars);
+int				check_bins(t_command *command, t_vars *vars, t_exec *exec);
+
+/*
+**		redir_pipes.c functions
+*/
+
+void			input_redir(t_command *command);
+void			output_redir(t_command *command);
+void			set_pipes(t_exec *exec, t_list *command_list);
+
+/*
 **		Exec functions
 */
 
-int				check_bins(t_command *command, char **env, t_vars *vars, int i);
-int				ft_executable(char *bin_path, t_command *cmd,
-								char **env, t_vars *vars, int cmd_num);
-void			iterate_command(t_list *command_list, char **env, t_vars *vars);
+void			ft_executable(t_exec *exec, t_command *command, t_vars *vars);
+void			open_files(int *fd, char *file, int type, mode_t mode);
+void			is_internal(t_command *command, t_vars *vars, t_exec *exec);
+void			exec_func(t_command *command, t_vars *vars, t_exec *exec);
+void			iterate_command(t_list *command_list, t_vars *vars);
 
 /*
 **		Util functions
