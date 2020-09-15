@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/14 16:18:13 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/15 13:07:03 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,12 @@ typedef struct	s_parsing {
 	t_list			*list;
 	t_separator		cur_sep;
 	t_separator		prev_sep;
-	t_redirection	redir;
 	t_error			err;
 }				t_parsing;
 
 typedef struct	s_command {
 	char			**args;
 	t_pipe			pipe;
-	t_redirection	redir;
 	t_list			*file_in;
 	t_list			*file_out;
 	t_list			*out_mode;
@@ -141,8 +139,8 @@ int				check_bins(t_command *command, t_vars *vars, t_exec *exec);
 **		redir_pipes.c functions
 */
 
-void			input_redir(t_command *command);
-void			output_redir(t_command *command);
+int				input_redir(t_command *command);
+int				output_redir(t_command *command);
 void			set_pipes(t_exec *exec, t_list *command_list);
 
 /*

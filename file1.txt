@@ -1,0 +1,12 @@
+total 72
+drwxr-xr-x  11 thvan-de  piscine    374 Sep 15 14:21 .
+drwxr-xr-x  13 thvan-de  piscine    442 Sep 15 10:45 ..
+drwxr-xr-x  15 thvan-de  piscine    510 Sep 15 14:20 .git
+-rw-r--r--   1 thvan-de  piscine   1944 Sep 15 10:02 Makefile
+-rw-r--r--   1 thvan-de  piscine      0 Sep 15 14:21 file1.txt
+drwxr-xr-x   4 thvan-de  piscine    136 Sep 15 10:02 includes
+drwxr-xr-x  98 thvan-de  piscine   3332 Sep 15 14:17 libft
+-rwxr-xr-x   1 thvan-de  piscine  30748 Sep 15 14:20 minishell
+drwxr-xr-x   8 thvan-de  piscine    272 Sep 15 14:17 objs
+drwxr-xr-x   8 thvan-de  piscine    272 Sep 15 10:02 srcs
+-rw-r--r--   1 thvan-de  piscine      0 Sep 15 14:21 today.txt

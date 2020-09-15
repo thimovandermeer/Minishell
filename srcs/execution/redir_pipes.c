@@ -3,10 +3,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void	input_redir(t_command *command)
+int		input_redir(t_command *command)
 {
 	char	*file;
-
+	printf("hoevaak kom ik hierin?\n");
 	command->fd_in = 0;
 	while (command->file_in)
 	{
@@ -15,7 +15,7 @@ void	input_redir(t_command *command)
 			close(command->fd_in);
 		open_files(&command->fd_in, file, O_RDONLY, 0644);
 		if (command->fd_in == -1)
-			return ;
+			return (1);
 		command->file_in = command->file_in->next;
 	}
 	if (command->fd_in != 0)
@@ -23,9 +23,10 @@ void	input_redir(t_command *command)
 		dup2(command->fd_in, 0);
 		close(command->fd_in);
 	}
+	return (0);
 }
 
-void	output_redir(t_command *command)
+int		output_redir(t_command *command)
 {
 	int		type;
 	char	*file;
@@ -37,7 +38,7 @@ void	output_redir(t_command *command)
 	tmp_out_mode = command->out_mode;
 	while (tmp_file_out)
 	{
-		file = (char*)command->file_out->content;
+		file = (char*)tmp_file_out->content;
 		if (command->fd_out != 1)
 			close(command->fd_out);
 		if (*((t_filemode*)tmp_out_mode->content) == APPEND)
@@ -45,6 +46,8 @@ void	output_redir(t_command *command)
 		else if (*((t_filemode*)tmp_out_mode->content) == TRUNC)
 			type = O_TRUNC;
 		open_files(&command->fd_out, file, O_CREAT | type | O_WRONLY, 0644);
+		if (command->fd_out == -1)
+			return (1);
 		// error handling
 		tmp_file_out = tmp_file_out->next;
 		tmp_out_mode = tmp_out_mode->next;
@@ -54,6 +57,7 @@ void	output_redir(t_command *command)
 		dup2(command->fd_out, 1);
 		close(command->fd_out);
 	}
+	return (0);
 }
 
 void	set_pipes(t_exec *exec, t_list *command_list)
