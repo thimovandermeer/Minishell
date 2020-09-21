@@ -6,7 +6,7 @@
 int		input_redir(t_command *command)
 {
 	char	*file;
-	printf("hoevaak kom ik hierin?\n");
+
 	command->fd_in = 0;
 	while (command->file_in)
 	{

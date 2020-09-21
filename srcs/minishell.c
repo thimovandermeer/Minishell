@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/14 14:18:03 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/17 18:12:09 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ int		is_builtin(t_command *command, t_vars *vars)
 		vars->ret = cd_builtin(command, vars->get_env);
 	else if (ft_strcmp(command->args[0], "pwd") == 0)
 		vars->ret = pwd_builtin();
-	// else if (ft_strcmp(command->args[0], "export") == 0)
-	// 	vars->ret = (export_func(command));
+	else if (ft_strcmp(command->args[0], "export") == 0)
+		vars->ret = export_builtin(command, vars);
 	else if (ft_strcmp(command->args[0], "unset") == 0)
 		vars->ret = unset_builtin(vars);
-	// else if (ft_strcmp(command->args[0], "env") == 0)
-	//	vars->ret = (env_func(command));
+	else if (ft_strcmp(command->args[0], "env") == 0)
+		vars->ret = env_func(vars);
 	else if (ft_strcmp(command->args[0], "exit") == 0)
 		vars->ret = exit_builtin(command, vars);
 	else

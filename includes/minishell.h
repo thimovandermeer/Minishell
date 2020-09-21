@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/15 13:07:03 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/17 18:12:58 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,9 +205,9 @@ int				get_length_var_name(char *replace);
 int				echo_builtin(t_command *command);
 int				cd_builtin(t_command *command, char **env);
 int				pwd_builtin(void);
-int				export_builtin(t_command *command);
+int				export_builtin(t_command *command, t_vars *vars);
 int				unset_builtin(t_vars *vars);
-int				env_builtin(t_command *command);
+int				env_func(t_vars *vars);
 int				exit_builtin(t_command *command, t_vars *vars);
 void			command_prompt(void);
 void			command_handler(int sig_num);
