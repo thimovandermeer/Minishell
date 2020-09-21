@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/15 14:25:05 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/17 15:59:05 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ void			add_list(t_list **list, void *content)
 	t_list		*new_item;
 
 	new_item = ft_lstnew(content);
-	if (new_item == NULL)
-		error_malloc();
+	// if (new_item == NULL)
+	// 	error_malloc();
 	ft_lstadd_back(list, new_item);
 }
 
