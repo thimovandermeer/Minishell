@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/21 13:10:14 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/21 15:37:30 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void		set_env_name(t_vars *vars, char *new_var)
 	int		i;
 
 	index = ft_env_len(vars->get_env);
-	tmp = (char **)malloc(sizeof(char*) * (index + 1));
+	tmp = (char **)malloc(sizeof(char*) * (index + 2));
 	if (tmp == NULL)
 		printf("error\n"); // normale error message nog inbouwen 
 	i = 0;
@@ -48,12 +48,13 @@ void		set_env_name(t_vars *vars, char *new_var)
 	free(vars->get_env);
 	vars->get_env = tmp;
 	vars->get_env[index] = ft_strdup(new_var);
+	vars->get_env[index + 1] = NULL;
 }
 
 void		declare_list_thing(t_command *command, t_vars *vars)
 {
 	int		i;
-	int		length;
+	size_t	length;
 	char	**export_print;
 
 	i = 0;
