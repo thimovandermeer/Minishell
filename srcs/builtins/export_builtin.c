@@ -6,26 +6,11 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/17 18:44:54 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/21 13:10:14 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// temporary func delete later
-
-void		print_env_list(char **get_env)
-{
-	int i;
-
-	i = 0;
-	while (get_env[i])
-	{
-		printf("%s\n", get_env[i]);
-		i++;
-	}
-	printf("END OF LIST\n");
-}
 
 int		check_var_name(char *key)
 {
@@ -43,11 +28,13 @@ int		check_var_name(char *key)
 	return (1);
 }
 
-void		resize_env(int index, char *new_var, t_vars *vars)
+void		set_env_name(t_vars *vars, char *new_var)
 {
+	int		index;
 	char	**tmp;
 	int		i;
 
+	index = ft_env_len(vars->get_env);
 	tmp = (char **)malloc(sizeof(char*) * (index + 1));
 	if (tmp == NULL)
 		printf("error\n"); // normale error message nog inbouwen 
@@ -63,17 +50,23 @@ void		resize_env(int index, char *new_var, t_vars *vars)
 	vars->get_env[index] = ft_strdup(new_var);
 }
 
-void		set_env_name(t_vars *vars, char *new_var)
+void		declare_list_thing(t_command *command, t_vars *vars)
 {
-	int		index;
-	char	**tmp;
+	int		i;
+	int		length;
+	char	**export_print;
 
-	index = ft_env_len(vars->get_env);
-	// resize env list
-	resize_env(index, new_var, vars);
-	
-
-	// put this var under it
+	i = 0;
+	length = ft_env_len(vars->get_env);
+	export_print = bubblesort(vars->get_env, length);
+	while (export_print[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(export_print[i], 1);
+		ft_putchar_fd('\n', 1);
+		i++;
+	}
+	free(export_print);
 }
 
 int			export_builtin(t_command *command, t_vars *vars)
@@ -89,12 +82,10 @@ int			export_builtin(t_command *command, t_vars *vars)
 			printf("Syntax error\n"); // later aanpassen naar goede error message's
 		else
 			set_env_name(vars, command->args[i]);
-   		// free var array after wards
 		ft_free_array(new_var);
-   		// print the export out
 		i++;
 	}
 	if (i == 1)
-		declare_list_thing();
-    return (0);
+		declare_list_thing(command, vars);
+	return (0);
 }

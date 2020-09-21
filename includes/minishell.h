@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/17 18:12:58 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/21 11:32:22 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,5 +222,5 @@ void			error_general(char *error_msg, t_vars *vars);
 void			error_malloc(t_vars *vars);
 void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
-
+char			**bubblesort(char **array, int length);
 #endif

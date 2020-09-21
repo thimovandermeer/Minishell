@@ -47,6 +47,9 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 			error_malloc(vars);
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
 		{
+			printf("kom ik hier zo ja met welke waarde?\n");
+			printf("tmp[0] = %s\n", tmp[0]);
+			printf("tmp[1] = %s\n", tmp[1]);
 			exec->bin_path = get_bin_path(tmp[1], command->args[0], vars);
 			return (1);
 		}
