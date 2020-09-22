@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpet <marvin@codam.nl>                       +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/22 10:27:22 by rpet          ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -209,7 +197,7 @@ int				echo_builtin(t_command *command);
 int				cd_builtin(t_command *command, char **env);
 int				pwd_builtin(void);
 int				export_builtin(t_command *command, t_vars *vars);
-int				unset_builtin(t_vars *vars);
+int				unset_builtin(t_vars *vars, t_command *command);
 int				env_func(t_vars *vars);
 int				exit_builtin(t_command *command, t_vars *vars);
 void			command_prompt(void);
@@ -225,5 +213,6 @@ void			error_general(char *error_msg, t_vars *vars);
 void			error_malloc(t_vars *vars);
 void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
-
+char			**bubblesort(char **array, int length);
+int				find_var_in_env(char *search_var, char **tmp_env);
 #endif

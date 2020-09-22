@@ -20,6 +20,7 @@ char	*get_bin_path(char *tmp, char *token, t_vars *vars)
 	{
 		temp = ft_strjoin(path[i], "/");
 		bin_path = ft_strjoin(temp, token);
+		free(temp);
 		if (lstat(bin_path, &f) == -1 && bin_path)
 			free(bin_path);
 		else
@@ -48,11 +49,11 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
 		{
 			exec->bin_path = get_bin_path(tmp[1], command->args[0], vars);
-			if (!exec->bin_path)
-				return (0);
+			free(tmp);
 			return (1);
 		}
 		i++;
+		free(tmp);
 	}
 	return (0);
 }

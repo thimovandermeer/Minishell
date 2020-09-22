@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/22 11:50:42 by rpet          ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include <signal.h>
@@ -26,7 +14,7 @@ int		is_builtin(t_command *command, t_vars *vars)
 	else if (ft_strcmp(command->args[0], "export") == 0)
 		vars->ret = export_builtin(command, vars);
 	else if (ft_strcmp(command->args[0], "unset") == 0)
-		vars->ret = unset_builtin(vars);
+		vars->ret = unset_builtin(vars, command);
 	else if (ft_strcmp(command->args[0], "env") == 0)
 		vars->ret = env_func(vars);
 	else if (ft_strcmp(command->args[0], "exit") == 0)
@@ -36,7 +24,6 @@ int		is_builtin(t_command *command, t_vars *vars)
 	printf("ret: [%i]\n", vars->ret);
 	return (vars->ret);
 }
-
 
 void		process_list(t_list *list, t_vars *vars)
 {

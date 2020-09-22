@@ -1,31 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   export_builtin.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/21 11:09:33 by rpet          ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "minishell.h"
-
-// temporary func delete later
-
-void		print_env_list(char **get_env)
-{
-	int i;
-
-	i = 0;
-	while (get_env[i])
-	{
-		printf("%s\n", get_env[i]);
-		i++;
-	}
-	printf("END OF LIST\n");
-}
 
 int		check_var_name(char *key)
 {
@@ -43,12 +17,17 @@ int		check_var_name(char *key)
 	return (1);
 }
 
-void		resize_env(int index, char *new_var, t_vars *vars)
+void		set_env_name(t_vars *vars, char *argument, char **new_var)
 {
+	int		index;
+	int		loc;
 	char	**tmp;
 	int		i;
 
-	tmp = (char **)malloc(sizeof(char*) * (index + 1));
+	index = ft_env_len(vars->get_env);
+	loc = (find_var_in_env(new_var[0], vars->get_env) > 0) ?
+	find_var_in_env(new_var[0], vars->get_env) : index;
+	tmp = (char **)malloc(sizeof(char*) * (index + 2));
 	if (tmp == NULL)
 		printf("error\n"); // normale error message nog inbouwen 
 	i = 0;
@@ -60,20 +39,27 @@ void		resize_env(int index, char *new_var, t_vars *vars)
 	tmp[i] = NULL;
 	free(vars->get_env);
 	vars->get_env = tmp;
-	vars->get_env[index] = ft_strdup(new_var);
+	vars->get_env[loc] = ft_strdup(argument);
+	vars->get_env[index + 1] = NULL;
 }
 
-void		set_env_name(t_vars *vars, char *new_var)
+void		declare_list_thing(t_command *command, t_vars *vars)
 {
-	int		index;
-	char	**tmp;
+	int		i;
+	size_t	length;
+	char	**export_print;
 
-	index = ft_env_len(vars->get_env);
-	// resize env list
-	resize_env(index, new_var, vars);
-	
-
-	// put this var under it
+	i = 0;
+	length = ft_env_len(vars->get_env);
+	export_print = bubblesort(vars->get_env, length);
+	while (export_print[i])
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(export_print[i], 1);
+		ft_putchar_fd('\n', 1);
+		i++;
+	}
+	free(export_print);
 }
 
 int			export_builtin(t_command *command, t_vars *vars)
@@ -88,13 +74,11 @@ int			export_builtin(t_command *command, t_vars *vars)
 		if (!check_var_name(new_var[0]))
 			printf("Syntax error\n"); // later aanpassen naar goede error message's
 		else
-			set_env_name(vars, command->args[i]);
-   		// free var array after wards
+			set_env_name(vars, command->args[i], new_var);
 		ft_free_array(new_var);
-   		// print the export out
 		i++;
 	}
-//	if (i == 1)
-//		declare_list_thing();
-    return (0);
+	if (i == 1)
+		declare_list_thing(command, vars);
+	return (0);
 }

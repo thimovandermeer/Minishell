@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:03:00 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/03 09:06:22 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/21 13:05:47 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,46 @@ char	*get_env(char **env, char *key)
 		i++;
 	}
 	return (NULL);
+}
+
+char	**set_new_env(char **array, int length)
+{
+	int		i;
+	char	**tmp_list;
+
+	tmp_list = (char **)malloc(sizeof(char*) * (length + 1));
+	i = 0;
+	while (array[i])
+	{
+		tmp_list[i] = ft_strdup(array[i]);
+		i++;
+	}
+	return (tmp_list);
+}
+
+char	**bubblesort(char **array, int length)
+{
+	int		i;
+	int		j;
+	char	**tmp_list;
+	char	*tmp;
+
+	tmp_list = set_new_env(array, length);
+	i = 0;
+	while (tmp_list[i])
+	{
+		j = i + 1;
+		while (tmp_list[j])
+		{
+			if (ft_strcmp(tmp_list[i], tmp_list[j]) > 0)
+			{
+				tmp = tmp_list[i];
+				tmp_list[i] = tmp_list[j];
+				tmp_list[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (tmp_list);
 }
