@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/21 13:20:56 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/22 10:50:13 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,4 +223,5 @@ void			error_malloc(t_vars *vars);
 void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
 char			**bubblesort(char **array, int length);
+int				find_var_in_env(char *search_var, char **tmp_env);
 #endif
