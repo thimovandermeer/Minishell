@@ -20,6 +20,7 @@ char	*get_bin_path(char *tmp, char *token, t_vars *vars)
 	{
 		temp = ft_strjoin(path[i], "/");
 		bin_path = ft_strjoin(temp, token);
+		free(temp);
 		if (lstat(bin_path, &f) == -1 && bin_path)
 			free(bin_path);
 		else
@@ -47,13 +48,12 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 			error_malloc(vars);
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
 		{
-			printf("kom ik hier zo ja met welke waarde?\n");
-			printf("tmp[0] = %s\n", tmp[0]);
-			printf("tmp[1] = %s\n", tmp[1]);
 			exec->bin_path = get_bin_path(tmp[1], command->args[0], vars);
+			free(tmp);
 			return (1);
 		}
 		i++;
+		free(tmp);
 	}
 	return (0);
 }

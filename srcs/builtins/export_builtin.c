@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/21 13:10:14 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/22 11:15:16 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,17 @@ int		check_var_name(char *key)
 	return (1);
 }
 
-void		set_env_name(t_vars *vars, char *new_var)
+void		set_env_name(t_vars *vars, char *argument, char **new_var)
 {
 	int		index;
+	int		loc;
 	char	**tmp;
 	int		i;
 
 	index = ft_env_len(vars->get_env);
-	tmp = (char **)malloc(sizeof(char*) * (index + 1));
+	loc = (find_var_in_env(new_var[0], vars->get_env) > 0) ?
+	find_var_in_env(new_var[0], vars->get_env) : index;
+	tmp = (char **)malloc(sizeof(char*) * (index + 2));
 	if (tmp == NULL)
 		printf("error\n"); // normale error message nog inbouwen 
 	i = 0;
@@ -47,13 +50,14 @@ void		set_env_name(t_vars *vars, char *new_var)
 	tmp[i] = NULL;
 	free(vars->get_env);
 	vars->get_env = tmp;
-	vars->get_env[index] = ft_strdup(new_var);
+	vars->get_env[loc] = ft_strdup(argument);
+	vars->get_env[index + 1] = NULL;
 }
 
 void		declare_list_thing(t_command *command, t_vars *vars)
 {
 	int		i;
-	int		length;
+	size_t	length;
 	char	**export_print;
 
 	i = 0;
@@ -81,7 +85,7 @@ int			export_builtin(t_command *command, t_vars *vars)
 		if (!check_var_name(new_var[0]))
 			printf("Syntax error\n"); // later aanpassen naar goede error message's
 		else
-			set_env_name(vars, command->args[i]);
+			set_env_name(vars, command->args[i], new_var);
 		ft_free_array(new_var);
 		i++;
 	}
