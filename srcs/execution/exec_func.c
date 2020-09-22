@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   exec_func.c                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/08/05 13:53:08 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/22 11:46:16 by thvan-de      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include <fcntl.h>
@@ -20,11 +8,11 @@
 #include <string.h>
 #include <errno.h>
 
-void		ft_executable(t_exec *exec, t_command *command, t_vars *vars)
+void	executable(t_exec *exec, t_command *command, t_vars *vars)
 {
 	execve(exec->bin_path, command->args, vars->get_env);
-	// error handling
-	exit(127);
+	// error handling wanneer path wel gevonden is maar niet uit kan voeren.
+	exit(126);
 }
 
 void	open_files(int *fd, char *file, int type, mode_t mode)
@@ -43,11 +31,15 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 {
 	int ret;
 
-	if (check_bins(command, vars, exec) == 0)
+	if (!check_bins(command, vars, exec))
+	{
+		error_invalid_cmd(command->args[0], vars);
+		vars->ret = 127;
 		return ;
+	}
 	exec->pid = fork();
 	if (exec->pid == 0)
-		ft_executable(exec, command, vars);
+		executable(exec, command, vars);
 	if (exec->pid < 0)
 	{
 		free(exec->bin_path);

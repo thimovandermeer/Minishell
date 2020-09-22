@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:07:32 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/07 14:43:17 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/22 08:07:55 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,4 @@ void	init_env(char **env, t_vars *vars)
 	}
 	env[i] = NULL;
 	vars->status = RUNNING;
-	vars->err = NO_ERROR;
 }
