@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/17 18:44:54 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/21 11:09:33 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int			export_builtin(t_command *command, t_vars *vars)
    		// print the export out
 		i++;
 	}
-	if (i == 1)
-		declare_list_thing();
+//	if (i == 1)
+//		declare_list_thing();
     return (0);
 }

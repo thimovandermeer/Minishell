@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/17 18:12:58 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/22 10:27:22 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,10 @@ void			add_token_to_list(t_lexer *lexer, t_list **list, t_vars *vars);
 void			lexer_loop(char *line, t_lexer *lexer, t_list **list, t_vars *vars);
 void			init_lexer(t_lexer *lexer);
 t_list			*lexer_line(char *line, t_vars *vars);
-int				check_valid_meta(t_list *list, t_vars *vars);
+int				is_redirection(char *token);
+int				syntax_redirection(t_list *list, t_vars *vars);
+int				syntax_multi_commands(t_list *list, t_vars *vars);
+int				check_valid_input(t_list *list, t_vars *vars);
 
 /*
 **		get_path.c functions
@@ -147,7 +150,7 @@ void			set_pipes(t_exec *exec, t_list *command_list);
 **		Exec functions
 */
 
-void			ft_executable(t_exec *exec, t_command *command, t_vars *vars);
+void			executable(t_exec *exec, t_command *command, t_vars *vars);
 void			open_files(int *fd, char *file, int type, mode_t mode);
 void			is_internal(t_command *command, t_vars *vars, t_exec *exec);
 void			exec_func(t_command *command, t_vars *vars, t_exec *exec);
