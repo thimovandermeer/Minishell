@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   minishell.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/06/29 11:49:44 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/09/22 11:48:05 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <signal.h>
@@ -5,7 +17,9 @@
 
 int		is_builtin(t_command *command, t_vars *vars)
 {
-	if (ft_strcmp(command->args[0], "echo") == 0)
+	if (!command->args[0])
+		vars->err = ERROR;
+	else if (ft_strcmp(command->args[0], "echo") == 0)
 		vars->ret = echo_builtin(command);
 	else if (ft_strcmp(command->args[0], "cd") == 0)
 		vars->ret = cd_builtin(command, vars->get_env);
@@ -21,7 +35,6 @@ int		is_builtin(t_command *command, t_vars *vars)
 		vars->ret = exit_builtin(command, vars);
 	else
 		vars->ret = 1;
-	printf("ret: [%i]\n", vars->ret);
 	return (vars->ret);
 }
 
@@ -36,6 +49,8 @@ void		process_list(t_list *list, t_vars *vars)
 		if (!command_list)
 			break ;
 		iterate_command(command_list, vars);
+		if (vars->err == ERROR)
+			break ;
 		if (!vars->status)
 			return ;
 	}
@@ -62,8 +77,7 @@ int			main(int argc, char **argv, char **env)
 		if (!get_next_line(0, &line))
 			break ;
 		list = lexer_line(line, &vars);
-		print_list(list);
-		if (!check_valid_input(list, &vars))
+		if (!check_valid_meta(list, &vars))
 			continue ;
 		process_list(list, &vars);
 		free(line);
