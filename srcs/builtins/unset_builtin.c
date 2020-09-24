@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   unset_builtin.c                                    :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/07/14 15:50:10 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/22 11:15:02 by thvan-de      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int		find_var_in_env(char *search_var, char **tmp_env)
@@ -25,7 +13,7 @@ int		find_var_in_env(char *search_var, char **tmp_env)
 			return (i);
 		i++;
 	}
-	return (0);
+	return (-1); //moet hier nog worden gefreed?
 }
 
 void	recreate_env_list(t_vars *vars, int index, int skip_loc)
@@ -55,7 +43,7 @@ int		unset_builtin(t_vars *vars, t_command *command)
 	{
 		tmp_env = command->args[i];
 		skip_loc = find_var_in_env(tmp_env, vars->get_env);
-		if (skip_loc > 0)
+		if (skip_loc >= 0)
 		{
 			index = ft_env_len(vars->get_env) - 1;
 			recreate_env_list(vars, index, skip_loc);

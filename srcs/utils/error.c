@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   error.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpet <marvin@codam.nl>                       +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/09/02 07:22:32 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/07 14:28:42 by thimovander   ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
+#include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
-#include "minishell.h"
 
 void	error_general(char *error_msg, t_vars *vars)
 {
@@ -21,10 +9,9 @@ void	error_general(char *error_msg, t_vars *vars)
 	vars->ret = 127;
 }
 
-void	error_malloc(t_vars *vars)
+void	error_malloc(void)
 {
-	error_general("Something went wrong during malloc.", vars);
-	vars->ret = 127;
+	ft_putendl_fd("Something went wrong during malloc.", 2);
 	exit(1);
 }
 
@@ -38,7 +25,7 @@ void	error_invalid_cmd(char *arg, t_vars *vars)
 
 void	error_syntax(char *arg, t_vars *vars)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token: `", 2);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putendl_fd("'", 2);
 	vars->ret = 127;

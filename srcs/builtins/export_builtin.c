@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   export_builtin.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/07/14 15:50:01 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/22 11:15:16 by thvan-de      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int		check_var_name(char *key)
@@ -66,8 +54,7 @@ void		declare_list_thing(t_command *command, t_vars *vars)
 	while (export_print[i])
 	{
 		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(export_print[i], 1);
-		ft_putchar_fd('\n', 1);
+		ft_putendl_fd(export_print[i], 1); //" " moet ook worden geprint
 		i++;
 	}
 	free(export_print);

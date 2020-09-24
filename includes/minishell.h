@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   minishell.h                                        :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpet <marvin@codam.nl>                       +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/06/25 07:33:20 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/22 10:50:13 by thvan-de      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -33,7 +21,7 @@ typedef enum	e_error {
 typedef enum	e_token {
 	NOT_ACTIVE,
 	ACTIVE,
-	METACHAR
+	METACHAR,
 }				t_token;
 
 typedef enum	e_quote {
@@ -100,7 +88,6 @@ typedef struct	s_vars {
 	int			commands;
 	int			ret;
 	t_status	status;
-	t_error		err;
 }				t_vars;
 
 typedef	struct s_exec
@@ -120,19 +107,22 @@ typedef	struct s_exec
 void			found_double_quote(char *line, t_lexer *lexer);
 void			found_single_quote(char *line, t_lexer *lexer);
 void			outside_token(char *line, t_lexer *lexer);
-void			in_active_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars);
-void			in_metachar_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars);
+void			in_active_token(char *line, t_lexer *lexer, t_list **list);
+void			in_metachar_token(char *line, t_lexer *lexer, t_list **list);
 int				check_metachar(char *line);
-void			add_token_to_list(t_lexer *lexer, t_list **list, t_vars *vars);
-void			lexer_loop(char *line, t_lexer *lexer, t_list **list, t_vars *vars);
+void			add_token_to_list(t_lexer *lexer, t_list **list);
+void			lexer_loop(char *line, t_lexer *lexer, t_list **list);
 void			init_lexer(t_lexer *lexer);
-t_list			*lexer_line(char *line, t_vars *vars);
-int				check_valid_meta(t_list *list, t_vars *vars);
+t_list			*lexer_line(char *line);
+int				is_redirection(char *token);
+int				syntax_redirections(t_list *list, t_vars *vars);
+int				syntax_seperators(t_list *list, t_vars *vars);
+int				check_valid_input(t_list *list, t_vars *vars);
 
 /*
 **		get_path.c functions
 */
-char			*get_bin_path(char *tmp, char *token, t_vars *vars);
+char			*get_bin_path(char *tmp, char *token);
 int				check_bins(t_command *command, t_vars *vars, t_exec *exec);
 
 /*
@@ -147,7 +137,7 @@ void			set_pipes(t_exec *exec, t_list *command_list);
 **		Exec functions
 */
 
-void			ft_executable(t_exec *exec, t_command *command, t_vars *vars);
+void			executable(t_exec *exec, t_command *command, t_vars *vars);
 void			open_files(int *fd, char *file, int type, mode_t mode);
 void			is_internal(t_command *command, t_vars *vars, t_exec *exec);
 void			exec_func(t_command *command, t_vars *vars, t_exec *exec);
@@ -203,23 +193,37 @@ char			*expand_var(char *replace, t_vars *vars, t_quote quote);
 void			expand_func(t_list *list, t_vars *vars);
 int				get_length_var_name(char *replace);
 int				echo_builtin(t_command *command);
-int				cd_builtin(t_command *command, char **env);
 int				pwd_builtin(void);
 int				export_builtin(t_command *command, t_vars *vars);
 int				unset_builtin(t_vars *vars, t_command *command);
 int				env_func(t_vars *vars);
-int				exit_builtin(t_command *command, t_vars *vars);
 void			command_prompt(void);
 void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
 int				is_builtin(t_command *command, t_vars *vars);
 
 /*
+**		Cd functions
+*/
+
+void			update_pwd(t_vars *vars, char *new_pwd);
+int				cd_old(t_vars *vars);
+int				cd_home(t_vars *vars);
+int				cd_builtin(t_command *command, t_vars *vars);
+
+/*
+**		Exit functions
+*/
+
+int				str_is_num(char *str);
+int				exit_builtin(t_command *command, t_vars *vars);
+
+/*
 **		Error functions
 */
 
 void			error_general(char *error_msg, t_vars *vars);
-void			error_malloc(t_vars *vars);
+void			error_malloc(void);
 void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
 char			**bubblesort(char **array, int length);
