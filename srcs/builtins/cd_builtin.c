@@ -46,6 +46,7 @@ int		cd_old(t_vars *vars)
 	tmp = ft_strdup(old_pwd);
 	if (!tmp)
 		error_malloc();
+	ft_putendl_fd(old_pwd, 1);
 	update_pwd(vars, tmp);
 	free(tmp);
 	return (0);
