@@ -31,6 +31,7 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 {
 	int ret;
 
+	printf("command: [%s]\n", command->args[0]);
 	if (!check_bins(command, vars, exec))
 	{
 		error_invalid_cmd(command->args[0], vars);

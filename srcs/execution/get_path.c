@@ -49,11 +49,13 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
 		{
 			exec->bin_path = get_bin_path(tmp[1], command->args[0]);
-			free(tmp);
+			ft_free_array(tmp);
+			if (!exec->bin_path)
+				return (0);
 			return (1);
 		}
+		ft_free_array(tmp);
 		i++;
-		free(tmp);
 	}
 	return (0);
 }
