@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/01 13:50:00 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/07 13:53:27 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/23 13:27:13 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ int		pwd_builtin(void)
 	if (!getcwd(cwd, sizeof(cwd)))
 	{
 		ft_putendl_fd(strerror(errno), 2);
-		exit(1); //niet exit
+		return (127);
 	}
-	ft_putstr_fd(cwd, 1);
-	ft_putstr_fd("\n", 1);
+	ft_putendl_fd(cwd, 0);
 	return (0);
 }

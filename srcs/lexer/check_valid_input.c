@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   check_valid_input.c                                :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpet <marvin@codam.nl>                       +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/08/13 13:14:43 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/22 11:53:21 by rpet          ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 
@@ -22,7 +10,7 @@ int		is_redirection(char	*token)
 	return (0);
 }
 
-/*int		syntax_redirection(t_list *list, t_vars *vars)
+int		syntax_redirections(t_list *list, t_vars *vars)
 {
 	while (list)
 	{
@@ -39,21 +27,9 @@ int		is_redirection(char	*token)
 					error_syntax("<", vars);
 					return (0);
 				}
-		}
-		list = list->next;
-	}
-	return (1);
-}*/
-
-int		syntax_redirection(t_list *list, t_vars *vars)
-{
-	while (list)
-	{
-		if (is_redirection(list->content))
-		{
-			if (ft_strlen(list->content) > 2)
+			if (!list->next)
 			{
-				error_syntax(list->content + 2, vars);
+				error_syntax("newline", vars);
 				return (0);
 			}
 		}
@@ -62,7 +38,7 @@ int		syntax_redirection(t_list *list, t_vars *vars)
 	return (1);
 }
 
-int		syntax_multi_commands(t_list *list, t_vars *vars)
+int		syntax_seperators(t_list *list, t_vars *vars)
 {
 	char	*cur;
 	char	*next;
@@ -93,9 +69,9 @@ int		check_valid_input(t_list *list, t_vars *vars)
 {
 	if (!list)
 		return (0);
-	if (!syntax_multi_commands(list, vars))
+	if (!syntax_seperators(list, vars))
 		return (0);
-	if (!syntax_redirection(list, vars))
+	if (!syntax_redirections(list, vars))
 		return (0);
 	return (1);
 }

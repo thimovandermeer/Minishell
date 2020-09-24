@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   parse_func.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/07/23 15:04:51 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/17 15:59:05 by thimovander   ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -56,19 +44,13 @@ t_list			*make_item(int arg_count, t_vars *vars)
 
 	command = malloc(sizeof(t_command));
 	if (!command)
-		error_malloc(vars);
+		error_malloc();
 	tmp = ft_lstnew(command);
 	if (!tmp)
-	{
-		free(command);
-		error_malloc(vars);
-	}
+		error_malloc();
 	command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
 	if (!command->args)
-	{
-		ft_free_array(command->args);
-		error_malloc(vars);
-	}
+		error_malloc();
 	command->args[arg_count] = NULL;
 	command->pipe = NO_PIPE;
 	command->file_in = NULL;
@@ -92,8 +74,8 @@ void			add_list(t_list **list, void *content)
 	t_list		*new_item;
 
 	new_item = ft_lstnew(content);
-	// if (new_item == NULL)
-	// 	error_malloc();
+	if (!new_item)
+		error_malloc();
 	ft_lstadd_back(list, new_item);
 }
 
@@ -110,8 +92,8 @@ void			redir_handling(t_parsing *parser, t_command *command,
 	else
 	{
 		mode = malloc(sizeof(t_filemode));
-		if (mode == NULL)
-			printf("het gaat fout kut\n");
+		if (!mode)
+			error_malloc();
 		*mode = (redir == REDIR_OUT_APPEND) ? APPEND : TRUNC;
 		add_list(&(command->file_out), file);
 		add_list(&(command->out_mode), mode);

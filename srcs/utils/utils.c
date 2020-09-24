@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:03:00 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/21 13:05:47 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/09/24 10:53:50 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,7 @@ void	free_int_array(int **arr)
 	arr = NULL;
 }
 
-void 	ft_free_array(char **arr)
-{
-	int i;
 
-	i = 0;
-	if (!arr)
-		return ;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-	arr = NULL;
-}
 
 void    print_list(t_list *list)
 {

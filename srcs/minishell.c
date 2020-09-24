@@ -8,7 +8,7 @@ int		is_builtin(t_command *command, t_vars *vars)
 	if (ft_strcmp(command->args[0], "echo") == 0)
 		vars->ret = echo_builtin(command);
 	else if (ft_strcmp(command->args[0], "cd") == 0)
-		vars->ret = cd_builtin(command, vars->get_env);
+		vars->ret = cd_builtin(command, vars);
 	else if (ft_strcmp(command->args[0], "pwd") == 0)
 		vars->ret = pwd_builtin();
 	else if (ft_strcmp(command->args[0], "export") == 0)
@@ -21,7 +21,6 @@ int		is_builtin(t_command *command, t_vars *vars)
 		vars->ret = exit_builtin(command, vars);
 	else
 		vars->ret = 1;
-	printf("ret: [%i]\n", vars->ret);
 	return (vars->ret);
 }
 
@@ -38,6 +37,7 @@ void		process_list(t_list *list, t_vars *vars)
 		iterate_command(command_list, vars);
 		if (!vars->status)
 			return ;
+		free_command_table(&command_list);
 	}
 }
 
@@ -61,10 +61,11 @@ int			main(int argc, char **argv, char **env)
 		signal(SIGQUIT, ctrl_esc);
 		if (!get_next_line(0, &line))
 			break ;
-		list = lexer_line(line, &vars);
-		print_list(list);
+		list = lexer_line(line);
+		// print_list(list);
 		if (!check_valid_input(list, &vars))
 			continue ;
+		printf("-------------------------------\n");
 		process_list(list, &vars);
 		free(line);
 	}
