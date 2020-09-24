@@ -6,7 +6,7 @@
 #    By: rpet <marvin@codam.nl>                       +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/06/24 11:54:19 by rpet          #+#    #+#                  #
-#    Updated: 2020/09/21 13:20:53 by rpet          ########   odam.nl          #
+#    Updated: 2020/09/23 13:53:44 by rpet          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ INC = includes
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFTMAP)/$(LIBFT)
-	$(CC) -L$(LIBFTMAP) -lft -o $(NAME) $(OBJS)
+	$(CC) -L$(LIBFTMAP) -lft -o $(NAME) $(OBJS) #-g -fsanitize=address
 
 $(LIBFTMAP)/$(LIBFT):
 	make -C $(LIBFTMAP)

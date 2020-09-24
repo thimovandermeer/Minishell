@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-char	*get_bin_path(char *tmp, char *token, t_vars *vars)
+char	*get_bin_path(char *tmp, char *token)
 {
 	char			**path;
 	char			*bin_path;
@@ -14,7 +14,7 @@ char	*get_bin_path(char *tmp, char *token, t_vars *vars)
 
 	path = ft_split(tmp, ':');
 	if (!path)
-		error_malloc(vars);
+		error_malloc();
 	i = 0;
 	while (path[i])
 	{
@@ -45,10 +45,10 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 	{
 		tmp = ft_split(vars->get_env[i], '=');
 		if (!tmp)
-			error_malloc(vars);
+			error_malloc();
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)
 		{
-			exec->bin_path = get_bin_path(tmp[1], command->args[0], vars);
+			exec->bin_path = get_bin_path(tmp[1], command->args[0]);
 			free(tmp);
 			return (1);
 		}

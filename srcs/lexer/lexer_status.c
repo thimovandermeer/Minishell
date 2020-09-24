@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   lexer_status.c                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpet <marvin@codam.nl>                       +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/08/07 11:06:14 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/07 14:47:49 by thimovander   ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 
@@ -77,27 +65,31 @@ void	outside_token(char *line, t_lexer *lexer)
 **		While in a token, checks if it should start a new token.
 */
 
-void	in_active_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars)
+void	in_active_token(char *line, t_lexer *lexer, t_list **list)
 {
 	if (check_metachar(line))
 	{
-		add_token_to_list(lexer, list, vars);
+		add_token_to_list(lexer, list);
 		lexer->token = METACHAR;
 		lexer->token_len = 0;
 		lexer->token_str = line;
 	}
 	else if (*line == ' ' || *line == '\t')
 	{
-		add_token_to_list(lexer, list, vars);
+		add_token_to_list(lexer, list);
 		lexer->token = NOT_ACTIVE;
 	}
 }
 
-void	in_metachar_token(char *line, t_lexer *lexer, t_list **list, t_vars *vars)
+/*
+**		While in a meta token, checks if it should start a new token.
+*/
+
+void	in_metachar_token(char *line, t_lexer *lexer, t_list **list)
 {
 	if (*line == '>')
 		return ;
-	add_token_to_list(lexer, list, vars);
+	add_token_to_list(lexer, list);
 	if (*line == ' ' || *line == '\t')
 		lexer->token = NOT_ACTIVE;
 	else

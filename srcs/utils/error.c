@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   error.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpet <marvin@codam.nl>                       +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/09/02 07:22:32 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/22 10:16:44 by rpet          ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
+#include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
-#include "minishell.h"
 
 void	error_general(char *error_msg, t_vars *vars)
 {
@@ -21,9 +9,9 @@ void	error_general(char *error_msg, t_vars *vars)
 	vars->ret = 127;
 }
 
-void	error_malloc(t_vars *vars)
+void	error_malloc(void)
 {
-	error_general("Something went wrong during malloc.", vars);
+	ft_putendl_fd("Something went wrong during malloc.", 2);
 	exit(1);
 }
 
