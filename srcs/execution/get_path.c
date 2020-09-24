@@ -50,6 +50,8 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 		{
 			exec->bin_path = get_bin_path(tmp[1], command->args[0]);
 			free_array(tmp);
+			if (!exec->bin_path)
+				return (0);
 			return (1);
 		}
 		i++;

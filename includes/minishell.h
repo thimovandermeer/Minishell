@@ -206,6 +206,7 @@ int				is_builtin(t_command *command, t_vars *vars);
 **		Cd functions
 */
 
+void			set_pwd(t_vars *vars, int var_index, char *env_var, char *loc);
 void			update_pwd(t_vars *vars, char *new_pwd);
 int				cd_old(t_vars *vars);
 int				cd_home(t_vars *vars);

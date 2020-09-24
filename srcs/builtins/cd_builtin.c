@@ -6,6 +6,15 @@
 #include <string.h>
 #include <errno.h>
 
+void	set_pwd(t_vars *vars, int var_index, char *env_var, char *loc)
+{
+	free(vars->get_env[var_index]);
+	vars->get_env[var_index] = NULL;
+	vars->get_env[var_index] = ft_strjoin(env_var, loc);
+	if (!vars->get_env[var_index])
+		error_malloc();
+}
+
 void	update_pwd(t_vars *vars, char *new_pwd)
 {
 	char	*old_pwd;
@@ -14,38 +23,31 @@ void	update_pwd(t_vars *vars, char *new_pwd)
 	old_pwd = get_env(vars->get_env, "PWD");
 	if (!old_pwd)
 		old_pwd = "";
-	printf("getcwd: [%s]\n", old_pwd);
 	index_pwd = find_var_in_env("OLDPWD", vars->get_env);
 	if (index_pwd >= 0)
-	{
-		free(vars->get_env[index_pwd]);
-		vars->get_env[index_pwd] = NULL;
-		vars->get_env[index_pwd] = ft_strjoin("OLDPWD=", old_pwd);
-		if (!vars->get_env[index_pwd])
-			error_malloc();
-	}
+		set_pwd(vars, index_pwd, "OLDPWD=", old_pwd);
 	index_pwd = find_var_in_env("PWD", vars->get_env);
 	if (index_pwd == -1)
 		return ;
-	free(vars->get_env[index_pwd]);
-	vars->get_env[index_pwd] = NULL;
-	vars->get_env[index_pwd] = ft_strjoin("PWD=", new_pwd);
-	if (!vars->get_env[index_pwd])
-		error_malloc();
+	set_pwd(vars, index_pwd, "PWD=", new_pwd);
 }
 
 int		cd_old(t_vars *vars)
 {
 	char	*old_pwd;
+	char	*tmp;
 
 	old_pwd = get_env(vars->get_env, "OLDPWD");
-	printf("old_pwd: [%s]\n", old_pwd);
 	if (!old_pwd)
 	{
 		ft_putendl_fd("OLDPWD not set", 2);
 		return (1);
 	}
-	update_pwd(vars, old_pwd);
+	tmp = ft_strdup(old_pwd);
+	if (!tmp)
+		error_malloc();
+	update_pwd(vars, tmp);
+	free(tmp);
 	return (0);
 }
 
