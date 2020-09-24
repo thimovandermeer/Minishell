@@ -75,7 +75,6 @@ int		cd_builtin(t_command *command, t_vars *vars)
 {
 	char	new_cwd[PATH_MAX];
 
-	printf("OLDPWD: [%s]\n", get_env(vars->get_env, "OLDPWD"));
 	if (!command->args[1])
 		return (cd_home(vars));
 	else if (!ft_strcmp(command->args[1], "-"))

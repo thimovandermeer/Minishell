@@ -148,8 +148,6 @@ void			iterate_command(t_list *command_list, t_vars *vars);
 */
 
 int				ft_occurence(char *line, char c);
-void			free_int_array(int **arr);
-void			free_array(char **arr);
 void			print_list(t_list *list);
 void			print_commands(t_list *command_list);
 char			*get_env(char **env, char *key);
@@ -229,6 +227,11 @@ void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
 char			**bubblesort(char **array, int length);
 int				find_var_in_env(char *search_var, char **tmp_env);
+
+/*
+**		Free functions
+*/
+
 void			free_command_table(t_list **command_list);
 void 			free_array(char **arr);
 void			free_content(void *content);

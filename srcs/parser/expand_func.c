@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   expand_func.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/08/05 13:49:40 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/22 11:43:46 by thvan-de      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -51,16 +39,21 @@ void		expand_func(t_list *list, t_vars *vars)
 	char		*token;
 	char		*new;
 	t_quote		quote;
+
 	while (list && ft_strcmp(list->content , ";"))
 	{
 		quote = check_quote_type(list);
 		token = ft_strtrim(list->content, "\' \"");
+		if (!token)
+			error_malloc();
 		if (ft_strrchr(token, '$'))
 		{
 			if (token[1] == '?')
 				new = exit_status(vars);
 			else
 				new = expand_var(token, vars, quote);
+			if (!new)
+				error_malloc();
 			list->content = new;
 		}
 		else

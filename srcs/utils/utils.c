@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:03:00 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/24 10:53:50 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/24 14:19:17 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int 	ft_occurence(char *line, char c)
 	return (occ);
 }
 
-void	free_int_array(int **arr)
+/*void	free_int_array(int **arr)
 {
 	int	i;
 
@@ -45,7 +45,7 @@ void	free_int_array(int **arr)
 	free(arr);
 	arr = NULL;
 }
-
+*/
 
 
 void    print_list(t_list *list)
