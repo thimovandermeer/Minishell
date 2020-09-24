@@ -47,7 +47,10 @@ t_list			*make_item(int arg_count, t_vars *vars)
 		error_malloc();
 	tmp = ft_lstnew(command);
 	if (!tmp)
+	{
+		free(command);
 		error_malloc();
+	}
 	command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
 	if (!command->args)
 		error_malloc();
@@ -55,6 +58,7 @@ t_list			*make_item(int arg_count, t_vars *vars)
 	command->pipe = NO_PIPE;
 	command->file_in = NULL;
 	command->file_out = NULL;
+	command->out_mode = NULL;
 	return (tmp);
 }
 
@@ -119,6 +123,7 @@ void			parse_command(t_command *command, t_parsing *parser,
 {
 	int				i;
 	t_redirection	redir;
+	t_list			*tmp;
 
 	i = 0;
 	while (parser->list &&
@@ -132,7 +137,9 @@ void			parse_command(t_command *command, t_parsing *parser,
 			command->args[i] = parser->list->content;
 			i++;
 		}
+		tmp = parser->list;
 		parser->list = parser->list->next;
+		free(tmp);
 	}
 	parse_pipes(command, parser);
 }
