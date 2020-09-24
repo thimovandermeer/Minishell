@@ -37,6 +37,7 @@ void		process_list(t_list *list, t_vars *vars)
 		iterate_command(command_list, vars);
 		if (!vars->status)
 			return ;
+		free_command_table(&command_list);
 	}
 }
 
@@ -61,7 +62,7 @@ int			main(int argc, char **argv, char **env)
 		if (!get_next_line(0, &line))
 			break ;
 		list = lexer_line(line);
-		print_list(list);
+		// print_list(list);
 		if (!check_valid_input(list, &vars))
 			continue ;
 		printf("-------------------------------\n");

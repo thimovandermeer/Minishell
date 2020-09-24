@@ -73,7 +73,7 @@ int			export_builtin(t_command *command, t_vars *vars)
 			printf("Syntax error\n"); // later aanpassen naar goede error message's
 		else
 			set_env_name(vars, command->args[i], new_var);
-		ft_free_array(new_var);
+		free_array(new_var);
 		i++;
 	}
 	if (i == 1)
