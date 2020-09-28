@@ -18,6 +18,11 @@ typedef enum	e_error {
 	ERROR
 }				t_error;
 
+typedef enum	e_escape {
+	NO_ESCAPE,
+	ESCAPE
+}				t_escape;
+
 typedef enum	e_token {
 	NOT_ACTIVE,
 	ACTIVE,
@@ -54,6 +59,7 @@ typedef	enum	e_filemode
 typedef	struct	s_lexer {
 	int			token_len;
 	char		*token_str;
+	t_escape	escape;
 	t_quote		quote;
 	t_token		token;
 }				t_lexer;
@@ -104,6 +110,7 @@ typedef	struct s_exec
 **		Lexer functions
 */
 
+void			found_escape_char(char *line, t_lexer *lexer);
 void			found_double_quote(char *line, t_lexer *lexer);
 void			found_single_quote(char *line, t_lexer *lexer);
 void			outside_token(char *line, t_lexer *lexer);
@@ -148,8 +155,6 @@ void			iterate_command(t_list *command_list, t_vars *vars);
 */
 
 int				ft_occurence(char *line, char c);
-void			free_int_array(int **arr);
-void			free_array(char **arr);
 void			print_list(t_list *list);
 void			print_commands(t_list *command_list);
 char			*get_env(char **env, char *key);
@@ -229,7 +234,13 @@ void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
 char			**bubblesort(char **array, int length);
 int				find_var_in_env(char *search_var, char **tmp_env);
+
+/*
+**		Free functions
+*/
+
 void			free_command_table(t_list **command_list);
+void			free_list(t_list **list);
 void 			free_array(char **arr);
 void			free_content(void *content);
 #endif

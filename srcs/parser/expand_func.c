@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   expand_func.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/08/05 13:49:40 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/22 11:43:46 by thvan-de      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
@@ -51,16 +40,21 @@ void		expand_func(t_list *list, t_vars *vars)
 	char		*token;
 	char		*new;
 	t_quote		quote;
+
 	while (list && ft_strcmp(list->content , ";"))
 	{
 		quote = check_quote_type(list);
 		token = ft_strtrim(list->content, "\' \"");
+		if (!token)
+			error_malloc();
 		if (ft_strrchr(token, '$'))
 		{
 			if (token[1] == '?')
 				new = exit_status(vars);
 			else
 				new = expand_var(token, vars, quote);
+			if (!new)
+				error_malloc();
 			list->content = new;
 		}
 		else
@@ -77,8 +71,8 @@ char		*expand_var(char *replace, t_vars *vars, t_quote quote)
 	char	*var_name;
 	char	*value;
 
-	length = get_length_var_name(replace);
-	var_name = ft_substr(replace, 1, length - 1);
+	length = get_length_var_name(ft_strrchr(replace, '$'));
+	var_name = ft_substr(ft_strrchr(replace,'$'), 1, length - 1);
 	if (quote == SINGLE_QUOTE)
 		return (replace);
 	length_start_str = ft_strlen(replace) - length;
@@ -98,14 +92,15 @@ char		*create_new_token(char *replace, char *value, int len)
 		bash = ft_strdup("bash");
 	if (replace[1] == '_')
 		bash = ft_strdup("_");
-	dst = ft_substr(replace, 2, len);
-	free(replace);
+	dst = ft_substr(replace, 0, len);
 	if (dst && !bash)
 		result = ft_strdup(dst);
 	if (value)
 		result = ft_strdup(value);
 	if (bash && dst)
 		result = ft_strjoin(bash, dst);
+	if (dst && value)
+		result = ft_strjoin(dst, value);
 	free(dst);
 	free(value);
 	free(bash);

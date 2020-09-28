@@ -47,10 +47,7 @@ t_list			*make_item(int arg_count, t_vars *vars)
 		error_malloc();
 	tmp = ft_lstnew(command);
 	if (!tmp)
-	{
-		free(command);
 		error_malloc();
-	}
 	command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
 	if (!command->args)
 		error_malloc();
@@ -160,6 +157,7 @@ t_list			*parse_line(t_list **list, t_vars *vars)
 {
 	t_parsing	parsing;
 	t_list		*command_list;
+	t_list		*tmp;
 
 	command_list = NULL;
 	parsing.list = *list;

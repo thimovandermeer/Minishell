@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/07/23 15:03:00 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/24 10:53:50 by thimovander   ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
@@ -30,7 +19,7 @@ int 	ft_occurence(char *line, char c)
 	return (occ);
 }
 
-void	free_int_array(int **arr)
+/*void	free_int_array(int **arr)
 {
 	int	i;
 
@@ -45,19 +34,19 @@ void	free_int_array(int **arr)
 	free(arr);
 	arr = NULL;
 }
-
+*/
 
 
 void    print_list(t_list *list)
 {
     int			i;
-	int			len;
+//	int			len;
 
     i = 1;
     while (list)
     {
-		len = ft_strlen(list->content);
-		printf("Token %i: [%s] token_len: [%i]\n", i, list->content, len);
+		//len = ft_strlen(list->content);
+		printf("Token %i: [%s] addr: [%p]\n", i, list->content, list->content);
         list = list->next;
         i++;
     }
@@ -105,6 +94,7 @@ char	**set_new_env(char **array, int length)
 	while (array[i])
 	{
 		tmp_list[i] = ft_strdup(array[i]);
+		printf("tmp_list[%i] = %s\n", i, tmp_list[i]);
 		i++;
 	}
 	return (tmp_list);
