@@ -42,6 +42,22 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 	vars->get_env[index + 1] = NULL;
 }
 
+void		set_quotes(char *export_print)
+{
+	int		i;
+	char	**pair;
+
+	i = 0;
+	pair = ft_split(export_print, '=');
+	ft_putstr_fd(pair[0], 1);
+	ft_putchar_fd('=', 1);
+	ft_putchar_fd('\"', 1);
+	ft_putstr_fd(pair[1], 1);
+	ft_putchar_fd('\"', 1);
+	ft_putchar_fd('\n', 1);
+	free_array(pair);
+}
+
 void		declare_list_thing(t_command *command, t_vars *vars)
 {
 	int		i;
@@ -54,7 +70,7 @@ void		declare_list_thing(t_command *command, t_vars *vars)
 	while (export_print[i])
 	{
 		ft_putstr_fd("declare -x ", 1);
-		ft_putendl_fd(export_print[i], 1); //" " moet ook worden geprint
+		set_quotes(export_print[i]);
 		i++;
 	}
 	free(export_print);

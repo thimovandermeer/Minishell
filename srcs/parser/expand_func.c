@@ -1,3 +1,4 @@
+
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -70,8 +71,8 @@ char		*expand_var(char *replace, t_vars *vars, t_quote quote)
 	char	*var_name;
 	char	*value;
 
-	length = get_length_var_name(replace);
-	var_name = ft_substr(replace, 1, length - 1);
+	length = get_length_var_name(ft_strrchr(replace, '$'));
+	var_name = ft_substr(ft_strrchr(replace,'$'), 1, length - 1);
 	if (quote == SINGLE_QUOTE)
 		return (replace);
 	length_start_str = ft_strlen(replace) - length;
@@ -91,14 +92,15 @@ char		*create_new_token(char *replace, char *value, int len)
 		bash = ft_strdup("bash");
 	if (replace[1] == '_')
 		bash = ft_strdup("_");
-	dst = ft_substr(replace, 2, len);
-	free(replace);
+	dst = ft_substr(replace, 0, len);
 	if (dst && !bash)
 		result = ft_strdup(dst);
 	if (value)
 		result = ft_strdup(value);
 	if (bash && dst)
 		result = ft_strjoin(bash, dst);
+	if (dst && value)
+		result = ft_strjoin(dst, value);
 	free(dst);
 	free(value);
 	free(bash);
