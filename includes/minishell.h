@@ -27,6 +27,7 @@ typedef enum	e_token {
 	NOT_ACTIVE,
 	ACTIVE,
 	METACHAR,
+	ESCAPE_CHAR
 }				t_token;
 
 typedef enum	e_quote {
@@ -59,6 +60,7 @@ typedef	enum	e_filemode
 typedef	struct	s_lexer {
 	int			token_len;
 	char		*token_str;
+	char		*tmp;
 	t_escape	escape;
 	t_quote		quote;
 	t_token		token;

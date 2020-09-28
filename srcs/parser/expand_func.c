@@ -40,11 +40,14 @@ void		expand_func(t_list *list, t_vars *vars)
 	char		*token;
 	char		*new;
 	t_quote		quote;
+	t_list		*tmp;
 
-	while (list && ft_strcmp(list->content , ";"))
+	while (list && ft_strcmp(list->content, ";"))
 	{
 		quote = check_quote_type(list);
 		token = ft_strtrim(list->content, "\' \"");
+		free(list->content);
+		list->content = NULL;
 		if (!token)
 			error_malloc();
 		if (ft_strrchr(token, '$'))
@@ -72,7 +75,7 @@ char		*expand_var(char *replace, t_vars *vars, t_quote quote)
 	char	*value;
 
 	length = get_length_var_name(ft_strrchr(replace, '$'));
-	var_name = ft_substr(ft_strrchr(replace,'$'), 1, length - 1);
+	var_name = ft_substr(ft_strrchr(replace, '$'), 1, length - 1);
 	if (quote == SINGLE_QUOTE)
 		return (replace);
 	length_start_str = ft_strlen(replace) - length;

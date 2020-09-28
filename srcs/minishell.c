@@ -27,13 +27,10 @@ int		is_builtin(t_command *command, t_vars *vars)
 void		process_list(t_list *list, t_vars *vars)
 {
 	t_list		*command_list;
-	t_list		*head;
 
-	head = list;
 	while (list)
 	{
 		expand_func(list, vars);
-		// print_list(list);
 		command_list = parse_line(&list, vars);
 		if (!command_list)
 			break ;
@@ -65,7 +62,7 @@ int			main(int argc, char **argv, char **env)
 		if (!get_next_line(0, &line))
 			break ;
 		list = lexer_line(line);
-		print_list(list);
+		// print_list(list);
 		if (check_valid_input(list, &vars))
 			process_list(list, &vars);
 		free(line);
