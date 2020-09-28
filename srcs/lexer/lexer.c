@@ -39,8 +39,8 @@ void	add_token_to_list(t_lexer *lexer, t_list **list)
 
 void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
 {
-	if (*line == '\\' && lexer->quote != SINGLE_QUOTE)
-		found_escape_char(line, lexer);
+//	if (*line == '\\' && lexer->quote != SINGLE_QUOTE)
+//		found_escape_char(line, lexer);
 	if (*line == '\'' && lexer->quote != DOUBLE_QUOTE)
 		found_single_quote(line, lexer);
 	if (*line == '\"' && lexer->quote != SINGLE_QUOTE)
@@ -51,9 +51,9 @@ void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
 		in_active_token(line, lexer, list);
 	else if (lexer->token == METACHAR && lexer->quote == NO_QUOTE)
 		in_metachar_token(line, lexer, list);
-	if (*line != '\\' && lexer->escape == ESCAPE)
-		lexer->escape = NO_ESCAPE;
-	if (lexer->token != NOT_ACTIVE)
+//	if (*line != '\\' && lexer->escape == ESCAPE)
+//		lexer->escape = NO_ESCAPE;
+	if (lexer->token != NOT_ACTIVE) //&& lexer->token != ESCAPE)
 		lexer->token_len++;
 }
 
@@ -65,6 +65,7 @@ void	init_lexer(t_lexer *lexer)
 {
 	lexer->token_len = 0;
 	lexer->token_str = NULL;
+	lexer->tmp = NULL;
 	lexer->escape = NO_ESCAPE;
 	lexer->quote = NO_QUOTE;
 	lexer->token = NOT_ACTIVE;
