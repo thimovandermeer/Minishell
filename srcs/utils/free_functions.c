@@ -1,4 +1,6 @@
 #include "minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
 // free path
 
@@ -19,11 +21,25 @@ void	free_command_table(t_list **command_list)
 		command = node->content;
 		ft_lstclear(&command->file_in, free_content);
 		ft_lstclear(&command->file_out, free_content);
-		// ft_lstclear(&command->out_mode, free_content);
+		ft_lstclear(&command->out_mode, free_content);
 		free_array(command->args);
 		node = node->next;
 	}
 	ft_lstclear(command_list, free_content);
+}
+
+void	free_list(t_list **list)
+{
+	t_list	*tmp;
+
+	while (list)
+	{
+		tmp = *list;
+		*list = (*list)->next;
+		free(tmp->content);
+		tmp->content = NULL;
+	}
+	*list = NULL;
 }
 
 // free_args_array
@@ -38,6 +54,7 @@ void 	free_array(char **arr)
 	while (arr[i])
 	{
 		free(arr[i]);
+		arr[i] = NULL;
 		i++;
 	}
 	free(arr);
