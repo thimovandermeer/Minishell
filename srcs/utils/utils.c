@@ -6,7 +6,7 @@
 /*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/07/23 15:03:00 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/24 10:53:50 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/24 16:00:37 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ char	**set_new_env(char **array, int length)
 	while (array[i])
 	{
 		tmp_list[i] = ft_strdup(array[i]);
+		printf("tmp_list[%i] = %s\n", i, tmp_list[i]);
 		i++;
 	}
 	return (tmp_list);
