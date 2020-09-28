@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/07/23 15:03:00 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/09/24 14:19:17 by rpet          ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include <unistd.h>
@@ -51,13 +39,13 @@ int 	ft_occurence(char *line, char c)
 void    print_list(t_list *list)
 {
     int			i;
-	int			len;
+//	int			len;
 
     i = 1;
     while (list)
     {
-		len = ft_strlen(list->content);
-		printf("Token %i: [%s] token_len: [%i]\n", i, list->content, len);
+		//len = ft_strlen(list->content);
+		printf("Token %i: [%s] addr: [%p]\n", i, list->content, list->content);
         list = list->next;
         i++;
     }

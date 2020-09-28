@@ -28,6 +28,20 @@ void	free_command_table(t_list **command_list)
 	ft_lstclear(command_list, free_content);
 }
 
+void	free_list(t_list **list)
+{
+	t_list	*tmp;
+
+	while (list)
+	{
+		tmp = *list;
+		*list = (*list)->next;
+		free(tmp->content);
+		tmp->content = NULL;
+	}
+	*list = NULL;
+}
+
 // free_args_array
 
 void 	free_array(char **arr)
