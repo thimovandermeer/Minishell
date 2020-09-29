@@ -23,23 +23,23 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 	char	**tmp;
 	int		i;
 
-	index = ft_env_len(vars->get_env);
-	loc = (find_var_in_env(new_var[0], vars->get_env) > 0) ?
-	find_var_in_env(new_var[0], vars->get_env) : index;
+	index = ft_env_len(vars->env);
+	loc = (find_var_in_env(new_var[0], vars->env) > 0) ?
+	find_var_in_env(new_var[0], vars->env) : index;
 	tmp = (char **)malloc(sizeof(char*) * (index + 2));
 	if (tmp == NULL)
 		printf("error\n"); // normale error message nog inbouwen 
 	i = 0;
-	while (vars->get_env[i])
+	while (vars->env[i])
 	{
-		tmp[i] = vars->get_env[i];
+		tmp[i] = vars->env[i];
 		i++;
 	}
 	tmp[i] = NULL;
-	free(vars->get_env);
-	vars->get_env = tmp;
-	vars->get_env[loc] = ft_strdup(argument);
-	vars->get_env[index + 1] = NULL;
+	free(vars->env);
+	vars->env = tmp;
+	vars->env[loc] = ft_strdup(argument);
+	vars->env[index + 1] = NULL;
 }
 
 void		set_quotes(char *export_print)
@@ -65,8 +65,8 @@ void		declare_list_thing(t_command *command, t_vars *vars)
 	char	**export_print;
 
 	i = 0;
-	length = ft_env_len(vars->get_env);
-	export_print = bubblesort(vars->get_env, length);
+	length = ft_env_len(vars->env);
+	export_print = bubblesort(vars->env, length);
 	while (export_print[i])
 	{
 		ft_putstr_fd("declare -x ", 1);

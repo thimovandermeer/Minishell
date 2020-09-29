@@ -94,7 +94,6 @@ char	**set_new_env(char **array, int length)
 	while (array[i])
 	{
 		tmp_list[i] = ft_strdup(array[i]);
-		printf("tmp_list[%i] = %s\n", i, tmp_list[i]);
 		i++;
 	}
 	return (tmp_list);
