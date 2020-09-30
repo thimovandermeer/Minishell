@@ -11,6 +11,7 @@ int		find_var_in_env(char *search_var, char **tmp_env)
 		search_place = ft_split(tmp_env[i], '=');
 		if (!ft_strcmp(search_place[0], search_var))
 			return (i);
+		free_array(search_place);
 		i++;
 	}
 	return (-1); //moet hier nog worden gefreed?
@@ -22,6 +23,7 @@ void	recreate_env_list(t_vars *vars, int index, int skip_loc)
 
 	if (tmp == NULL)
 		printf("error"); // normale error nog inbouwen
+	printf("locatie = %s\n", vars->get_env[skip_loc]);
 	free(vars->get_env[skip_loc]);
 	while (skip_loc < index)
 	{

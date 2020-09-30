@@ -38,6 +38,7 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 	tmp[i] = NULL;
 	free(vars->get_env);
 	vars->get_env = tmp;
+	free(vars->get_env[loc]);
 	vars->get_env[loc] = ft_strdup(argument);
 	vars->get_env[index + 1] = NULL;
 }
@@ -45,17 +46,19 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 void		set_quotes(char *export_print)
 {
 	int		i;
-	char	**pair;
-
+	char	*key;
+	char	*value;
 	i = 0;
-	pair = ft_split(export_print, '=');
-	ft_putstr_fd(pair[0], 1);
+	key = ft_substr(export_print, 0, ft_str_pos(export_print, '='));
+	value = ft_substr(export_print, ft_str_pos(export_print, '=') + 1, ft_strlen(export_print));
+	ft_putstr_fd(key, 1);
 	ft_putchar_fd('=', 1);
 	ft_putchar_fd('\"', 1);
-	ft_putstr_fd(pair[1], 1);
+	ft_putstr_fd(value, 1);
 	ft_putchar_fd('\"', 1);
 	ft_putchar_fd('\n', 1);
-	free_array(pair);
+	free(key);
+	free(value);
 }
 
 void		declare_list_thing(t_command *command, t_vars *vars)
@@ -73,7 +76,7 @@ void		declare_list_thing(t_command *command, t_vars *vars)
 		set_quotes(export_print[i]);
 		i++;
 	}
-	free(export_print);
+	free_array(export_print);
 }
 
 int			export_builtin(t_command *command, t_vars *vars)

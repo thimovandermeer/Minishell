@@ -57,7 +57,10 @@ void		expand_func(t_list *list, t_vars *vars)
 			else
 				new = expand_var(token, vars, quote);
 			if (!new)
+			{
+				free(new);
 				error_malloc();
+			}
 			list->content = new;
 		}
 		else
@@ -107,26 +110,28 @@ char		*create_new_token(char *replace, char *value, int len)
 	free(dst);
 	free(value);
 	free(bash);
+	free(replace);
 	return (result);
 }
 
 char		*search_var_name(char *search_val, char **search_place)
 {
 	int		i;
-	char	**key_pair;
-	char	*replace_value;
+	char	*key;
+	char	*value;
 	int		len;
 
 	i = 0;
 	while (search_place[i])
 	{
-		key_pair = ft_split(search_place[i], '=');
-		len = ft_strlen(key_pair[0]);
-		if (!ft_strncmp(key_pair[0], search_val, len))
+		key = ft_substr(search_place[i], 0, ft_str_pos(search_place[i], '='));
+		len = ft_strlen(key);
+		if (!ft_strncmp(key, search_val, len))
 		{
-			replace_value = ft_strdup(key_pair[1]);
-			return (replace_value);
+			value = ft_substr(search_place[i], ft_str_pos(search_place[i], '=') + 1, ft_strlen(search_place[i]));
+			return (value);
 		}
+		free(key);
 		i++;
 	}
 	return (NULL);
