@@ -60,6 +60,7 @@ typedef	struct	s_lexer {
 	int			token_len;
 	char		*token_str;
 	char		*tmp;
+	char		metachar;
 	t_escape	escape;
 	t_quote		quote;
 	t_token		token;
@@ -120,7 +121,7 @@ void			found_single_quote(char *line, t_lexer *lexer);
 void			outside_token(char *line, t_lexer *lexer);
 void			in_active_token(char *line, t_lexer *lexer, t_list **list);
 void			in_metachar_token(char *line, t_lexer *lexer, t_list **list);
-int				check_metachar(char *line);
+int				check_metachar(t_lexer *lexer, char cur_char);
 void			add_token_to_list(t_lexer *lexer, t_list **list);
 t_list			*lexer_line(char *line);
 int				check_valid_input(t_list *list, t_vars *vars);
@@ -240,7 +241,6 @@ int				find_var_in_env(char *search_var, char **tmp_env);
 */
 
 void			free_command_table(t_list **command_list);
-void			free_list(t_list **list);
 void 			free_array(char **arr);
 void			free_content(void *content);
 #endif
