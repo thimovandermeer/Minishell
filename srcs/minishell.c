@@ -66,7 +66,7 @@ int			main(int argc, char **argv, char **env)
 			process_list(list, &vars);
 		free(line);
 	}
-	free_array(vars.get_env);
+	free_array(vars.env);
 	ft_putstr_fd("exit\n", 1);
 	return (0);
 }

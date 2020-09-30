@@ -23,14 +23,14 @@ void	recreate_env_list(t_vars *vars, int index, int skip_loc)
 
 	if (tmp == NULL)
 		printf("error"); // normale error nog inbouwen
-	printf("locatie = %s\n", vars->get_env[skip_loc]);
-	free(vars->get_env[skip_loc]);
+	printf("locatie = %s\n", vars->env[skip_loc]);
+	free(vars->env[skip_loc]);
 	while (skip_loc < index)
 	{
-		vars->get_env[skip_loc] = vars->get_env[skip_loc + 1];
+		vars->env[skip_loc] = vars->env[skip_loc + 1];
 		skip_loc++;
 	}
-	vars->get_env[index] = NULL;
+	vars->env[index] = NULL;
 }
 
 int		unset_builtin(t_vars *vars, t_command *command)
@@ -44,10 +44,10 @@ int		unset_builtin(t_vars *vars, t_command *command)
 	while (command->args[i])
 	{
 		tmp_env = command->args[i];
-		skip_loc = find_var_in_env(tmp_env, vars->get_env);
+		skip_loc = find_var_in_env(tmp_env, vars->env);
 		if (skip_loc >= 0)
 		{
-			index = ft_env_len(vars->get_env) - 1;
+			index = ft_env_len(vars->env) - 1;
 			recreate_env_list(vars, index, skip_loc);
 		}
 		i++;

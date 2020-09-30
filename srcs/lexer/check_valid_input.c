@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-int		is_redirection(char	*token)
+static int		is_redirection(char	*token)
 {
 	if (*token == '>' && *token + 1 == '>')
 		return (1);
@@ -10,7 +10,7 @@ int		is_redirection(char	*token)
 	return (0);
 }
 
-int		syntax_redirections(t_list *list, t_vars *vars)
+static int		syntax_redirections(t_list *list, t_vars *vars)
 {
 	while (list)
 	{
@@ -38,7 +38,7 @@ int		syntax_redirections(t_list *list, t_vars *vars)
 	return (1);
 }
 
-int		syntax_seperators(t_list *list, t_vars *vars)
+static int		syntax_seperators(t_list *list, t_vars *vars)
 {
 	char	*cur;
 	char	*next;
@@ -65,10 +65,22 @@ int		syntax_seperators(t_list *list, t_vars *vars)
 	return (1);
 }
 
-int		check_valid_input(t_list *list, t_vars *vars)
+static void		check_multi_line(t_list *list, t_vars *vars)
+{
+	while (list->next)
+		list = list->next;
+	if (!ft_strcmp(list->content, "|"))
+	{
+		error_general("multi-line is not supported", vars);
+		exit(1);
+	}
+}
+
+int				check_valid_input(t_list *list, t_vars *vars)
 {
 	if (!list)
 		return (0);
+	check_multi_line(list, vars);
 	if (!syntax_seperators(list, vars))
 		return (0);
 	if (!syntax_redirections(list, vars))
