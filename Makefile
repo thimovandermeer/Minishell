@@ -27,13 +27,14 @@ OBJS =	$(addsuffix .o, $(addprefix $(ODIR)/, $(_OBJS)))
 LIBFT = libft.a
 LIBFTMAP = libft
 INC = includes
+CC = gcc
 
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFTMAP)/$(LIBFT)
-	$(CC) -L$(LIBFTMAP) -lft -o $(NAME) $(OBJS)
+	gcc $(OBJS) -L$(LIBFTMAP) -lft -o $(NAME)
 
 $(LIBFTMAP)/$(LIBFT):
 	make -C $(LIBFTMAP)
@@ -43,7 +44,7 @@ test: all
 
 $(ODIR)/%.o: $(SDIR)/%.c $(INC)/$(HEADER)
 	@mkdir -p $(ODIR)/$(dir $*)
-	$(CC) $(CFLAGS) -I$(INC) -c $< -o $@
+	gcc $(CFLAGS) -I$(INC) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)

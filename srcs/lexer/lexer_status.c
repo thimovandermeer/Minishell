@@ -51,7 +51,7 @@ void	found_single_quote(char *line, t_lexer *lexer)
 
 void	outside_token(char *line, t_lexer *lexer)
 {
-	if (check_metachar(line))
+	if (check_metachar(lexer, *line))
 	{
 		lexer->token = METACHAR;
 		lexer->token_len = 0;
@@ -71,7 +71,7 @@ void	outside_token(char *line, t_lexer *lexer)
 
 void	in_active_token(char *line, t_lexer *lexer, t_list **list)
 {
-	if (check_metachar(line))
+	if (check_metachar(lexer, *line))
 	{
 		add_token_to_list(lexer, list);
 		lexer->token = METACHAR;
@@ -91,8 +91,10 @@ void	in_active_token(char *line, t_lexer *lexer, t_list **list)
 
 void	in_metachar_token(char *line, t_lexer *lexer, t_list **list)
 {
-	if (*line == '>')
-		return ;
+	printf("lexer->metachar: %c\n", lexer->metachar);
+	if (check_metachar(lexer, lexer->metachar))
+		if (*line == '>' && lexer->metachar == '>')
+			return ;
 	add_token_to_list(lexer, list);
 	if (*line == ' ' || *line == '\t')
 		lexer->token = NOT_ACTIVE;
@@ -100,7 +102,7 @@ void	in_metachar_token(char *line, t_lexer *lexer, t_list **list)
 	{
 		lexer->token_str = line;
 		lexer->token_len = 0;
-		if (!check_metachar(line))
+		if (!check_metachar(lexer, *line))
 			lexer->token = ACTIVE;
 	}
 }

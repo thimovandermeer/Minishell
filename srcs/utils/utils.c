@@ -59,7 +59,7 @@ void    print_commands(t_list *command_list)
 	while (command_list)
 	{
 		i = 0;
-		while (((t_command*)command_list->content)->args[i] != '\0')
+		while (((t_command*)command_list->content)->args[i])
 		{
 			printf("args: [%s]\n", ((t_command*)command_list->content)->args[i]);
 			i++;

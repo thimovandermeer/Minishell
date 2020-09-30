@@ -100,7 +100,7 @@ static int	reading_loop(char **line, char **str, int fd)
 
 int			get_next_line(int fd, char **line)
 {
-	static char	*str[OPEN_MAX];
+	static char	*str[_SC_OPEN_MAX];
 
 	if (fd < 0 || line == NULL || BUFFER_SIZE <= 0 || read(fd, NULL, 0) == -1)
 		return (-1);
