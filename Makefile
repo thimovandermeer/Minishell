@@ -6,7 +6,7 @@
 #    By: rpet <marvin@codam.nl>                       +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/06/24 11:54:19 by rpet          #+#    #+#                  #
-#    Updated: 2020/09/28 09:11:04 by rpet          ########   odam.nl          #
+#    Updated: 2020/09/29 09:32:51 by rpet          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ builtins/cd_builtin builtins/echo_builtin builtins/env_builtin\
 builtins/exit_builtin builtins/export_builtin builtins/pwd_builtin \
 builtins/unset_builtin execution/exec_func execution/get_path execution/redir_pipes\
 lexer/check_valid_input lexer/lexer lexer/lexer_status lexer/lexer_esc_char \
-parser/expand_func parser/init_env_func parser/parse_func \
+parser/expand_func parser/init_env_func parser/parse_func parser/remove_quotes \
 utils/command_prompt utils/error utils/parse_utils utils/signals \
 utils/utils utils/free_functions
 

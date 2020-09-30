@@ -41,9 +41,9 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 	int			i;
 
 	i = 0;
-	while (vars->get_env[i] != '\0')
+	while (vars->env[i] != '\0')
 	{
-		tmp = ft_split(vars->get_env[i], '=');
+		tmp = ft_split(vars->env[i], '=');
 		if (!tmp)
 			error_malloc();
 		if (ft_strncmp(tmp[0], "PATH", ft_strlen(tmp[0])) == 0)

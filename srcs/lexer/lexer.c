@@ -25,11 +25,9 @@ void	add_token_to_list(t_lexer *lexer, t_list **list)
 	t_list	*element;
 
 	token = ft_substr(lexer->token_str, 0, lexer->token_len);
-	printf("token pointer = %p\n", token);
 	if (!token)
 		error_malloc();
 	element = ft_lstnew(token);
-	printf("element = %p\n", element);
 	if (!element)
 		error_malloc();
 	ft_lstadd_back(list, element);
@@ -39,10 +37,10 @@ void	add_token_to_list(t_lexer *lexer, t_list **list)
 **		Checks where to split for tokens.
 */
 
-void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
+static void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
 {
-//	if (*line == '\\' && lexer->quote != SINGLE_QUOTE)
-//		found_escape_char(line, lexer);
+	if (*line == '\\' && lexer->quote != SINGLE_QUOTE)
+		found_escape_char(line, lexer);
 	if (*line == '\'' && lexer->quote != DOUBLE_QUOTE)
 		found_single_quote(line, lexer);
 	if (*line == '\"' && lexer->quote != SINGLE_QUOTE)
@@ -53,9 +51,9 @@ void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
 		in_active_token(line, lexer, list);
 	else if (lexer->token == METACHAR && lexer->quote == NO_QUOTE)
 		in_metachar_token(line, lexer, list);
-//	if (*line != '\\' && lexer->escape == ESCAPE)
-//		lexer->escape = NO_ESCAPE;
-	if (lexer->token != NOT_ACTIVE) //&& lexer->token != ESCAPE)
+	if (*line != '\\' && lexer->escape == ESCAPE)
+		lexer->escape = NO_ESCAPE;
+	if (lexer->token != NOT_ACTIVE)
 		lexer->token_len++;
 }
 
@@ -63,7 +61,7 @@ void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
 **		Initializes the lexer.
 */
 
-void	init_lexer(t_lexer *lexer)
+static void	init_lexer(t_lexer *lexer)
 {
 	lexer->token_len = 0;
 	lexer->token_str = NULL;
@@ -77,7 +75,7 @@ void	init_lexer(t_lexer *lexer)
 **		Calls the loop for the lexer.
 */
 
-t_list	*lexer_line(char *line)
+t_list		*lexer_line(char *line)
 {
 	t_lexer		lexer;
 	t_list		*list;
@@ -91,5 +89,10 @@ t_list	*lexer_line(char *line)
 	}
 	if (lexer.token != NOT_ACTIVE)
 		add_token_to_list(&lexer, &list);
+	if (lexer.quote != NO_QUOTE)
+	{
+		ft_putendl_fd("multi-line is not supported", 2);
+		exit(1);
+	}
 	return (list);
 }

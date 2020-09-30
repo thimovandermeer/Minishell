@@ -7,6 +7,8 @@
 
 void	found_double_quote(char *line, t_lexer *lexer)
 {
+	if (lexer->escape == ESCAPE)
+		return ;
 	if (lexer->quote == DOUBLE_QUOTE)
 		lexer->quote = NO_QUOTE;
 	else
@@ -27,6 +29,8 @@ void	found_double_quote(char *line, t_lexer *lexer)
 
 void	found_single_quote(char *line, t_lexer *lexer)
 {
+	if (lexer->escape == ESCAPE)
+		return ;
 	if (lexer->quote == SINGLE_QUOTE)
 		lexer->quote = NO_QUOTE;
 	else

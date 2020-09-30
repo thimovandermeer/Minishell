@@ -62,12 +62,12 @@ int			main(int argc, char **argv, char **env)
 		if (!get_next_line(0, &line))
 			break ;
 		list = lexer_line(line);
-		// print_list(list);
+		print_list(list);
 		if (check_valid_input(list, &vars))
 			process_list(list, &vars);
 		free(line);
 	}
-	free_array(vars.get_env);
+	free_array(vars.env);
 	ft_putstr_fd("exit\n", 1);
 	return (0);
 }

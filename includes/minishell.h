@@ -27,7 +27,6 @@ typedef enum	e_token {
 	NOT_ACTIVE,
 	ACTIVE,
 	METACHAR,
-	ESCAPE_CHAR
 }				t_token;
 
 typedef enum	e_quote {
@@ -92,10 +91,13 @@ typedef struct	s_command {
 }				t_command;
 
 typedef struct	s_vars {
-	char		**get_env;
+	char		**env;
+	char		*token;
 	int			commands;
 	int			ret;
 	t_status	status;
+	t_quote		quote;
+	t_escape	escape;
 }				t_vars;
 
 typedef	struct s_exec
@@ -120,12 +122,7 @@ void			in_active_token(char *line, t_lexer *lexer, t_list **list);
 void			in_metachar_token(char *line, t_lexer *lexer, t_list **list);
 int				check_metachar(char *line);
 void			add_token_to_list(t_lexer *lexer, t_list **list);
-void			lexer_loop(char *line, t_lexer *lexer, t_list **list);
-void			init_lexer(t_lexer *lexer);
 t_list			*lexer_line(char *line);
-int				is_redirection(char *token);
-int				syntax_redirections(t_list *list, t_vars *vars);
-int				syntax_seperators(t_list *list, t_vars *vars);
 int				check_valid_input(t_list *list, t_vars *vars);
 
 /*
@@ -208,6 +205,7 @@ void			command_prompt(void);
 void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
 int				is_builtin(t_command *command, t_vars *vars);
+void			remove_quotes(char *old, t_vars *vars);
 
 /*
 **		Cd functions

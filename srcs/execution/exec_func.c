@@ -10,7 +10,7 @@
 
 void	executable(t_exec *exec, t_command *command, t_vars *vars)
 {
-	execve(exec->bin_path, command->args, vars->get_env);
+	execve(exec->bin_path, command->args, vars->env);
 	// error handling wanneer path wel gevonden is maar niet uit kan voeren.
 	exit(126);
 }

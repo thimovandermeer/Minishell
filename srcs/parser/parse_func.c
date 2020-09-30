@@ -46,7 +46,6 @@ t_list			*make_item(int arg_count, t_vars *vars)
 	if (!command)
 		error_malloc();
 	tmp = ft_lstnew(command);
-	// printf("tmp pointer = %p\n", tmp);
 	if (!tmp)
 		error_malloc();
 	command->args = (char**)malloc(sizeof(char *) * (arg_count + 1));
@@ -185,8 +184,8 @@ t_list			*parse_line(t_list **list, t_vars *vars)
 		{
 			free((*list)->content);
 			(*list)->content = NULL;
-			free((*list));
-			(*list) = NULL;
+		//	free((*list));
+		//	(*list) = NULL;
 		}
 		(*list) = (*list)->next;
 	}
