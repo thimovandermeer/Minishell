@@ -1,10 +1,6 @@
 #include "minishell.h"
 
-/*
-**	function which checks if the var name is correct
-*/
-
-int			check_var_name(char *key)
+int		check_var_name(char *key)
 {
 	int	i;
 
@@ -20,10 +16,6 @@ int			check_var_name(char *key)
 	return (1);
 }
 
-/*
-**	function which sets the env name to the new value
-*/
-
 void		set_env_name(t_vars *vars, char *argument, char **new_var)
 {
 	int		index;
@@ -36,7 +28,7 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 	find_var_in_env(new_var[0], vars->env) : index;
 	tmp = (char **)malloc(sizeof(char*) * (index + 2));
 	if (tmp == NULL)
-		error_malloc();
+		printf("error\n"); // normale error message nog inbouwen 
 	i = 0;
 	while (vars->env[i])
 	{
@@ -50,10 +42,6 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 	vars->env[loc] = ft_strdup(argument);
 	vars->env[index + 1] = NULL;
 }
-
-/*
-**	function which sets the quotation marks for export call
-*/
 
 void		set_quotes(char *export_print)
 {
@@ -73,10 +61,6 @@ void		set_quotes(char *export_print)
 	free(value);
 }
 
-/*
-**	function which creates the output for the export call without arguments
-*/
-
 void		declare_list_thing(t_command *command, t_vars *vars)
 {
 	int		i;
@@ -95,10 +79,6 @@ void		declare_list_thing(t_command *command, t_vars *vars)
 	free_array(export_print);
 }
 
-/*
-**	Driver function for export builtin
-*/
-
 int			export_builtin(t_command *command, t_vars *vars)
 {
 	char	**new_var;
@@ -109,7 +89,7 @@ int			export_builtin(t_command *command, t_vars *vars)
 	{
 		new_var = ft_split(command->args[i], '=');
 		if (!check_var_name(new_var[0]))
-			error_identifier(command->args, vars);
+			printf("Syntax error\n"); // later aanpassen naar goede error message's
 		else
 			set_env_name(vars, command->args[i], new_var);
 		free_array(new_var);

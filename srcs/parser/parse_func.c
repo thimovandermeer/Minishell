@@ -2,11 +2,6 @@
 #include "libft.h"
 #include <stdlib.h>
 
-/*
-**	this function checks if there are
-**	redirections and what type of redirections it are
-*/
-
 t_separator		check_seperator(char *str)
 {
 	if (!ft_strcmp(str, ";"))
@@ -110,10 +105,6 @@ void			redir_handling(t_parsing *parser, t_command *command,
 	free(tmp);
 }
 
-/*
-**	this function parses the pipes and sets the command struct accordingly
-*/
-
 void			parse_pipes(t_command *command, t_parsing *parser)
 {
 	if (parser->cur_sep == PIPE)
@@ -123,10 +114,6 @@ void			parse_pipes(t_command *command, t_parsing *parser)
 	if (parser->prev_sep == PIPE && parser->cur_sep == PIPE)
 		command->pipe = PIPE_BOTH;
 }
-
-/*
-**	this function parses the commands and fills in all the variables
-*/
 
 void			parse_command(t_command *command, t_parsing *parser,
 								t_vars *vars)
@@ -154,26 +141,17 @@ void			parse_command(t_command *command, t_parsing *parser,
 	parse_pipes(command, parser);
 }
 
-/*
-**	this function free's the list if there
-**	are stil elements after running the entire list
-*/
-
-void			free_parse_line(t_list **list)
+void			create_command(t_parsing *parser, t_list **command_list,
+								t_vars *vars)
 {
-	if (!ft_strcmp((*list)->content, ";"))
-	{
-		free((*list)->content);
-		(*list)->content = NULL;
-		free((*list));
-		(*list) = NULL;
-	}
-	(*list) = (*list)->next;
-}
+	int		arg_count;
+	t_list	*command;
 
-/*
-**	this is the driver function of the parse part
-*/
+	arg_count = get_length(parser);
+	command = make_item(arg_count, vars);
+	parse_command((t_command*)command->content, parser, vars);
+	ft_lstadd_back(command_list, command);
+}
 
 t_list			*parse_line(t_list **list, t_vars *vars)
 {
@@ -192,6 +170,7 @@ t_list			*parse_line(t_list **list, t_vars *vars)
 			create_command(&parsing, &command_list, vars);
 			if (parsing.err == ERROR)
 				return (NULL);
+			// check hier voor pipe als het pipe is free'en
 			parsing.prev_sep = parsing.cur_sep;
 			parsing.list = (*list)->next;
 		}
@@ -200,7 +179,6 @@ t_list			*parse_line(t_list **list, t_vars *vars)
 	if (parsing.list)
 		create_command(&parsing, &command_list, vars);
 	if (*list)
-		free_parse_line(list);
 	{
 		if (!ft_strcmp((*list)->content, ";"))
 		{

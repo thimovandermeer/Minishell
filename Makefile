@@ -6,7 +6,7 @@
 #    By: rpet <marvin@codam.nl>                       +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/06/24 11:54:19 by rpet          #+#    #+#                  #
-#    Updated: 2020/09/30 16:21:53 by thimovander   ########   odam.nl          #
+#    Updated: 2020/09/29 09:32:51 by rpet          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ builtins/unset_builtin execution/exec_func execution/get_path execution/redir_pi
 lexer/check_valid_input lexer/lexer lexer/lexer_status lexer/lexer_esc_char \
 parser/expand_func parser/init_env_func parser/parse_func parser/remove_quotes \
 utils/command_prompt utils/error utils/parse_utils utils/signals \
-utils/utils utils/free_functions parser/create_func
+utils/utils utils/free_functions
 
 OBJS =	$(addsuffix .o, $(addprefix $(ODIR)/, $(_OBJS)))
 LIBFT = libft.a

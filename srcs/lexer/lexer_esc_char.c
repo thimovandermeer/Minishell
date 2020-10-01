@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-/*
-**	this function searches for the escape char
-*/
-
 void	found_escape_char(char *line, t_lexer *lexer)
 {
 	if (lexer->escape == ESCAPE)

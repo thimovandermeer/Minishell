@@ -8,20 +8,24 @@
 #include <string.h>
 #include <errno.h>
 
-/*
-**	function which opens files with the given file type and mode
-*/
+void	executable(t_exec *exec, t_command *command, t_vars *vars)
+{
+	execve(exec->bin_path, command->args, vars->env);
+	// error handling wanneer path wel gevonden is maar niet uit kan voeren.
+	exit(126);
+}
 
 void	open_files(int *fd, char *file, int type, mode_t mode)
 {
 	*fd = open(file, type, mode);
 	if (*fd == -1)
-		error_malloc();
+		printf("gaat fout bij open files\n");
 }
 
-/*
-**	function which executes the internal functions
-*/
+// void	signal_handling(t_exec *exec, )
+// {
+// 	waitpid()
+// }
 
 void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 {
@@ -30,38 +34,30 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 	if (!check_bins(command, vars, exec))
 	{
 		error_invalid_cmd(command->args[0], vars);
+		vars->ret = 127;
 		return ;
 	}
 	exec->pid = fork();
 	if (exec->pid == 0)
-	{
-		execve(exec->bin_path, command->args, vars->get_env);
-		exit(126);
-	}
+		executable(exec, command, vars);
 	if (exec->pid < 0)
 	{
 		free(exec->bin_path);
-		error_general("something went wrong during fork proces", vars);
+		printf("gaat fout bij exec");		
 		return ;
 	}
+	// signal_handling();
 	waitpid(exec->pid, &ret, WUNTRACED);
 	if (exec->bin_path)
 		free(exec->bin_path);
 }
 
-/*
-**	function which decides if the function is a internal of builtin function
-*/
-
 void	exec_func(t_command *command, t_vars *vars, t_exec *exec)
 {
+	// builtin uitvoeren
 	if (is_builtin(command, vars) == 1)
 		is_internal(command, vars, exec);
 }
-
-/*
-**	Main loop for execution of commands
-*/
 
 void	iterate_command(t_list *command_list, t_vars *vars)
 {
@@ -87,6 +83,7 @@ void	iterate_command(t_list *command_list, t_vars *vars)
 		dup2(tmp_fd[WRITE_END], STDOUT_FILENO);
 		close(tmp_fd[READ_END]);
 		close(tmp_fd[WRITE_END]);
+		// signal handling hier voor quit etc
 		command_list = command_list->next;
 	}
 }

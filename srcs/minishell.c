@@ -24,7 +24,7 @@ int		is_builtin(t_command *command, t_vars *vars)
 	return (vars->ret);
 }
 
-void	process_list(t_list *list, t_vars *vars)
+void		process_list(t_list *list, t_vars *vars)
 {
 	t_list		*command_list;
 
@@ -41,19 +41,13 @@ void	process_list(t_list *list, t_vars *vars)
 	}
 }
 
-void	signal_activation(void)
-{
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, ctrl_esc);
-}
-
-int		main(int argc, char **argv, char **env)
+int			main(int argc, char **argv, char **env)
 {
 	char		*line;
 	t_list		*list;
 	t_vars		vars;
 
-	(void)argv;
+	(void) argv;
 	if (argc != 1)
 	{
 		error_general("scripting is not supported", &vars);
@@ -63,7 +57,8 @@ int		main(int argc, char **argv, char **env)
 	while (vars.status == RUNNING)
 	{
 		command_prompt();
-		signal_activation();
+		signal(SIGINT, ctrl_c);
+		signal(SIGQUIT, ctrl_esc);
 		if (!get_next_line(0, &line))
 			break ;
 		list = lexer_line(line);

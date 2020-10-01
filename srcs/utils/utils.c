@@ -3,11 +3,7 @@
 #include "libft.h"
 #include <unistd.h>
 
-/*
-**	function which checks where in a string a char occurs
-*/
-
-int		ft_occurence(char *line, char c)
+int 	ft_occurence(char *line, char c)
 {
 	int i;
 	int occ;
@@ -23,26 +19,54 @@ int		ft_occurence(char *line, char c)
 	return (occ);
 }
 
-/*
-**	function which prints the entire list
-*/
-
-void	print_list(t_list *list)
+/*void	free_int_array(int **arr)
 {
-	int			i;
+	int	i;
 
-	i = 1;
-	while (list)
+	i = 0;
+	if (!arr)
+		return ;
+	while (arr[i])
 	{
-		printf("Token %i: [%s] addr: [%p]\n", i, list->content, list->content);
-		list = list->next;
+		free(arr[i]);
 		i++;
 	}
+	free(arr);
+	arr = NULL;
+}
+*/
+
+
+void    print_list(t_list *list)
+{
+    int			i;
+//	int			len;
+
+    i = 1;
+    while (list)
+    {
+		//len = ft_strlen(list->content);
+		printf("Token %i: [%s] addr: [%p]\n", i, list->content, list->content);
+        list = list->next;
+        i++;
+    }
 }
 
-/*
-**	function which returns the environments
-*/
+void    print_commands(t_list *command_list)
+{
+	int		i;
+
+	while (command_list)
+	{
+		i = 0;
+		while (((t_command*)command_list->content)->args[i])
+		{
+			printf("args: [%s]\n", ((t_command*)command_list->content)->args[i]);
+			i++;
+		}
+		command_list = command_list->next;
+	}
+}
 
 char	*get_env(char **env, char *key)
 {
@@ -60,10 +84,6 @@ char	*get_env(char **env, char *key)
 	return (NULL);
 }
 
-/*
-**	function which sets the environment
-*/
-
 char	**set_new_env(char **array, int length)
 {
 	int		i;
@@ -78,10 +98,6 @@ char	**set_new_env(char **array, int length)
 	}
 	return (tmp_list);
 }
-
-/*
-**	function which sort a string array alphabatically
-*/
 
 char	**bubblesort(char **array, int length)
 {
