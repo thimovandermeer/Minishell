@@ -1,6 +1,10 @@
 #include "minishell.h"
 #include "libft.h"
 
+/*
+** Driver function for env builtin
+*/
+
 int		env_func(t_vars *vars)
 {
 	int	i;

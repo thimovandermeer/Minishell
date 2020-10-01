@@ -2,18 +2,14 @@
 #include "libft.h"
 #include <stdlib.h>
 
-// free path
-
-// free command_list
-
 /*
 **	function which free's everything inside the command_table
 */
 
 void	free_command_table(t_list **command_list)
 {
-	t_list *node;
-	t_command *command;
+	t_list		*node;
+	t_command	*command;
 
 	node = *command_list;
 	while (node)
@@ -28,9 +24,11 @@ void	free_command_table(t_list **command_list)
 	ft_lstclear(command_list, free_content);
 }
 
-// free_args_array
+/*
+**	function which free's an string array
+*/
 
-void 	free_array(char **arr)
+void	free_array(char **arr)
 {
 	int i;
 
@@ -45,17 +43,6 @@ void 	free_array(char **arr)
 	}
 	free(arr);
 	arr = NULL;
-}
-
-// free_environment
-
-/*
-**	free command struct
-*/
-
-void	free_command_struct(t_command *command)
-{
-	
 }
 
 /*

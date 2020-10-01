@@ -1,20 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   command_prompt.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/08/05 14:03:50 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/22 11:35:02 by thvan-de      ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
+
+/*
+**	this function is activated if the system gives a command signal
+*/
 
 void	command_handler(int sig_num)
 {
@@ -26,6 +18,10 @@ void	command_handler(int sig_num)
 	}
 }
 
+/*
+**	this function is activated if the system gives a fork signal
+*/
+
 void	fork_handler(int sig_num)
 {
 	if (sig_num == SIGINT)
@@ -34,6 +30,10 @@ void	fork_handler(int sig_num)
 		signal(SIGINT, fork_handler);
 	}
 }
+
+/*
+**	this function creates the command prompt
+*/
 
 void	command_prompt(void)
 {

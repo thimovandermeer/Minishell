@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/01 13:50:00 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/23 13:27:13 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/30 13:34:35 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+
+/*
+**	Driver function for pwd builtin
+*/
 
 int		pwd_builtin(void)
 {

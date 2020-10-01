@@ -1,7 +1,13 @@
 #include "minishell.h"
 #include "libft.h"
 
-static int		is_redirection(char	*token)
+
+/*
+**	function which determines if token is redirection
+*/
+
+static int		is_redirection(char *token)
+
 {
 	if (*token == '>' && *token + 1 == '>')
 		return (1);
@@ -10,7 +16,13 @@ static int		is_redirection(char	*token)
 	return (0);
 }
 
+
+/*
+**	this function is checking the redirection syntax for errors
+*/
+
 static int		syntax_redirections(t_list *list, t_vars *vars)
+
 {
 	while (list)
 	{
@@ -38,6 +50,10 @@ static int		syntax_redirections(t_list *list, t_vars *vars)
 	return (1);
 }
 
+/*
+**	this function is checking the seperator syntax for errors
+*/
+
 static int		syntax_seperators(t_list *list, t_vars *vars)
 {
 	char	*cur;
@@ -64,6 +80,10 @@ static int		syntax_seperators(t_list *list, t_vars *vars)
 	}
 	return (1);
 }
+
+/*
+**	this function checks if the input is valid
+*/
 
 static void		check_multi_line(t_list *list, t_vars *vars)
 {

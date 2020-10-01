@@ -1,17 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        ::::::::            */
-/*   signals.c                                          :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: rpet <marvin@codam.nl>                       +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2020/09/03 08:24:47 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/03 08:37:18 by rpet          ########   odam.nl         */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "libft.h"
+
+/*
+**	function which is activated when ctrlc is called and this signals ignores
+*/
 
 void		ctrl_c(int signal)
 {
@@ -19,6 +11,10 @@ void		ctrl_c(int signal)
 	ft_putendl_fd("\b\b  ", 1);
 	command_prompt();
 }
+
+/*
+**	function which is activated when esc is called and this signals ignores
+*/
 
 void		ctrl_esc(int signal)
 {
