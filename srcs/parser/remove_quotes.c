@@ -6,13 +6,17 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:46:16 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:46:16 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/01 15:28:34 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
+
+/*
+**		this function resizes the tokens
+*/
 
 void		resize_token(t_vars *vars, int len)
 {
@@ -31,6 +35,10 @@ void		resize_token(t_vars *vars, int len)
 		vars->token = new;
 	}
 }
+
+/*
+**		this is main loop for the quote removal function
+*/
 
 void		quote_loop(char *old, t_vars *vars)
 {
@@ -56,6 +64,10 @@ void		quote_loop(char *old, t_vars *vars)
 	}
 	vars->token[i] = '\0';
 }
+
+/*
+**		this is the driver function for the quote removal
+*/
 
 void		remove_quotes(char *old, t_vars *vars)
 {
