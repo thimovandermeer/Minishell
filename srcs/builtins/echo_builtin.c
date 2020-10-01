@@ -6,13 +6,17 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/08/05 14:04:34 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/09/07 15:44:28 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/09/30 13:16:22 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
+
+/*
+**	driver function for echo builtin
+*/
 
 int		echo_builtin(t_command *command)
 {

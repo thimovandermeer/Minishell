@@ -2,7 +2,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static void double_quote(t_vars *vars, int *i, char c)
+static void	double_quote(t_vars *vars, int *i, char c)
 {
 	if (vars->quote == NO_QUOTE && vars->escape != ESCAPE)
 		vars->quote = DOUBLE_QUOTE;

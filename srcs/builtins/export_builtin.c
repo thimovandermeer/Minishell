@@ -1,6 +1,10 @@
 #include "minishell.h"
 
-int		check_var_name(char *key)
+/*
+**	function which checks if the var name is correct
+*/
+
+int			check_var_name(char *key)
 {
 	int	i;
 
@@ -16,6 +20,10 @@ int		check_var_name(char *key)
 	return (1);
 }
 
+/*
+**	function which sets the env name to the new value
+*/
+
 void		set_env_name(t_vars *vars, char *argument, char **new_var)
 {
 	int		index;
@@ -28,7 +36,7 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 	find_var_in_env(new_var[0], vars->env) : index;
 	tmp = (char **)malloc(sizeof(char*) * (index + 2));
 	if (tmp == NULL)
-		printf("error\n"); // normale error message nog inbouwen 
+		error_malloc();
 	i = 0;
 	while (vars->env[i])
 	{
@@ -43,14 +51,20 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 	vars->env[index + 1] = NULL;
 }
 
+/*
+**	function which sets the quotation marks for export call
+*/
+
 void		set_quotes(char *export_print)
 {
 	int		i;
 	char	*key;
 	char	*value;
+
 	i = 0;
 	key = ft_substr(export_print, 0, ft_str_pos(export_print, '='));
-	value = ft_substr(export_print, ft_str_pos(export_print, '=') + 1, ft_strlen(export_print));
+	value = ft_substr(export_print, ft_str_pos(export_print, '=')
+			+ 1, ft_strlen(export_print));
 	ft_putstr_fd(key, 1);
 	ft_putchar_fd('=', 1);
 	ft_putchar_fd('\"', 1);
@@ -60,6 +74,10 @@ void		set_quotes(char *export_print)
 	free(key);
 	free(value);
 }
+
+/*
+**	function which creates the output for the export call without arguments
+*/
 
 void		declare_list_thing(t_command *command, t_vars *vars)
 {
@@ -79,6 +97,10 @@ void		declare_list_thing(t_command *command, t_vars *vars)
 	free_array(export_print);
 }
 
+/*
+**	Driver function for export builtin
+*/
+
 int			export_builtin(t_command *command, t_vars *vars)
 {
 	char	**new_var;
@@ -89,7 +111,7 @@ int			export_builtin(t_command *command, t_vars *vars)
 	{
 		new_var = ft_split(command->args[i], '=');
 		if (!check_var_name(new_var[0]))
-			printf("Syntax error\n"); // later aanpassen naar goede error message's
+			error_identifier(command->args, vars);
 		else
 			set_env_name(vars, command->args[i], new_var);
 		free_array(new_var);

@@ -38,7 +38,7 @@ void	add_token_to_list(t_lexer *lexer, t_list **list)
 **		Checks where to split for tokens.
 */
 
-static void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
+void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
 {
 	if (*line == '\\' && lexer->quote != SINGLE_QUOTE)
 		found_escape_char(line, lexer);
@@ -62,7 +62,7 @@ static void	lexer_loop(char *line, t_lexer *lexer, t_list **list)
 **		Initializes the lexer.
 */
 
-static void	init_lexer(t_lexer *lexer)
+void	init_lexer(t_lexer *lexer)
 {
 	lexer->token_len = 0;
 	lexer->token_str = NULL;
@@ -77,7 +77,7 @@ static void	init_lexer(t_lexer *lexer)
 **		Calls the loop for the lexer.
 */
 
-t_list		*lexer_line(char *line)
+t_list	*lexer_line(char *line)
 {
 	t_lexer		lexer;
 	t_list		*list;

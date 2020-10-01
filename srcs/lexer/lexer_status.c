@@ -91,7 +91,6 @@ void	in_active_token(char *line, t_lexer *lexer, t_list **list)
 
 void	in_metachar_token(char *line, t_lexer *lexer, t_list **list)
 {
-	printf("lexer->metachar: %c\n", lexer->metachar);
 	if (check_metachar(lexer, lexer->metachar))
 		if (*line == '>' && lexer->metachar == '>')
 			return ;

@@ -1,7 +1,11 @@
 #include "minishell.h"
 #include "libft.h"
 
-static int		is_redirection(char	*token)
+/*
+**	function which determines if token is redirection
+*/
+
+int		is_redirection(char *token)
 {
 	if (*token == '>' && *token + 1 == '>')
 		return (1);
@@ -10,7 +14,11 @@ static int		is_redirection(char	*token)
 	return (0);
 }
 
-static int		syntax_redirections(t_list *list, t_vars *vars)
+/*
+**	this function is checking the redirection syntax for errors
+*/
+
+int		syntax_redirections(t_list *list, t_vars *vars)
 {
 	while (list)
 	{
@@ -38,7 +46,11 @@ static int		syntax_redirections(t_list *list, t_vars *vars)
 	return (1);
 }
 
-static int		syntax_seperators(t_list *list, t_vars *vars)
+/*
+**	this function is checking the seperator syntax for errors
+*/
+
+int		syntax_seperators(t_list *list, t_vars *vars)
 {
 	char	*cur;
 	char	*next;
@@ -65,7 +77,11 @@ static int		syntax_seperators(t_list *list, t_vars *vars)
 	return (1);
 }
 
-static void		check_multi_line(t_list *list, t_vars *vars)
+/*
+**	this function checks if the input is valid
+*/
+
+void	check_multi_line(t_list *list, t_vars *vars)
 {
 	while (list->next)
 		list = list->next;
@@ -76,7 +92,7 @@ static void		check_multi_line(t_list *list, t_vars *vars)
 	}
 }
 
-int				check_valid_input(t_list *list, t_vars *vars)
+int		check_valid_input(t_list *list, t_vars *vars)
 {
 	if (!list)
 		return (0);
