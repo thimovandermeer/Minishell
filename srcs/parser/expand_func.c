@@ -43,10 +43,8 @@ void		expand_func(t_list *list, t_vars *vars)
 	while (list && ft_strcmp(list->content, ";"))
 	{
 		quote = check_quote_type(list);
-		vars->quote = NO_QUOTE;
-		vars->escape = NO_ESCAPE;
+	//	shell_expansion(list->content, vars);
 		remove_quotes(list->content, vars);
-		//token = ft_strtrim(list->content, "\' \"");
 		free(list->content);
 		list->content = NULL;
 		if (ft_strrchr(vars->token, '$'))
