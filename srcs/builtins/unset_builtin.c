@@ -28,13 +28,14 @@ int		find_var_in_env(char *search_var, char **tmp_env)
 
 void	recreate_env_list(t_vars *vars, int index, int skip_loc)
 {
+
 	free(vars->get_env[skip_loc]);
 	while (skip_loc < index)
 	{
-		vars->get_env[skip_loc] = vars->get_env[skip_loc + 1];
+		vars->env[skip_loc] = vars->env[skip_loc + 1];
 		skip_loc++;
 	}
-	vars->get_env[index] = NULL;
+	vars->env[index] = NULL;
 }
 
 /*
@@ -53,7 +54,7 @@ int		unset_builtin(t_vars *vars, t_command *command)
 		skip_loc = find_var_in_env(command->args[i], vars->get_env);
 		if (skip_loc >= 0)
 		{
-			index = ft_env_len(vars->get_env) - 1;
+			index = ft_env_len(vars->env) - 1;
 			recreate_env_list(vars, index, skip_loc);
 		}
 		else

@@ -25,24 +25,6 @@ void	free_command_table(t_list **command_list)
 }
 
 /*
-**	function which free's a list and its contents
-*/
-
-void	free_list(t_list **list)
-{
-	t_list	*tmp;
-
-	while (list)
-	{
-		tmp = *list;
-		*list = (*list)->next;
-		free(tmp->content);
-		tmp->content = NULL;
-	}
-	*list = NULL;
-}
-
-/*
 **	function which free's an string array
 */
 

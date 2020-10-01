@@ -56,6 +56,16 @@ typedef	enum	e_filemode
 	TRUNC
 }				t_filemode;
 
+typedef	struct	s_lexer {
+	int			token_len;
+	char		*token_str;
+	char		*tmp;
+	char		metachar;
+	t_escape	escape;
+	t_quote		quote;
+	t_token		token;
+}				t_lexer;
+
 typedef enum	e_pipe
 {
 	NO_PIPE,
@@ -90,10 +100,13 @@ typedef struct	s_command {
 }				t_command;
 
 typedef struct	s_vars {
-	char			**get_env;
-	int				commands;
-	int				ret;
-	t_status		status;
+	char		**env;
+	char		*token;
+	int			commands;
+	int			ret;
+	t_status	status;
+	t_quote		quote;
+	t_escape	escape;
 }				t_vars;
 
 typedef	struct	s_exec {
@@ -214,6 +227,11 @@ void			outside_token(char *line, t_lexer *lexer);
 void			in_active_token(char *line, t_lexer *lexer, t_list **list);
 void			in_metachar_token(char *line, t_lexer *lexer, t_list **list);
 
+int				check_metachar(t_lexer *lexer, char cur_char);
+void			add_token_to_list(t_lexer *lexer, t_list **list);
+t_list			*lexer_line(char *line);
+int				check_valid_input(t_list *list, t_vars *vars);
+
 /*
 **		parser functions create func
 */
@@ -302,6 +320,7 @@ void			command_prompt(void);
 void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
 int				is_builtin(t_command *command, t_vars *vars);
+void			remove_quotes(char *old, t_vars *vars);
 
 /*
 **		Error functions
@@ -319,7 +338,6 @@ void			error_identifier(char **arg, t_vars *vars);
 */
 
 void			free_command_table(t_list **command_list);
-void			free_list(t_list **list);
 void 			free_array(char **arr);
 void			free_content(void *content);
 

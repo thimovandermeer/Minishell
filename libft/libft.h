@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/31 12:26:25 by rpet          #+#    #+#                 */
-/*   Updated: 2020/08/25 08:16:44 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/30 11:24:12 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void				ft_putstr_fd(char *s, int fd);
 void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 int					ft_strcmp(const char *s1, const char *s2);
+int					ft_str_pos(char *search_place, char search_val);
 
 /*
 ** BONUS LIBFT
