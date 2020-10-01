@@ -6,50 +6,13 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:09 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:47:11 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/01 15:44:02 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <unistd.h>
-
-/*
-**	function which checks where in a string a char occurs
-*/
-
-int		ft_occurence(char *line, char c)
-{
-	int i;
-	int occ;
-
-	i = 0;
-	occ = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == c)
-			occ++;
-		i++;
-	}
-	return (occ);
-}
-
-/*
-**	function which prints the entire list
-*/
-
-void	print_list(t_list *list)
-{
-	int			i;
-
-	i = 1;
-	while (list)
-	{
-		printf("Token %i: [%s] addr: [%p]\n", i, list->content, list->content);
-		list = list->next;
-		i++;
-	}
-}
 
 /*
 **	function which returns the environments

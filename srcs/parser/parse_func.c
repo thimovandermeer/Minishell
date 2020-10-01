@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:46:06 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 14:02:58 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/01 15:14:08 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,23 +89,16 @@ void			parse_command(t_command *command, t_parsing *parser,
 }
 
 /*
-**	this function free's the list if there
-**	are stil elements after running the entire list
+**	this function function is activated when no seperator
+**	 is found and will create a command
 */
 
-void			free_parse_line(t_list **list)
+void			no_sep_found_parsing(t_parsing *parsing, t_list **command_list,
+									t_list **list, t_vars *vars)
 {
-	t_list *tmp;
-
-	tmp = *list;
-	if (!ft_strcmp((*list)->content, ";"))
-	{
-		free(tmp->content);
-		tmp->content = NULL;
-		free(tmp);
-		tmp = NULL;
-	}
-	(*list) = (*list)->next;
+	create_command(parsing, command_list, vars);
+	parsing->prev_sep = parsing->cur_sep;
+	parsing->list = (*list)->next;
 }
 
 /*
@@ -116,23 +109,22 @@ t_list			*parse_line(t_list **list, t_vars *vars)
 {
 	t_parsing	parsing;
 	t_list		*command_list;
+	t_list		*tmp;
 
 	command_list = NULL;
+	tmp = NULL;
 	parsing.list = *list;
 	parsing.prev_sep = NO_SEP;
 	parsing.err = NO_ERROR;
 	while ((*list) && ft_strcmp((*list)->content, ";"))
 	{
 		parsing.cur_sep = check_seperator((*list)->content);
+		if (parsing.cur_sep == PIPE)
+			tmp = *list;
 		if (parsing.cur_sep != NO_SEP)
-		{
-			create_command(&parsing, &command_list, vars);
-			if (parsing.err == ERROR)
-				return (NULL);
-			parsing.prev_sep = parsing.cur_sep;
-			parsing.list = (*list)->next;
-		}
+			no_sep_found_parsing(&parsing, &command_list, list, vars);
 		(*list) = (*list)->next;
+		free_pipe_parse_line(&tmp);
 	}
 	if (parsing.list)
 		create_command(&parsing, &command_list, vars);

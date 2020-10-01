@@ -6,12 +6,16 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:46:11 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:46:12 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/01 15:26:28 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+
+/*
+**	this function searches for double quotes
+*/
 
 void		double_quote(t_vars *vars, int *i, char c)
 {
@@ -26,6 +30,10 @@ void		double_quote(t_vars *vars, int *i, char c)
 	}
 }
 
+/*
+**	this function searches for single quotes
+*/
+
 void		single_quote(t_vars *vars, int *i, char c)
 {
 	if (vars->quote == NO_QUOTE && vars->escape != ESCAPE)
@@ -38,6 +46,10 @@ void		single_quote(t_vars *vars, int *i, char c)
 		(*i)++;
 	}
 }
+
+/*
+**	this checks for the escape char
+*/
 
 void		escape(t_vars *vars, int *i, char c, char special)
 {
