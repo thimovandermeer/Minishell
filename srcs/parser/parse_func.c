@@ -87,8 +87,8 @@ void			free_parse_line(t_list **list)
 	{
 		free((*list)->content);
 		(*list)->content = NULL;
-		free((*list));
-		(*list) = NULL;
+	//	free((*list));		Hier crasht de ;
+	//	(*list) = NULL;
 	}
 	(*list) = (*list)->next;
 }

@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2019/10/31 12:26:25 by rpet          #+#    #+#                 */
-/*   Updated: 2020/08/25 08:16:44 by rpet          ########   odam.nl         */
+/*   Updated: 2020/09/30 11:27:05 by thimovander   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ int					strlen_gnl(char *str);
 char				*strdup_gnl(char *str);
 void				strcpy_gnl(char *dst, char *src, int line);
 char				*strjoin_gnl(char *s1, char *s2);
+int					ft_str_pos(char *search_place, char search_val);
 
 #endif

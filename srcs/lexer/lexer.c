@@ -6,12 +6,13 @@
 **		Looks for a metachar.
 */
 
-int		check_metachar(char *line)
+int		check_metachar(t_lexer *lexer, char cur_char)
 {
-	if (*line == '>' && *line + 1 == '>')
+	if (ft_strchr(";|><", cur_char))
+	{
+		lexer->metachar = cur_char;
 		return (1);
-	if (ft_strchr(";|><", *line))
-		return (1);
+	}
 	return (0);
 }
 
@@ -65,6 +66,8 @@ void	init_lexer(t_lexer *lexer)
 {
 	lexer->token_len = 0;
 	lexer->token_str = NULL;
+	lexer->tmp = NULL;
+	lexer->metachar = 0;
 	lexer->escape = NO_ESCAPE;
 	lexer->quote = NO_QUOTE;
 	lexer->token = NOT_ACTIVE;
@@ -88,5 +91,10 @@ t_list	*lexer_line(char *line)
 	}
 	if (lexer.token != NOT_ACTIVE)
 		add_token_to_list(&lexer, &list);
+	if (lexer.quote != NO_QUOTE)
+	{
+		ft_putendl_fd("multi-line is not supported", 2);
+		exit(1);
+	}
 	return (list);
 }

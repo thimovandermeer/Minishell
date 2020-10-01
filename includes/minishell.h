@@ -67,6 +67,8 @@ typedef enum	e_pipe
 typedef	struct	s_lexer {
 	int				token_len;
 	char			*token_str;
+	char			*tmp;
+	char			metachar;
 	t_escape		escape;
 	t_quote			quote;
 	t_token			token;
@@ -90,10 +92,13 @@ typedef struct	s_command {
 }				t_command;
 
 typedef struct	s_vars {
-	char			**get_env;
-	int				commands;
-	int				ret;
-	t_status		status;
+	char		**env;
+	char		*token;
+	int			commands;
+	int			ret;
+	t_status	status;
+	t_quote		quote;
+	t_escape	escape;
 }				t_vars;
 
 typedef	struct	s_exec {
@@ -192,7 +197,7 @@ int				check_valid_input(t_list *list, t_vars *vars);
 **		Lexer functions lexer
 */
 
-int				check_metachar(char *line);
+int				check_metachar(t_lexer *lexer, char cur_char);
 void			add_token_to_list(t_lexer *lexer, t_list **list);
 void			lexer_loop(char *line, t_lexer *lexer, t_list **list);
 void			init_lexer(t_lexer *lexer);
@@ -245,7 +250,6 @@ void			parse_command(t_command *command, t_parsing *parser,
 void			free_parse_line(t_list **list);
 t_list			*parse_line(t_list **list, t_vars *vars);
 
-
 /*
 **		Util functions
 */
@@ -262,6 +266,7 @@ char			*get_env(char **env, char *key);
 t_separator		check_seperator(char *str);
 t_list			*parse_line(t_list **list, t_vars *vars);
 t_redirection	check_redir(char *str);
+int				get_length(t_parsing *parser);
 
 /*
 **		Init env functions
@@ -294,7 +299,6 @@ char			*expand_var(char *replace, t_vars *vars, t_quote quote);
 void			expand_func(t_list *list, t_vars *vars);
 int				get_length_var_name(char *replace);
 
-
 int				export_builtin(t_command *command, t_vars *vars);
 int				unset_builtin(t_vars *vars, t_command *command);
 
@@ -302,6 +306,9 @@ void			command_prompt(void);
 void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
 int				is_builtin(t_command *command, t_vars *vars);
+void			remove_quotes(char *old, t_vars *vars);
+
+t_quote			check_quote_type(t_list *list);
 
 /*
 **		Error functions
@@ -314,13 +321,13 @@ void			error_syntax(char *arg, t_vars *vars);
 char			**bubblesort(char **array, int length);
 int				find_var_in_env(char *search_var, char **tmp_env);
 void			error_identifier(char **arg, t_vars *vars);
+
 /*
 **		Free functions
 */
 
 void			free_command_table(t_list **command_list);
-void			free_list(t_list **list);
-void 			free_array(char **arr);
+void			free_array(char **arr);
 void			free_content(void *content);
 
 void			parse_command(t_command *command, t_parsing *parser,

@@ -6,7 +6,7 @@
 #    By: rpet <marvin@codam.nl>                       +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/06/24 11:54:19 by rpet          #+#    #+#                  #
-#    Updated: 2020/09/30 16:21:53 by thimovander   ########   odam.nl          #
+#    Updated: 2020/10/01 11:21:06 by rpet          ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ builtins/cd_builtin builtins/echo_builtin builtins/env_builtin\
 builtins/exit_builtin builtins/export_builtin builtins/pwd_builtin \
 builtins/unset_builtin execution/exec_func execution/get_path execution/redir_pipes\
 lexer/check_valid_input lexer/lexer lexer/lexer_status lexer/lexer_esc_char \
-parser/expand_func parser/init_env_func parser/parse_func \
+parser/expand_func parser/init_env_func parser/parse_func parser/remove_quotes \
 utils/command_prompt utils/error utils/parse_utils utils/signals \
 utils/utils utils/free_functions parser/create_func
 
@@ -27,13 +27,14 @@ OBJS =	$(addsuffix .o, $(addprefix $(ODIR)/, $(_OBJS)))
 LIBFT = libft.a
 LIBFTMAP = libft
 INC = includes
+CC = gcc
 
 .PHONY: all clean fclean re
 
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFTMAP)/$(LIBFT)
-	$(CC) -L$(LIBFTMAP) -lft -o $(NAME) $(OBJS)
+	gcc $(OBJS) -L$(LIBFTMAP) -lft -o $(NAME)
 
 $(LIBFTMAP)/$(LIBFT):
 	make -C $(LIBFTMAP)
@@ -43,7 +44,7 @@ test: all
 
 $(ODIR)/%.o: $(SDIR)/%.c $(INC)/$(HEADER)
 	@mkdir -p $(ODIR)/$(dir $*)
-	$(CC) $(CFLAGS) -I$(INC) -c $< -o $@
+	gcc $(CFLAGS) -I$(INC) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)

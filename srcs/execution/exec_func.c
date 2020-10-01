@@ -35,7 +35,7 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 	exec->pid = fork();
 	if (exec->pid == 0)
 	{
-		execve(exec->bin_path, command->args, vars->get_env);
+		execve(exec->bin_path, command->args, vars->env);
 		exit(126);
 	}
 	if (exec->pid < 0)
