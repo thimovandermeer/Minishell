@@ -31,43 +31,6 @@ char		*exit_status(t_vars *vars)
 }
 
 /*
-**	this function expands the input to the appropriate environment vars
-*/
-
-void		expand_func(t_list *list, t_vars *vars)
-{
-	char		*new;
-	t_quote		quote;
-	t_list		*tmp;
-
-	while (list && ft_strcmp(list->content, ";"))
-	{
-		quote = check_quote_type(list);
-	//	shell_expansion(list->content, vars);
-		remove_quotes(list->content, vars);
-		free(list->content);
-		list->content = NULL;
-		if (ft_strrchr(vars->token, '$'))
-		{
-			if (vars->token[1] == '?')
-				new = exit_status(vars);
-			else
-				new = expand_var(vars->token, vars, quote);
-			if (!new)
-			{
-				free(new);
-				error_malloc();
-			}
-			list->content = new;
-		}
-		else
-			list->content = vars->token;
-		list = list->next;
-		quote = NO_QUOTE;
-	}
-}
-
-/*
 **	this function gets the length of the var and
 **	activates the function which searches for the var name
 */
@@ -118,4 +81,78 @@ char		*create_new_token(char *replace, char *value, int len)
 	free(bash);
 	free(replace);
 	return (result);
+}
+
+/*
+**	replaces the $? with the exit status value
+*/
+
+void		exit_status(t_vars *vars)
+{
+	
+}
+
+/*
+**	function to replace the $parameter for environment variable if needed
+*/
+
+void		shell_expansion(char *old, t_vars *vars)
+{
+	int		i;
+
+	vars->quote = NO_QUOTE;
+	vars->escape = NO_ESCAPE;
+	i = 0;
+	while (old[i])
+	{
+		if (old[i] == '\\')
+			shell_escape(vars);
+		else if (old[i] == '\'')
+			shell_single_quote(vars);
+		else if (old[i] == '\"')
+			shell_double_quote(vars);
+		else if (old[i] == '$')
+			shell_sign(vars, old, i);
+		if (old[i] != '\\' && vars->escape == ESCAPE)
+			vars->escape = NO_ESCAPE;
+		i++;
+	}
+}
+
+/*
+**	this function expands the input to the appropriate environment vars
+*/
+
+void		expand_func(t_list *list, t_vars *vars)
+{
+	char		*new;
+	t_quote		quote;
+	t_list		*tmp;
+
+	while (list && ft_strcmp(list->content, ";"))
+	{
+		vars->token = list->content;
+		quote = check_quote_type(list);
+	//	shell_expansion(list->content, vars);
+		remove_quotes(vars->token, vars);
+		free(list->content);
+		list->content = NULL;
+		if (ft_strrchr(vars->token, '$'))
+		{
+			if (vars->token[1] == '?')
+				new = exit_status(vars);
+			else
+				new = expand_var(vars->token, vars, quote);
+			if (!new)
+			{
+				free(new);
+				error_malloc();
+			}
+			list->content = new;
+		}
+		else
+			list->content = vars->token;
+		list = list->next;
+		quote = NO_QUOTE;
+	}
 }

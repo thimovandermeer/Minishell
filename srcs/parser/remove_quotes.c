@@ -2,6 +2,10 @@
 #include "libft.h"
 #include <stdlib.h>
 
+/*
+**		checks if the new token is smaller than the old one.
+*/
+
 void		resize_token(t_vars *vars, int len)
 {
 	char	*new;
@@ -19,6 +23,10 @@ void		resize_token(t_vars *vars, int len)
 		vars->token = new;
 	}
 }
+
+/*
+**		loop which iterates over the old token while new token is being made.
+*/
 
 void		quote_loop(char *old, t_vars *vars)
 {
@@ -45,6 +53,10 @@ void		quote_loop(char *old, t_vars *vars)
 	vars->token[i] = '\0';
 }
 
+/*
+**		main function for quote removing in tokens.
+*/
+
 void		remove_quotes(char *old, t_vars *vars)
 {
 	vars->quote = NO_QUOTE;
@@ -54,4 +66,5 @@ void		remove_quotes(char *old, t_vars *vars)
 		error_malloc();
 	quote_loop(old, vars);
 	resize_token(vars, ft_strlen(old));
+	//free(old);
 }

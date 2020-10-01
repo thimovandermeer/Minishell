@@ -1,6 +1,10 @@
 #include "minishell.h"
 #include "libft.h"
 
+/*
+**		determines if the " should be placed when it found a "
+*/
+
 void		double_quote(t_vars *vars, int *i, char c)
 {
 	if (vars->quote == NO_QUOTE && vars->escape != ESCAPE)
@@ -14,6 +18,10 @@ void		double_quote(t_vars *vars, int *i, char c)
 	}
 }
 
+/*
+**		determines if the ' should be placed when it found a '
+*/
+
 void		single_quote(t_vars *vars, int *i, char c)
 {
 	if (vars->quote == NO_QUOTE && vars->escape != ESCAPE)
@@ -26,6 +34,10 @@ void		single_quote(t_vars *vars, int *i, char c)
 		(*i)++;
 	}
 }
+
+/*
+**		determines if the \ should be placed when it found a \
+*/
 
 void		escape(t_vars *vars, int *i, char c, char special)
 {

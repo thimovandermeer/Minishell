@@ -307,6 +307,11 @@ void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
 int				is_builtin(t_command *command, t_vars *vars);
 
+void			shell_sign(t_vars *vars, char *old, int i);
+void			shell_double_quote(t_vars *vars);
+void			shell_single_quote(t_vars *vars);
+void			shell_escape(t_vars *vars);
+
 void			double_quote(t_vars *vars, int *i, char c);
 void			single_quote(t_vars *vars, int *i, char c);
 void			escape(t_vars *vars, int *i, char c, char special);
