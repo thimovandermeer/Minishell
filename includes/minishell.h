@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 14:08:15 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -281,6 +293,7 @@ void			init_env(char **env, t_vars *vars);
 
 void			ctrl_c(int signal);
 void			ctrl_esc(int signal);
+void			signal_activation(void);
 
 /*
 **		Pipe handling functions

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   minishell.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:47:14 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 14:07:13 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <signal.h>
@@ -41,16 +53,28 @@ void	process_list(t_list *list, t_vars *vars)
 	}
 }
 
-void	signal_activation(void)
+void	minishell_loop(t_vars *vars)
 {
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, ctrl_esc);
+	t_list		*list;
+	char		*line;
+
+	while (vars->status == RUNNING)
+	{
+		command_prompt();
+		signal_activation();
+		if (!get_next_line(0, &line))
+			break ;
+		list = lexer_line(line);
+		if (check_valid_input(list, vars))
+			process_list(list, vars);
+		else
+			ft_lstclear(&list, free_content);
+		free(line);
+	}
 }
 
 int		main(int argc, char **argv, char **env)
 {
-	char		*line;
-	t_list		*list;
 	t_vars		vars;
 
 	(void)argv;
@@ -60,19 +84,7 @@ int		main(int argc, char **argv, char **env)
 		return (1);
 	}
 	init_env(env, &vars);
-	while (vars.status == RUNNING)
-	{
-		command_prompt();
-		signal_activation();
-		if (!get_next_line(0, &line))
-			break ;
-		list = lexer_line(line);
-		if (check_valid_input(list, &vars))
-			process_list(list, &vars);
-		else
-			ft_lstclear(&list, free_content);
-		free(line);
-	}
+	minishell_loop(&vars);
 	free_array(vars.env);
 	ft_putstr_fd("exit\n", 1);
 	return (0);

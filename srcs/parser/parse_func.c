@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parse_func.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:46:06 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 14:02:58 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -83,12 +95,15 @@ void			parse_command(t_command *command, t_parsing *parser,
 
 void			free_parse_line(t_list **list)
 {
+	t_list *tmp;
+
+	tmp = *list;
 	if (!ft_strcmp((*list)->content, ";"))
 	{
-		free((*list)->content);
-		(*list)->content = NULL;
-	//	free((*list));		Hier crasht de ;
-	//	(*list) = NULL;
+		free(tmp->content);
+		tmp->content = NULL;
+		free(tmp);
+		tmp = NULL;
 	}
 	(*list) = (*list)->next;
 }
