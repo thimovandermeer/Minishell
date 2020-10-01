@@ -2,6 +2,10 @@
 #include "libft.h"
 #include <stdlib.h>
 
+/*
+**	function which checks if the str is al digits
+*/
+
 int		str_is_num(char *str)
 {
 	int		i;
@@ -19,6 +23,10 @@ int		str_is_num(char *str)
 	}
 	return (1);
 }
+
+/*
+**	Driver function for echo builtin
+*/
 
 int		exit_builtin(t_command *command, t_vars *vars)
 {

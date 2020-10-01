@@ -25,11 +25,9 @@ void	add_token_to_list(t_lexer *lexer, t_list **list)
 	t_list	*element;
 
 	token = ft_substr(lexer->token_str, 0, lexer->token_len);
-	printf("token pointer = %p\n", token);
 	if (!token)
 		error_malloc();
 	element = ft_lstnew(token);
-	printf("element = %p\n", element);
 	if (!element)
 		error_malloc();
 	ft_lstadd_back(list, element);

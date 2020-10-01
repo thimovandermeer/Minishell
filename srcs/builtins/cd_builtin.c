@@ -6,6 +6,10 @@
 #include <string.h>
 #include <errno.h>
 
+/*
+**	function which sets pwd to the right path
+*/
+
 void	set_pwd(t_vars *vars, int var_index, char *env_var, char *loc)
 {
 	free(vars->get_env[var_index]);
@@ -14,6 +18,10 @@ void	set_pwd(t_vars *vars, int var_index, char *env_var, char *loc)
 	if (!vars->get_env[var_index])
 		error_malloc();
 }
+
+/*
+**	function which updates pwd when there has been a change in directory
+*/
 
 void	update_pwd(t_vars *vars, char *new_pwd)
 {
@@ -31,6 +39,10 @@ void	update_pwd(t_vars *vars, char *new_pwd)
 		return ;
 	set_pwd(vars, index_pwd, "PWD=", new_pwd);
 }
+
+/*
+**	function which sets current dir to forgoing dir
+*/
 
 int		cd_old(t_vars *vars)
 {
@@ -52,6 +64,10 @@ int		cd_old(t_vars *vars)
 	return (0);
 }
 
+/*
+**	function which cd's to home directory
+*/
+
 int		cd_home(t_vars *vars)
 {
 	char	*tmp;
@@ -70,6 +86,10 @@ int		cd_home(t_vars *vars)
 	update_pwd(vars, get_env(vars->get_env, "HOME"));
 	return (0);
 }
+
+/*
+**	driver function for cd builtin function
+*/
 
 int		cd_builtin(t_command *command, t_vars *vars)
 {

@@ -56,14 +56,6 @@ typedef	enum	e_filemode
 	TRUNC
 }				t_filemode;
 
-typedef	struct	s_lexer {
-	int			token_len;
-	char		*token_str;
-	t_escape	escape;
-	t_quote		quote;
-	t_token		token;
-}				t_lexer;
-
 typedef enum	e_pipe
 {
 	NO_PIPE,
@@ -71,6 +63,14 @@ typedef enum	e_pipe
 	PIPE_OUT,
 	PIPE_BOTH
 }				t_pipe;
+
+typedef	struct	s_lexer {
+	int				token_len;
+	char			*token_str;
+	t_escape		escape;
+	t_quote			quote;
+	t_token			token;
+}				t_lexer;
 
 typedef struct	s_parsing {
 	t_list			*list;
@@ -90,65 +90,161 @@ typedef struct	s_command {
 }				t_command;
 
 typedef struct	s_vars {
-	char		**get_env;
-	int			commands;
-	int			ret;
-	t_status	status;
+	char			**get_env;
+	int				commands;
+	int				ret;
+	t_status		status;
 }				t_vars;
 
-typedef	struct s_exec
-{
-	pid_t		pid;
-	char		*bin_path;
-	// char		**args;
-	int			fd[2];
-	int 		in;
+typedef	struct	s_exec {
+	pid_t			pid;
+	char			*bin_path;
+	int				fd[2];
+	int				in;
 }				t_exec;
 
-
 /*
-**		Lexer functions
+**		Cd functions
 */
 
-void			found_escape_char(char *line, t_lexer *lexer);
-void			found_double_quote(char *line, t_lexer *lexer);
-void			found_single_quote(char *line, t_lexer *lexer);
-void			outside_token(char *line, t_lexer *lexer);
-void			in_active_token(char *line, t_lexer *lexer, t_list **list);
-void			in_metachar_token(char *line, t_lexer *lexer, t_list **list);
-int				check_metachar(char *line);
-void			add_token_to_list(t_lexer *lexer, t_list **list);
-void			lexer_loop(char *line, t_lexer *lexer, t_list **list);
-void			init_lexer(t_lexer *lexer);
-t_list			*lexer_line(char *line);
+void			set_pwd(t_vars *vars, int var_index, char *env_var, char *loc);
+void			update_pwd(t_vars *vars, char *new_pwd);
+int				cd_old(t_vars *vars);
+int				cd_home(t_vars *vars);
+int				cd_builtin(t_command *command, t_vars *vars);
+
+/*
+**		Echo functions
+*/
+int				echo_builtin(t_command *command);
+
+/*
+**		Env functions
+*/
+int				env_func(t_vars *vars);
+
+/*
+**		Exit functions
+*/
+
+int				str_is_num(char *str);
+int				exit_builtin(t_command *command, t_vars *vars);
+
+/*
+**		export builtin functions
+*/
+
+int				check_var_name(char *key);
+void			set_env_name(t_vars *vars, char *argument, char **new_var);
+void			set_quotes(char *export_print);
+void			declare_list_thing(t_command *command, t_vars *vars);
+int				export_builtin(t_command *command, t_vars *vars);
+
+/*
+**		pwd builtin functions
+*/
+int				pwd_builtin(void);
+
+/*
+**		unset builtin functions
+*/
+
+int				find_var_in_env(char *search_var, char **tmp_env);
+void			recreate_env_list(t_vars *vars, int index, int skip_loc);
+int				unset_builtin(t_vars *vars, t_command *command);
+
+/*
+**		execution exec func
+*/
+
+void			open_files(int *fd, char *file, int type, mode_t mode);
+void			is_internal(t_command *command, t_vars *vars, t_exec *exec);
+void			exec_func(t_command *command, t_vars *vars, t_exec *exec);
+void			iterate_command(t_list *command_list, t_vars *vars);
+
+/*
+**		execution get path
+*/
+
+char			*create_new_binpath(char **path, char *token, int i);
+char			*get_bin_path(char *tmp, char *token);
+int				check_bins(t_command *command, t_vars *vars, t_exec *exec);
+
+/*
+**		execution redir pipes
+*/
+
+int				input_redir(t_command *command);
+int				type_determination(t_command *command, t_list *tmp_out_mode);
+int				output_redir(t_command *command);
+void			set_pipes(t_exec *exec, t_list *command_list);
+
+/*
+**		Lexer functions check_valid_input
+*/
+
 int				is_redirection(char *token);
 int				syntax_redirections(t_list *list, t_vars *vars);
 int				syntax_seperators(t_list *list, t_vars *vars);
 int				check_valid_input(t_list *list, t_vars *vars);
 
 /*
-**		get_path.c functions
+**		Lexer functions lexer
 */
-char			*get_bin_path(char *tmp, char *token);
-int				check_bins(t_command *command, t_vars *vars, t_exec *exec);
+
+int				check_metachar(char *line);
+void			add_token_to_list(t_lexer *lexer, t_list **list);
+void			lexer_loop(char *line, t_lexer *lexer, t_list **list);
+void			init_lexer(t_lexer *lexer);
+t_list			*lexer_line(char *line);
 
 /*
-**		redir_pipes.c functions
+**		Lexer functions lexer esc char
 */
 
-int				input_redir(t_command *command);
-int				output_redir(t_command *command);
-void			set_pipes(t_exec *exec, t_list *command_list);
+void			found_escape_char(char *line, t_lexer *lexer);
 
 /*
-**		Exec functions
+**		Lexer functions lexer status
 */
 
-void			executable(t_exec *exec, t_command *command, t_vars *vars);
-void			open_files(int *fd, char *file, int type, mode_t mode);
-void			is_internal(t_command *command, t_vars *vars, t_exec *exec);
-void			exec_func(t_command *command, t_vars *vars, t_exec *exec);
-void			iterate_command(t_list *command_list, t_vars *vars);
+void			found_double_quote(char *line, t_lexer *lexer);
+void			found_single_quote(char *line, t_lexer *lexer);
+void			outside_token(char *line, t_lexer *lexer);
+void			in_active_token(char *line, t_lexer *lexer, t_list **list);
+void			in_metachar_token(char *line, t_lexer *lexer, t_list **list);
+
+/*
+**		parser functions create func
+*/
+
+t_list			*make_item(int arg_count, t_vars *vars);
+void			create_command(t_parsing *parser, t_list **command_list,
+								t_vars *vars);
+void			add_list(t_list **list, void *content);
+
+/*
+**		parser functions expand func
+*/
+
+int				get_length_var_name(char *replace);
+char			*exit_status(t_vars *vars);
+void			expand_func(t_list *list, t_vars *vars);
+char			*expand_var(char *replace, t_vars *vars, t_quote quote);
+char			*create_new_token(char *replace, char *value, int len);
+
+/*
+**		parser functions parse func
+*/
+
+void			redir_handling(t_parsing *parser, t_command *command,
+								t_redirection redir);
+void			parse_pipes(t_command *command, t_parsing *parser);
+void			parse_command(t_command *command, t_parsing *parser,
+								t_vars *vars);
+void			free_parse_line(t_list **list);
+t_list			*parse_line(t_list **list, t_vars *vars);
+
 
 /*
 **		Util functions
@@ -197,32 +293,15 @@ char			*create_new_token(char *str1, char *str2, int len);
 char			*expand_var(char *replace, t_vars *vars, t_quote quote);
 void			expand_func(t_list *list, t_vars *vars);
 int				get_length_var_name(char *replace);
-int				echo_builtin(t_command *command);
-int				pwd_builtin(void);
+
+
 int				export_builtin(t_command *command, t_vars *vars);
 int				unset_builtin(t_vars *vars, t_command *command);
-int				env_func(t_vars *vars);
+
 void			command_prompt(void);
 void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
 int				is_builtin(t_command *command, t_vars *vars);
-
-/*
-**		Cd functions
-*/
-
-void			set_pwd(t_vars *vars, int var_index, char *env_var, char *loc);
-void			update_pwd(t_vars *vars, char *new_pwd);
-int				cd_old(t_vars *vars);
-int				cd_home(t_vars *vars);
-int				cd_builtin(t_command *command, t_vars *vars);
-
-/*
-**		Exit functions
-*/
-
-int				str_is_num(char *str);
-int				exit_builtin(t_command *command, t_vars *vars);
 
 /*
 **		Error functions
@@ -234,7 +313,7 @@ void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
 char			**bubblesort(char **array, int length);
 int				find_var_in_env(char *search_var, char **tmp_env);
-
+void			error_identifier(char **arg, t_vars *vars);
 /*
 **		Free functions
 */
@@ -243,4 +322,7 @@ void			free_command_table(t_list **command_list);
 void			free_list(t_list **list);
 void 			free_array(char **arr);
 void			free_content(void *content);
+
+void			parse_command(t_command *command, t_parsing *parser,
+								t_vars *vars);
 #endif

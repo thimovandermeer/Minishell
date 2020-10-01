@@ -1,7 +1,10 @@
-
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
+
+/*
+**	this function returns the length of the var name
+*/
 
 int			get_length_var_name(char *replace)
 {
@@ -18,22 +21,18 @@ int			get_length_var_name(char *replace)
 	return (i);
 }
 
+/*
+**	this function returns the exit status as an int
+*/
+
 char		*exit_status(t_vars *vars)
 {
 	return (ft_itoa(vars->ret));
 }
 
-t_quote		check_quote_type(t_list *list)
-{
-	t_quote		quote;
-
-	quote = NO_QUOTE;
-	if (ft_strchr(list->content, '\"'))
-		quote = DOUBLE_QUOTE;
-	else if (ft_strchr(list->content, '\''))
-		quote = SINGLE_QUOTE;
-	return (quote);
-}
+/*
+**	this function expands the input to the appropriate environment vars
+*/
 
 void		expand_func(t_list *list, t_vars *vars)
 {
@@ -67,6 +66,11 @@ void		expand_func(t_list *list, t_vars *vars)
 	}
 }
 
+/*
+**	this function gets the length of the var and
+**	activates the function which searches for the var name
+*/
+
 char		*expand_var(char *replace, t_vars *vars, t_quote quote)
 {
 	int		length;
@@ -83,6 +87,10 @@ char		*expand_var(char *replace, t_vars *vars, t_quote quote)
 	free(var_name);
 	return (create_new_token(replace, value, length_start_str));
 }
+
+/*
+**	this function create the return token for the expansion
+*/
 
 char		*create_new_token(char *replace, char *value, int len)
 {
@@ -108,26 +116,4 @@ char		*create_new_token(char *replace, char *value, int len)
 	free(value);
 	free(bash);
 	return (result);
-}
-
-char		*search_var_name(char *search_val, char **search_place)
-{
-	int		i;
-	char	**key_pair;
-	char	*replace_value;
-	int		len;
-
-	i = 0;
-	while (search_place[i])
-	{
-		key_pair = ft_split(search_place[i], '=');
-		len = ft_strlen(key_pair[0]);
-		if (!ft_strncmp(key_pair[0], search_val, len))
-		{
-			replace_value = ft_strdup(key_pair[1]);
-			return (replace_value);
-		}
-		i++;
-	}
-	return (NULL);
 }
