@@ -42,7 +42,7 @@ void	process_list(t_list *list, t_vars *vars)
 
 	while (list)
 	{
-		expand_func(list, vars);
+		expand_loop(list, vars);
 		command_list = parse_line(&list, vars);
 		if (!command_list)
 			break ;

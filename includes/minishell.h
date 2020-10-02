@@ -244,11 +244,8 @@ void			add_list(t_list **list, void *content);
 **		parser functions expand func
 */
 
-int				get_length_var_name(char *replace);
-char			*exit_status(t_vars *vars);
-void			expand_func(t_list *list, t_vars *vars);
-char			*expand_var(char *replace, t_vars *vars, t_quote quote);
-char			*create_new_token(char *replace, char *value, int len);
+void			expand_loop(t_list *list, t_vars *vars);
+void			shell_expansion(t_vars *vars, char *old);
 
 /*
 **		parser functions init env func
@@ -333,12 +330,25 @@ void			ctrl_esc(int signal);
 void			signal_activation(void);
 
 /*
+**		parse functions expansion status
+*/
+
+int				shell_sign(t_vars *vars, int i);
+void			shell_double_quote(t_vars *vars);
+void			shell_single_quote(t_vars *vars);
+void			shell_escape(t_vars *vars);
+
+/*
 **		Util functions utils
 */
 
 char			*get_env(char **env, char *key);
 char			**set_new_env(char **array, int length);
 char			**bubblesort(char **array, int length);
+
+int				replace_env(t_vars *vars, char *replace, int i);
+int				env_len(char *env);
+char			*find_env(t_vars *vars, int i);
 
 /*
 **		Util functions error exec

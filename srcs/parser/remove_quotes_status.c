@@ -14,7 +14,7 @@
 #include "libft.h"
 
 /*
-**	this function searches for double quotes
+**		determines if the " should be placed when it found a "
 */
 
 void		double_quote(t_vars *vars, int *i, char c)
@@ -31,7 +31,7 @@ void		double_quote(t_vars *vars, int *i, char c)
 }
 
 /*
-**	this function searches for single quotes
+**		determines if the ' should be placed when it found a '
 */
 
 void		single_quote(t_vars *vars, int *i, char c)
@@ -48,7 +48,7 @@ void		single_quote(t_vars *vars, int *i, char c)
 }
 
 /*
-**	this checks for the escape char
+**		determines if the \ should be placed when it found a \
 */
 
 void		escape(t_vars *vars, int *i, char c, char special)

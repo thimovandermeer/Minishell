@@ -15,6 +15,7 @@
 #include <stdlib.h>
 
 /*
+**		checks if the new token is smaller than the old one.
 **		this function resizes the tokens
 */
 
@@ -37,7 +38,7 @@ void		resize_token(t_vars *vars, int len)
 }
 
 /*
-**		this is main loop for the quote removal function
+**		loop which iterates over the old token while new token is being made.
 */
 
 void		quote_loop(char *old, t_vars *vars)
@@ -78,4 +79,5 @@ void		remove_quotes(char *old, t_vars *vars)
 		error_malloc();
 	quote_loop(old, vars);
 	resize_token(vars, ft_strlen(old));
+	free(old);
 }
