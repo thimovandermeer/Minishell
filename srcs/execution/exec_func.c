@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:11 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 11:29:18 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 13:27:20 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	open_files(int *fd, char *file, int type, mode_t mode)
 {
 	*fd = open(file, type, mode);
 	if (*fd == -1)
-		error_malloc();
+		error_str_error(file, strerror(errno));
 }
 
 /*

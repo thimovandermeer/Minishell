@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:41 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:41:42 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 14:28:40 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,13 @@ int		find_var_in_env(char *search_var, char **tmp_env)
 	while (tmp_env[i])
 	{
 		search_place = ft_split(tmp_env[i], '=');
+		if (search_place == NULL)
+			error_malloc();
 		if (!ft_strcmp(search_place[0], search_var))
+		{
+			free_array(search_place);
 			return (i);
+		}
 		free_array(search_place);
 		i++;
 	}
@@ -46,7 +51,7 @@ void	recreate_env_list(t_vars *vars, int index, int skip_loc)
 		vars->env[skip_loc] = vars->env[skip_loc + 1];
 		skip_loc++;
 	}
-	vars->env[index] = NULL;
+	vars->env[skip_loc] = NULL;
 }
 
 /*
