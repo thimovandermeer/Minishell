@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:44:45 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 13:05:00 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int		syntax_redirections(t_list *list, t_vars *vars)
 
 int		syntax_seperators(t_list *list, t_vars *vars)
 {
-	char	*cur;
-	char	*next;
+	char	cur;
+	char	next;
 
 	if (!ft_strcmp(list->content, "|") || !ft_strcmp(list->content, ";"))
 	{
@@ -74,14 +74,15 @@ int		syntax_seperators(t_list *list, t_vars *vars)
 	}
 	while (list && list->next)
 	{
-		cur = list->content;
-		next = list->next->content;
-		if (!next)
+		cur = *(char*)(list->content);
+		next = *(char*)(list->next->content);
+		if (!list->next->content)
 			return (1);
-		if ((!ft_strcmp(cur, "|") || !ft_strcmp(cur, ";")) &&
-			(!ft_strcmp(next, "|") || !ft_strcmp(next, ";")))
+		if ((cur == '|' || cur == ';') && (next == '|' || next == ';'))
 		{
-			error_syntax(cur, vars);
+			if (cur == '|' && next == '|')
+				return (1);
+			error_syntax(list->next->content, vars);
 			return (0);
 		}
 		list = list->next;
@@ -108,9 +109,9 @@ int		check_valid_input(t_list *list, t_vars *vars)
 {
 	if (!list)
 		return (0);
-	check_multi_line(list, vars);
 	if (!syntax_seperators(list, vars))
 		return (0);
+	check_multi_line(list, vars);
 	if (!syntax_redirections(list, vars))
 		return (0);
 	return (1);
