@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:24 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:41:26 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 15:06:10 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int		exit_builtin(t_command *command, t_vars *vars)
 		}
 		i++;
 	}
-	vars->status = STOP;
+	if (command->pipe == NO_PIPE)
+		vars->status = STOP;
 	return (0);
 }
