@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   ft_str_pos.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
+/*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/30 11:21:43 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/10/02 13:51:25 by rpet          ########   odam.nl         */
+/*   Created: 2020/10/02 14:52:25 by rpet          #+#    #+#                 */
+/*   Updated: 2020/10/02 14:52:26 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
