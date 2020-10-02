@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 15:59:43 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 11:28:46 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,6 +339,12 @@ void			signal_activation(void);
 char			*get_env(char **env, char *key);
 char			**set_new_env(char **array, int length);
 char			**bubblesort(char **array, int length);
+
+/*
+**		Util functions error exec
+*/
+
+void			error_str_error(char *arg, char *str_error);
 
 /*
 **		Minishell
