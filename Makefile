@@ -3,15 +3,35 @@ FLAGS = -Wall -Werror -Wextra
 SDIR = srcs
 ODIR = objs
 _OBJS = minishell \
-builtins/cd_builtin builtins/echo_builtin builtins/env_builtin\
-builtins/exit_builtin builtins/export_builtin builtins/pwd_builtin \
-builtins/unset_builtin execution/exec_func execution/get_path execution/redir_pipes\
-lexer/check_valid_input lexer/lexer lexer/lexer_status lexer/lexer_esc_char \
-parser/expand_func parser/init_env_func parser/parse_func parser/remove_quotes \
-parser/remove_quotes_status parser/shell_expansion_status parser/shell_replace \
-utils/command_prompt utils/error utils/parse_utils utils/signals \
-utils/utils utils/free_functions parser/create_func utils/error_exec
-
+		builtins/cd_builtin \
+		builtins/echo_builtin \
+		builtins/env_builtin \
+		builtins/exit_builtin \
+		builtins/export_builtin \
+		builtins/pwd_builtin \
+		builtins/unset_builtin \
+		execution/exec_func \
+		execution/get_path \
+		execution/redir_pipes\
+		lexer/check_valid_input \
+		lexer/lexer \
+		lexer/lexer_esc_char \
+		lexer/lexer_status \
+		parser/create_func \
+		parser/expand_func \
+		parser/init_env_func \
+		parser/parse_func \
+		parser/remove_quotes \
+		parser/remove_quotes_status \
+		parser/shell_expansion_status \
+		parser/shell_replace \
+		utils/command_prompt \
+		utils/error \
+		utils/error_exec \
+		utils/free_functions \
+		utils/parse_utils \
+		utils/signals \
+		utils/utils
 OBJS =	$(addsuffix .o, $(addprefix $(ODIR)/, $(_OBJS)))
 LIBFT = libft.a
 LIBFTMAP = libft

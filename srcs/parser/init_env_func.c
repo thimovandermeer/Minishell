@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:45:59 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:46:00 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 14:37:17 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void		init_env(char **env, t_vars *vars)
 	i = 0;
 	while (env[i])
 	{
-		if (!(vars->env[i] = ft_strdup(env[i])))
+		vars->env[i] = ft_strdup(env[i]);
+		if (!vars->env[i])
 			error_malloc();
 		i++;
 	}
