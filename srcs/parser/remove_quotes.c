@@ -66,5 +66,5 @@ void		remove_quotes(char *old, t_vars *vars)
 		error_malloc();
 	quote_loop(old, vars);
 	resize_token(vars, ft_strlen(old));
-	//free(old);
+	free(old);
 }

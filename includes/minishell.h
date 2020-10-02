@@ -234,7 +234,7 @@ void			add_list(t_list **list, void *content);
 
 int				get_length_var_name(char *replace);
 char			*exit_status(t_vars *vars);
-void			expand_func(t_list *list, t_vars *vars);
+void			expand_loop(t_list *list, t_vars *vars);
 char			*expand_var(char *replace, t_vars *vars, t_quote quote);
 char			*create_new_token(char *replace, char *value, int len);
 
@@ -296,6 +296,7 @@ void			pipe_handling(t_command *command, char *bin_path,
 char			*search_var_name(char *search_val, char **search_place);
 char			*create_new_token(char *str1, char *str2, int len);
 char			*expand_var(char *replace, t_vars *vars, t_quote quote);
+void			shell_expansion(t_vars *vars, char *old);
 void			expand_func(t_list *list, t_vars *vars);
 int				get_length_var_name(char *replace);
 
@@ -307,7 +308,7 @@ void			command_handler(int sig_num);
 void			fork_handler(int sig_num);
 int				is_builtin(t_command *command, t_vars *vars);
 
-void			shell_sign(t_vars *vars, char *old, int i);
+int				shell_sign(t_vars *vars, int i);
 void			shell_double_quote(t_vars *vars);
 void			shell_single_quote(t_vars *vars);
 void			shell_escape(t_vars *vars);
@@ -321,6 +322,10 @@ void			quote_loop(char *old, t_vars *vars);
 void			remove_quotes(char *old, t_vars *vars);
 
 t_quote			check_quote_type(t_list *list);
+
+int				replace_env(t_vars *vars, char *replace, int i);
+int				env_len(char *env);
+char			*find_env(t_vars *vars, int i);
 
 /*
 **		Error functions
