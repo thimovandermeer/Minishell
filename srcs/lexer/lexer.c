@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:45:05 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:45:06 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 13:06:56 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_list	*lexer_line(char *line)
 		add_token_to_list(&lexer, &list);
 	if (lexer.quote != NO_QUOTE)
 	{
-		ft_putendl_fd("multi-line is not supported", 2);
+		ft_putendl_fd("minishell: multi-line is not supported", 2);
 		exit(1);
 	}
 	return (list);
