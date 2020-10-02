@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:30 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 14:14:48 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/02 14:44:38 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void		set_quotes(char *export_print)
 	key = ft_substr(export_print, 0, split_index);
 	value = ft_substr(export_print, split_index + 1, value_len);
 	ft_putstr_fd(key, 1);
-	ft_putchar_fd('=', 1);
 	if (split_index == ft_str_pos(export_print, '='))
 	{
+		ft_putchar_fd('=', 1);
 		ft_putchar_fd('\"', 1);
 		ft_putstr_fd(value, 1);
 		ft_putchar_fd('\"', 1);
