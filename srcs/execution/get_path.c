@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:20 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 10:41:01 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 14:49:13 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*get_bin_path(char *tmp, char *token)
 **	this functions searches for absolute path execution
 */
 
-int	absolute_path_check(t_command *command, t_exec *exec)
+int		absolute_path_check(t_command *command, t_exec *exec)
 {
 	if (ft_strnstr(command->args[0], "./", 4))
 	{
