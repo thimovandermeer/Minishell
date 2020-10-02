@@ -6,11 +6,13 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:30 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 09:03:43 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 14:14:48 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
 /*
 **	function which checks if the var name is correct
@@ -20,6 +22,8 @@ int			check_var_name(char *key)
 {
 	int	i;
 
+	if (!key)
+		return (0);
 	if (!ft_isalpha(key[0]) && key[0] != '_')
 		return (0);
 	i = 1;
@@ -69,19 +73,25 @@ void		set_env_name(t_vars *vars, char *argument, char **new_var)
 
 void		set_quotes(char *export_print)
 {
-	int		i;
+	int		split_index;
+	int		value_len;
 	char	*key;
 	char	*value;
 
-	i = 0;
-	key = ft_substr(export_print, 0, ft_str_pos(export_print, '='));
-	value = ft_substr(export_print, ft_str_pos(export_print, '=')
-			+ 1, ft_strlen(export_print));
+	split_index = ft_str_pos(export_print, '=');
+	if (split_index == 0)
+		split_index = ft_strlen(export_print);
+	value_len = ft_strlen(export_print) - split_index;
+	key = ft_substr(export_print, 0, split_index);
+	value = ft_substr(export_print, split_index + 1, value_len);
 	ft_putstr_fd(key, 1);
 	ft_putchar_fd('=', 1);
-	ft_putchar_fd('\"', 1);
-	ft_putstr_fd(value, 1);
-	ft_putchar_fd('\"', 1);
+	if (split_index == ft_str_pos(export_print, '='))
+	{
+		ft_putchar_fd('\"', 1);
+		ft_putstr_fd(value, 1);
+		ft_putchar_fd('\"', 1);
+	}
 	ft_putchar_fd('\n', 1);
 	free(key);
 	free(value);
@@ -122,6 +132,8 @@ int			export_builtin(t_command *command, t_vars *vars)
 	while (command->args[i])
 	{
 		new_var = ft_split(command->args[i], '=');
+		if (!new_var)
+			error_malloc();
 		if (!check_var_name(new_var[0]))
 			error_identifier(command->args, vars);
 		else
