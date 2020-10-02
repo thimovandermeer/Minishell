@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   lexer_esc_char.c                                   :+:    :+:            */
+/*   error_exec.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/10/01 13:44:49 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:44:50 by thvan-de      ########   odam.nl         */
+/*   Created: 2020/10/02 11:26:21 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/02 11:30:13 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
 /*
-**	this function searches for the escape char
+**	this function gives a invalid command messages when called
 */
 
-void	found_escape_char(char *line, t_lexer *lexer)
+void	error_str_error(char *arg, char *str_error)
 {
-	if (lexer->escape == ESCAPE)
-		lexer->escape = NO_ESCAPE;
-	else if (lexer->escape == NO_ESCAPE)
-	{
-		lexer->escape = ESCAPE;
-		if (lexer->token == NOT_ACTIVE)
-		{
-			lexer->token = ACTIVE;
-			lexer->token_len = 0;
-			lexer->token_str = line;
-		}
-	}
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(arg, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(str_error, 2);
 }

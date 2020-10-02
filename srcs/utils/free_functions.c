@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   free_functions.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:46:54 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 15:59:40 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -22,24 +34,6 @@ void	free_command_table(t_list **command_list)
 		node = node->next;
 	}
 	ft_lstclear(command_list, free_content);
-}
-
-/*
-**	function which free's a list and its contents
-*/
-
-void	free_list(t_list **list)
-{
-	t_list	*tmp;
-
-	while (list)
-	{
-		tmp = *list;
-		*list = (*list)->next;
-		free(tmp->content);
-		tmp->content = NULL;
-	}
-	*list = NULL;
 }
 
 /*

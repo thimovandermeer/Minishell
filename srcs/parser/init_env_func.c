@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   init_env_func.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: thimovandermeer <thimovandermeer@studen      +#+                     */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/07/23 15:07:32 by thimovander   #+#    #+#                 */
-/*   Updated: 2020/10/01 11:11:21 by rpet          ########   odam.nl         */
+/*   Created: 2020/10/01 13:45:59 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 13:46:00 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

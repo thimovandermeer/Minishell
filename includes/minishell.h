@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/02 11:28:46 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -232,11 +244,17 @@ void			add_list(t_list **list, void *content);
 **		parser functions expand func
 */
 
-int				get_length_var_name(char *replace);
-char			*exit_status(t_vars *vars);
 void			expand_loop(t_list *list, t_vars *vars);
-char			*expand_var(char *replace, t_vars *vars, t_quote quote);
-char			*create_new_token(char *replace, char *value, int len);
+void			shell_expansion(t_vars *vars, char *old);
+
+/*
+**		parser functions init env func
+*/
+
+size_t			ft_env_len(char **env);
+void			init_env(char **env, t_vars *vars);
+char			*search_var_name(char *search_val, char **search_place);
+t_quote			check_quote_type(t_list *list);
 
 /*
 **		parser functions parse func
@@ -247,106 +265,103 @@ void			redir_handling(t_parsing *parser, t_command *command,
 void			parse_pipes(t_command *command, t_parsing *parser);
 void			parse_command(t_command *command, t_parsing *parser,
 								t_vars *vars);
-void			free_parse_line(t_list **list);
+void			no_sep_found_parsing(t_parsing *parsing, t_list **command_list,
+									t_list **list, t_vars *vars);
 t_list			*parse_line(t_list **list, t_vars *vars);
 
 /*
-**		Util functions
+**		parser functions remove quotes status
 */
-
-int				ft_occurence(char *line, char c);
-void			print_list(t_list *list);
-void			print_commands(t_list *command_list);
-char			*get_env(char **env, char *key);
-
-/*
-**		Parse functions
-*/
-
-t_separator		check_seperator(char *str);
-t_list			*parse_line(t_list **list, t_vars *vars);
-t_redirection	check_redir(char *str);
-int				get_length(t_parsing *parser);
-
-/*
-**		Init env functions
-*/
-
-size_t			ft_env_len(char **env);
-void			init_env(char **env, t_vars *vars);
-
-/*
-**		Signal functions
-*/
-
-void			ctrl_c(int signal);
-void			ctrl_esc(int signal);
-
-/*
-**		Pipe handling functions
-*/
-
-void			pipe_handling(t_command *command, char *bin_path,
-								char **env, pid_t p_id);
-
-/*
-**		Expand_func.c
-*/
-
-char			*search_var_name(char *search_val, char **search_place);
-char			*create_new_token(char *str1, char *str2, int len);
-char			*expand_var(char *replace, t_vars *vars, t_quote quote);
-void			shell_expansion(t_vars *vars, char *old);
-void			expand_func(t_list *list, t_vars *vars);
-int				get_length_var_name(char *replace);
-
-int				export_builtin(t_command *command, t_vars *vars);
-int				unset_builtin(t_vars *vars, t_command *command);
-
-void			command_prompt(void);
-void			command_handler(int sig_num);
-void			fork_handler(int sig_num);
-int				is_builtin(t_command *command, t_vars *vars);
-
-int				shell_sign(t_vars *vars, int i);
-void			shell_double_quote(t_vars *vars);
-void			shell_single_quote(t_vars *vars);
-void			shell_escape(t_vars *vars);
 
 void			double_quote(t_vars *vars, int *i, char c);
 void			single_quote(t_vars *vars, int *i, char c);
 void			escape(t_vars *vars, int *i, char c, char special);
 
+/*
+**		parser functions remove quotes status
+*/
+
 void			resize_token(t_vars *vars, int len);
 void			quote_loop(char *old, t_vars *vars);
 void			remove_quotes(char *old, t_vars *vars);
 
-t_quote			check_quote_type(t_list *list);
+/*
+**		Util functions command prompt
+*/
 
-int				replace_env(t_vars *vars, char *replace, int i);
-int				env_len(char *env);
-char			*find_env(t_vars *vars, int i);
+void			command_handler(int sig_num);
+void			fork_handler(int sig_num);
+void			command_prompt(void);
 
 /*
-**		Error functions
+**		Util functions error functions
 */
 
 void			error_general(char *error_msg, t_vars *vars);
 void			error_malloc(void);
 void			error_invalid_cmd(char *arg, t_vars *vars);
 void			error_syntax(char *arg, t_vars *vars);
-char			**bubblesort(char **array, int length);
-int				find_var_in_env(char *search_var, char **tmp_env);
 void			error_identifier(char **arg, t_vars *vars);
 
 /*
-**		Free functions
+**		Util functions free functions
 */
 
 void			free_command_table(t_list **command_list);
 void			free_array(char **arr);
 void			free_content(void *content);
 
-void			parse_command(t_command *command, t_parsing *parser,
-								t_vars *vars);
+/*
+**		Util functions parse utils
+*/
+
+t_separator		check_seperator(char *str);
+t_redirection	check_redir(char *str);
+int				get_length(t_parsing *parser);
+void			free_pipe_parse_line(t_list **tmp);
+void			free_parse_line(t_list **list);
+
+/*
+**		Util functions signals
+*/
+
+void			ctrl_c(int signal);
+void			ctrl_esc(int signal);
+void			signal_activation(void);
+
+/*
+**		parse functions expansion status
+*/
+
+int				shell_sign(t_vars *vars, int i);
+void			shell_double_quote(t_vars *vars);
+void			shell_single_quote(t_vars *vars);
+void			shell_escape(t_vars *vars);
+
+/*
+**		Util functions utils
+*/
+
+char			*get_env(char **env, char *key);
+char			**set_new_env(char **array, int length);
+char			**bubblesort(char **array, int length);
+
+int				replace_env(t_vars *vars, char *replace, int i);
+int				env_len(char *env);
+char			*find_env(t_vars *vars, int i);
+
+/*
+**		Util functions error exec
+*/
+
+void			error_str_error(char *arg, char *str_error);
+
+/*
+**		Minishell
+*/
+
+int				is_builtin(t_command *command, t_vars *vars);
+void			process_list(t_list *list, t_vars *vars);
+void			minishell_loop(t_vars *vars);
+
 #endif

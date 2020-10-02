@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   signals.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:47:05 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 14:08:33 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 
@@ -20,4 +32,14 @@ void		ctrl_esc(int signal)
 {
 	(void)signal;
 	ft_putstr_fd("\b\b  \b\b", 1);
+}
+
+/*
+**	function which activates our signal handling
+*/
+
+void		signal_activation(void)
+{
+	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, ctrl_esc);
 }

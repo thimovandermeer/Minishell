@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   exec_func.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:44:11 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/02 11:29:18 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <fcntl.h>
@@ -25,7 +37,7 @@ void	open_files(int *fd, char *file, int type, mode_t mode)
 
 void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 {
-	int ret;
+	int		status;
 
 	if (!check_bins(command, vars, exec))
 	{
@@ -36,6 +48,7 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 	if (exec->pid == 0)
 	{
 		execve(exec->bin_path, command->args, vars->env);
+		error_str_error(command->args[0], strerror(errno));
 		exit(126);
 	}
 	if (exec->pid < 0)
@@ -44,7 +57,9 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 		error_general("something went wrong during fork proces", vars);
 		return ;
 	}
-	waitpid(exec->pid, &ret, WUNTRACED);
+	waitpid(exec->pid, &status, WUNTRACED);
+	if (WIFEXITED(status))
+		vars->ret = WEXITSTATUS(status);
 	if (exec->bin_path)
 		free(exec->bin_path);
 }

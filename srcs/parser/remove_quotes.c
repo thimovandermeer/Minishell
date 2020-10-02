@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   remove_quotes.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:46:16 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 15:28:34 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
 
 /*
 **		checks if the new token is smaller than the old one.
+**		this function resizes the tokens
 */
 
 void		resize_token(t_vars *vars, int len)
@@ -54,7 +67,7 @@ void		quote_loop(char *old, t_vars *vars)
 }
 
 /*
-**		main function for quote removing in tokens.
+**		this is the driver function for the quote removal
 */
 
 void		remove_quotes(char *old, t_vars *vars)

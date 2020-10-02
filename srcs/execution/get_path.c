@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_path.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:44:20 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/02 10:41:01 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/types.h>
@@ -54,6 +65,20 @@ char	*get_bin_path(char *tmp, char *token)
 }
 
 /*
+**	this functions searches for absolute path execution
+*/
+
+int	absolute_path_check(t_command *command, t_exec *exec)
+{
+	if (ft_strnstr(command->args[0], "./", 4))
+	{
+		exec->bin_path = ft_strdup(command->args[0]);
+		return (1);
+	}
+	return (0);
+}
+
+/*
 **	function which iterates al environment variables
 **	searching for the path variable to start searching on these locations
 */
@@ -65,6 +90,8 @@ int		check_bins(t_command *command, t_vars *vars, t_exec *exec)
 	int			i;
 
 	i = 0;
+	if (absolute_path_check(command, exec) == 1)
+		return (1);
 	while (vars->env[i])
 	{
 		tmp = ft_split(vars->env[i], '=');

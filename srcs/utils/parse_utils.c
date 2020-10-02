@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parse_utils.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2020/10/01 13:46:57 by thvan-de      #+#    #+#                 */
+/*   Updated: 2020/10/01 15:15:11 by thvan-de      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
@@ -58,4 +70,39 @@ int				get_length(t_parsing *parser)
 	if (current != NO_REDIR)
 		return (0);
 	return (arg_count);
+}
+
+/*
+**	this function free's the list if the pipe has been detected
+*/
+
+void			free_pipe_parse_line(t_list **tmp)
+{
+	if ((*tmp) != NULL)
+	{
+		free((*tmp)->content);
+		(*tmp)->content = NULL;
+		free((*tmp));
+		(*tmp) = NULL;
+	}
+}
+
+/*
+**	this function free's the list if there
+**	are stil elements after running the entire list
+*/
+
+void			free_parse_line(t_list **list)
+{
+	t_list *tmp;
+
+	tmp = *list;
+	if (!ft_strcmp((*list)->content, ";"))
+	{
+		free(tmp->content);
+		tmp->content = NULL;
+		free(tmp);
+		tmp = NULL;
+	}
+	(*list) = (*list)->next;
 }
