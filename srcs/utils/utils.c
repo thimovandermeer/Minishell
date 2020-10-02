@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:09 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 15:44:02 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/02 09:28:47 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ char	**set_new_env(char **array, int length)
 	char	**tmp_list;
 
 	tmp_list = (char **)malloc(sizeof(char*) * (length + 1));
+	if (tmp_list == NULL)
+		error_malloc();
 	i = 0;
 	while (array[i])
 	{
 		tmp_list[i] = ft_strdup(array[i]);
 		i++;
 	}
+	tmp_list[i] = NULL;
 	return (tmp_list);
 }
 
