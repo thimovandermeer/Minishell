@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 13:20:58 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/05 13:43:18 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "libft.h"
 # include <stddef.h>
-# include <stdio.h>
+# include <stdio.h>//
 
 # define READ_END 0
 # define WRITE_END 1
@@ -152,6 +152,8 @@ int				env_func(t_vars *vars);
 */
 
 int				str_is_num(char *str);
+int				exit_invalid_arguments(t_command *command);
+int				exit_multiple_arguments(t_command *command, t_vars *vars);
 int				exit_builtin(t_command *command, t_vars *vars);
 
 /*
