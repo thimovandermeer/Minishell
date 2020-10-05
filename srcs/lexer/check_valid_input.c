@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 15:08:59 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/05 13:20:36 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int		syntax_seperators(t_list *list, t_vars *vars)
 		next = *(char*)(list->next->content);
 		if (!list->next->content)
 			return (1);
-		if ((cur == '|' || cur == ';') && (next == '|' || next == ';'))
+		if ((is_metachar(cur) && (next == '|' || next == ';')) ||
+		(is_redirection(list->content) && is_redirection(list->next->content)))
 		{
 			error_syntax(list->next->content, vars);
 			return (0);

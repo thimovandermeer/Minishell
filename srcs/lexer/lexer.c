@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:45:05 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 13:06:56 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/05 13:21:22 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,13 @@
 #include <stdlib.h>
 
 /*
-**		Looks for a metachar.
+**		Checks is current character is a meta character.
 */
 
-int		check_metachar(t_lexer *lexer, char cur_char)
+int		is_metachar(char cur_char)
 {
 	if (ft_strchr(";|><", cur_char))
-	{
-		lexer->metachar = cur_char;
 		return (1);
-	}
 	return (0);
 }
 

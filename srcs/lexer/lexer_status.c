@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:56 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:44:58 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 13:20:42 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ void	found_single_quote(char *line, t_lexer *lexer)
 
 void	outside_token(char *line, t_lexer *lexer)
 {
-	if (check_metachar(lexer, *line))
+	if (is_metachar(*line))
 	{
+		lexer->metachar = *line;
 		lexer->token = METACHAR;
 		lexer->token_len = 0;
 		lexer->token_str = line;
@@ -83,8 +84,9 @@ void	outside_token(char *line, t_lexer *lexer)
 
 void	in_active_token(char *line, t_lexer *lexer, t_list **list)
 {
-	if (check_metachar(lexer, *line))
+	if (is_metachar(*line))
 	{
+		lexer->metachar = *line;
 		add_token_to_list(lexer, list);
 		lexer->token = METACHAR;
 		lexer->token_len = 0;
@@ -103,9 +105,11 @@ void	in_active_token(char *line, t_lexer *lexer, t_list **list)
 
 void	in_metachar_token(char *line, t_lexer *lexer, t_list **list)
 {
-	if (check_metachar(lexer, lexer->metachar))
+	if (is_metachar(lexer->metachar))
+	{
 		if (*line == '>' && lexer->metachar == '>')
 			return ;
+	}
 	add_token_to_list(lexer, list);
 	if (*line == ' ' || *line == '\t')
 		lexer->token = NOT_ACTIVE;
@@ -113,7 +117,7 @@ void	in_metachar_token(char *line, t_lexer *lexer, t_list **list)
 	{
 		lexer->token_str = line;
 		lexer->token_len = 0;
-		if (!check_metachar(lexer, *line))
+		if (!is_metachar(*line))
 			lexer->token = ACTIVE;
 	}
 }

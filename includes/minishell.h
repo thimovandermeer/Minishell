@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 09:51:30 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/05 13:20:58 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <stddef.h>
+# include <stdio.h>
 
 # define READ_END 0
 # define WRITE_END 1
@@ -215,7 +216,7 @@ int				check_valid_input(t_list *list, t_vars *vars);
 **		Lexer functions lexer
 */
 
-int				check_metachar(t_lexer *lexer, char cur_char);
+int				is_metachar(char cur_char);
 void			add_token_to_list(t_lexer *lexer, t_list **list);
 void			lexer_loop(char *line, t_lexer *lexer, t_list **list);
 void			init_lexer(t_lexer *lexer);
