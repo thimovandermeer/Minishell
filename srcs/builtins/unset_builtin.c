@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:41 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 14:28:40 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 09:50:31 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int		unset_builtin(t_vars *vars, t_command *command)
 	size_t	index;
 	int		skip_loc;
 
+	vars->builtin = BUILTIN;
 	i = 1;
 	while (command->args[i])
 	{

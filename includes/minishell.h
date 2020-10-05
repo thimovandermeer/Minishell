@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 14:52:03 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/05 09:51:30 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ typedef enum	e_pipe
 	PIPE_BOTH
 }				t_pipe;
 
+typedef enum	e_builtin
+{
+	NO_BUILTIN,
+	BUILTIN
+}				t_builtin;
+
 typedef	struct	s_lexer {
 	int				token_len;
 	char			*token_str;
@@ -107,6 +113,7 @@ typedef struct	s_vars {
 	char		*token;
 	int			commands;
 	int			ret;
+	t_builtin	builtin;
 	t_status	status;
 	t_quote		quote;
 	t_escape	escape;
@@ -132,7 +139,7 @@ int				cd_builtin(t_command *command, t_vars *vars);
 /*
 **		Echo functions
 */
-int				echo_builtin(t_command *command);
+int				echo_builtin(t_command *command, t_vars *vars);
 
 /*
 **		Env functions
@@ -159,7 +166,7 @@ int				export_builtin(t_command *command, t_vars *vars);
 /*
 **		pwd builtin functions
 */
-int				pwd_builtin(void);
+int				pwd_builtin(t_vars *vars);
 
 /*
 **		unset builtin functions

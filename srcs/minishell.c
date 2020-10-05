@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 11:03:25 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 09:51:45 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 int		is_builtin(t_command *command, t_vars *vars)
 {
 	if (ft_strcmp(command->args[0], "echo") == 0)
-		vars->ret = echo_builtin(command);
+		vars->ret = echo_builtin(command, vars);
 	else if (ft_strcmp(command->args[0], "cd") == 0)
 		vars->ret = cd_builtin(command, vars);
 	else if (ft_strcmp(command->args[0], "pwd") == 0)
-		vars->ret = pwd_builtin();
+		vars->ret = pwd_builtin(vars);
 	else if (ft_strcmp(command->args[0], "export") == 0)
 		vars->ret = export_builtin(command, vars);
 	else if (ft_strcmp(command->args[0], "unset") == 0)
@@ -32,7 +32,10 @@ int		is_builtin(t_command *command, t_vars *vars)
 	else if (ft_strcmp(command->args[0], "exit") == 0)
 		vars->ret = exit_builtin(command, vars);
 	else
+	{
 		vars->ret = 1;
+		vars->builtin = NO_BUILTIN;
+	}
 	return (vars->ret);
 }
 
@@ -87,5 +90,5 @@ int		main(int argc, char **argv, char **env)
 	minishell_loop(&vars);
 	free_array(vars.env);
 	ft_putstr_fd("exit\n", 1);
-	return (0);
+	return (vars.ret);
 }

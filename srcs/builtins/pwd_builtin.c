@@ -6,7 +6,7 @@
 /*   By: rpet <marvin@codam.nl>                       +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/09/01 13:50:00 by rpet          #+#    #+#                 */
-/*   Updated: 2020/09/30 13:34:35 by thimovander   ########   odam.nl         */
+/*   Updated: 2020/10/05 09:50:48 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@
 **	Driver function for pwd builtin
 */
 
-int		pwd_builtin(void)
+int		pwd_builtin(t_vars *vars)
 {
 	char	cwd[PATH_MAX];
 
+	vars->builtin = BUILTIN;
 	ft_bzero(cwd, PATH_MAX);
 	if (!getcwd(cwd, sizeof(cwd)))
 	{

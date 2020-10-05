@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:17 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:41:18 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 09:49:34 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		env_func(t_vars *vars)
 {
 	int	i;
 
+	vars->builtin = BUILTIN;
 	i = 0;
 	while (vars->env[i])
 	{

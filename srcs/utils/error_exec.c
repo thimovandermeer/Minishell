@@ -6,13 +6,11 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/02 11:26:21 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 11:30:13 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 08:37:52 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include <stdlib.h>
 
 /*
 **	this function gives a invalid command messages when called

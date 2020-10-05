@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:30 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 14:44:38 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/05 09:49:49 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int			export_builtin(t_command *command, t_vars *vars)
 	char	**new_var;
 	int		i;
 
+	vars->builtin = BUILTIN;
 	i = 1;
 	while (command->args[i])
 	{
