@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:24 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 09:52:35 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/05 10:57:54 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,27 @@ int		str_is_num(char *str)
 
 int		exit_builtin(t_command *command, t_vars *vars)
 {
+	int		i;
+
 	vars->builtin = BUILTIN;
-	if (!str_is_num(command->args[1]))
+	i = 1;
+	while (command->args[i])
 	{
-		ft_putendl_fd("exit", 2);
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(command->args[1], 2);
-		ft_putendl_fd(": numeric argument required", 2);
-		exit(255);
-	}
-	if (command->args[2])
-	{
-		ft_putendl_fd("exit", 2);
-		error_general("exit: too many arguments", vars);
-		return (1);
+		if (i > 1)
+		{
+			ft_putendl_fd("exit", 2);
+			error_general("exit: too many arguments", vars);
+			return (1);
+		}
+		if (!str_is_num(command->args[i]))
+		{
+			ft_putendl_fd("exit", 2);
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(command->args[i], 2);
+			ft_putendl_fd(": numeric argument required", 2);
+			exit(1);
+		}
+		i++;
 	}
 	if (command->pipe == NO_PIPE)
 		vars->status = STOP;
