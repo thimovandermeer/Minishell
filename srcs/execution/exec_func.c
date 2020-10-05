@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:11 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 13:27:20 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 09:45:21 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	is_internal(t_command *command, t_vars *vars, t_exec *exec)
 
 void	exec_func(t_command *command, t_vars *vars, t_exec *exec)
 {
-	if (is_builtin(command, vars) == 1)
+	if (is_builtin(command, vars) == 1 && vars->builtin == NO_BUILTIN)
 		is_internal(command, vars, exec);
 }
 

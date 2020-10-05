@@ -6,12 +6,13 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:05 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 14:08:33 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 07:22:19 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <signal.h>
 
 /*
 **	function which is activated when ctrlc is called and this signals ignores

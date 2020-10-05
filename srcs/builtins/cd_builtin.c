@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:41:01 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:41:03 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/05 09:44:19 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int		cd_builtin(t_command *command, t_vars *vars)
 {
 	char	new_cwd[PATH_MAX];
 
+	vars->builtin = BUILTIN;
 	if (!command->args[1])
 		return (cd_home(vars));
 	else if (!ft_strcmp(command->args[1], "-"))
