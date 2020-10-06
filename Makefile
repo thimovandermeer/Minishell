@@ -12,6 +12,7 @@ _OBJS = minishell \
 		builtins/unset_builtin \
 		execution/exec_func \
 		execution/get_path \
+		execution/count_pipes \
 		execution/redir_pipes\
 		lexer/check_valid_input \
 		lexer/lexer \

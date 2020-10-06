@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 09:51:45 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/06 09:13:39 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@ void	process_list(t_list *list, t_vars *vars)
 {
 	t_list		*command_list;
 
+	expand_loop(list, vars);
+	pipes_loop(list, vars);
 	while (list)
 	{
-		expand_loop(list, vars);
 		command_list = parse_line(&list, vars);
 		if (!command_list)
-			break ;
+			return ;
 		iterate_command(command_list, vars);
 		if (!vars->status)
 			return ;

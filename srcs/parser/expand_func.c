@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:45:36 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:45:36 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/06 09:09:51 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		shell_expansion(t_vars *vars, char *old)
 
 void		expand_loop(t_list *list, t_vars *vars)
 {
-	while (list && ft_strcmp(list->content, ";"))
+	while (list)
 	{
 		shell_expansion(vars, list->content);
 		remove_quotes(vars->token, vars);

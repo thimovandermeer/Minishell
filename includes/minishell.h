@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/06 09:19:00 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/06 09:26:44 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ typedef struct	s_vars {
 	int			commands;
 	int			ret;
 	int 		**pipes;
+	int			*pipes_counter;
 	t_builtin	builtin;
 	t_status	status;
 	t_quote		quote;
@@ -296,6 +297,14 @@ void			escape(t_vars *vars, int *i, char c, char special);
 void			resize_token(t_vars *vars, int len);
 void			quote_loop(char *old, t_vars *vars);
 void			remove_quotes(char *old, t_vars *vars);
+
+/*
+**		pipe functions
+*/
+
+void			count_pipes(t_list *list, t_vars *vars);
+int				count_commands(t_list *list);
+void			pipes_loop(t_list *list, t_vars *vars);
 
 /*
 **		Util functions command prompt
