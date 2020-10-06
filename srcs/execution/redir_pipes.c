@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:26 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/06 09:18:54 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/06 11:31:50 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,16 +97,14 @@ int		output_redir(t_command *command)
 
 void	set_pipes(t_exec *exec, t_list *command_list, t_vars *vars)
 {
-	int		amount_of_pipes;
 	int		**pipe_array;
 	int		i;
 
 	i = 0;
-	amount_of_pipes = 1; // pseudo code remove later
-	pipe_array = ft_calloc(amount_of_pipes, sizeof(int *));
+	pipe_array = ft_calloc(vars->cmd_amount, sizeof(int *));
 	if (pipe_array == NULL)
 		error_malloc();
-	while (i + 1 < amount_of_pipes)
+	while (i + 1 < vars->cmd_amount)
 	{
 		pipe_array[i] = ft_calloc(3, sizeof(int));
 		if (pipe_array[i] == NULL)
@@ -136,4 +134,16 @@ void	set_pipes_old(t_exec *exec, t_list *command_list)
 		dup2(exec->fd[WRITE_END], STDOUT_FILENO);
 		close(exec->fd[WRITE_END]);
 	}
+}
+
+/*
+**	redir locking
+*/
+
+void	redir_locking(t_vars *vars, int n)
+{
+	if (vars->pipes && vars->pipes[n] && vars->pipes[n][1] > 1)
+		vars->tmp_fd[READ_END] = vars->pipes[n][1];
+	if (vars->pipes && n > 0 && vars->pipes[n - 1] && vars->pipes[n - 1][0] > 1)
+		vars->tmp_fd[WRITE_END] = vars->pipes[n - 1][0];
 }

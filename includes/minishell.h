@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/06 09:26:44 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/06 11:26:53 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,10 @@ typedef struct	s_vars {
 	char		*token;
 	int			commands;
 	int			ret;
-	int 		**pipes;
+	int			**pipes;
 	int			*pipes_counter;
+	int			tmp_fd[2];
+	int			cmd_amount;
 	t_builtin	builtin;
 	t_status	status;
 	t_quote		quote;
@@ -127,7 +129,6 @@ typedef	struct	s_exec {
 	char			*bin_path;
 	int				fd[2];
 	int				in;
-	
 }				t_exec;
 
 /*
@@ -208,6 +209,15 @@ int				type_determination(t_command *command, t_list *tmp_out_mode);
 int				output_redir(t_command *command);
 void			set_pipes_old(t_exec *exec, t_list *command_list);
 void			set_pipes(t_exec *exec, t_list *command_list, t_vars *vars);
+void			redir_locking(t_vars *vars, int n);
+
+/*
+**		execution count_pipes
+*/
+
+void			count_pipes(t_list *list, t_vars *vars);
+int				count_commands(t_list *list);
+void			pipes_loop(t_list *list, t_vars *vars);
 
 /*
 **		Lexer functions check_valid_input

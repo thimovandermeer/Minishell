@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:11 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/06 09:35:19 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/06 11:40:13 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,18 @@ void	exec_func(t_command *command, t_vars *vars, t_exec *exec)
 **	function which decides if the function is a internal of builtin function
 */
 
-void	close_pipes(t_vars *vars)
+void	close_pipes(t_vars *vars, int n)
 {
-	int n;
-
-	n = 1;
+	printf(" n = [%i]\n", n);
 	if (vars->pipes)
 	{
+		printf("first if\n");
 		if (vars->pipes[n] && vars->pipes[n][1] > 1)
 		{
 			close(vars->pipes[n][1]);
 			vars->pipes[n][1] = -1;
 		}
+		printf("second if\n");
 		if (n > 0 && vars->pipes[n - 1] && vars->pipes[n - 1][0] > 1)
 		{
 			close(vars->pipes[n - 1][0]);
@@ -105,22 +105,41 @@ void	close_pipes(t_vars *vars)
 void	iterate_command(t_list *command_list, t_vars *vars)
 {
 	t_exec	exec;
-	int		tmp_fd[2];
+	int		n;
+	int		i;
 
-	// exec.in = STDIN_FILENO;
-	// exec.fd[WRITE_END] = STDOUT_FILENO;
-	while (command_list)
+	n = 0;
+	i = 0;
+
+	// hier moet gesplit worden op ;
+	n = 0;
+	// hier moeten we lopen of de commands
+	printf("cmd amount = %i\n", vars->cmd_amount);
+	while (i < vars->cmd_amount)
 	{
-		exec.bin_path = NULL;
-		tmp_fd[READ_END] = vars->pipes[n - 1][1];
-		tmp_fd[WRITE_END] = vars->pipes[n - 1][0];
-		set_pipes(&exec, command_list, vars);
-		if (input_redir(((t_command*)command_list->content)))
-			return ;
-		if (output_redir(((t_command*)command_list->content)))
-			return ;
-		exec_func(((t_command*)command_list->content), vars, &exec);
-		close_pipes(vars);
-		command_list = command_list->next;
+		n = 0;
+		printf("pipes_counter[i] = %i\n", vars->pipes_counter[i]);
+		while (n <= vars->pipes_counter[i])
+		{
+			printf("n = %i\n", n);
+			exec.bin_path = NULL;
+			if (vars->pipes_counter[i] != 0)
+			{
+				printf("kom ik hier?\n");
+				set_pipes(&exec, command_list, vars);
+				redir_locking(vars, n);
+			}
+			if (input_redir(((t_command*)command_list->content)))
+				return ;
+			if (output_redir(((t_command*)command_list->content)))
+				return ;
+			exec_func(((t_command*)command_list->content), vars, &exec);
+			printf("voor close pipes\n");
+			close_pipes(vars, n);
+			printf("na close pipes\n");
+			command_list = command_list->next;
+			n++;
+		}
+		i++;
 	}
 }
