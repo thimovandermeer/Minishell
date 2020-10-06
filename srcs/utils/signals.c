@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:05 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 07:22:19 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/06 14:51:17 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void		ctrl_c(int signal)
 {
 	(void)signal;
 	ft_putendl_fd("\b\b  ", 1);
-	command_prompt();
 }
 
 /*
