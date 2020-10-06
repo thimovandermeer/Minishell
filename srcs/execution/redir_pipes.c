@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:26 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:44:27 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/06 09:18:54 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,37 @@ int		output_redir(t_command *command)
 **	function which creates pipe file stream
 */
 
-void	set_pipes(t_exec *exec, t_list *command_list)
+void	set_pipes(t_exec *exec, t_list *command_list, t_vars *vars)
 {
-	if (command_list->next)
-		pipe(exec->fd);
+	int		amount_of_pipes;
+	int		**pipe_array;
+	int		i;
+
+	i = 0;
+	amount_of_pipes = 1; // pseudo code remove later
+	pipe_array = ft_calloc(amount_of_pipes, sizeof(int *));
+	if (pipe_array == NULL)
+		error_malloc();
+	while (i + 1 < amount_of_pipes)
+	{
+		pipe_array[i] = ft_calloc(3, sizeof(int));
+		if (pipe_array[i] == NULL)
+			error_malloc();
+		if (pipe(pipe_array[i]) == -1)
+			error_malloc(); // later naar kijken
+		i++;
+	}
+	vars->pipes = pipe_array;
+}
+
+/*
+**	Old set pipes
+*/
+
+void	set_pipes_old(t_exec *exec, t_list *command_list)
+{
+	// if (command_list->next)
+	// 	pipe(exec->fd);
 	if (exec->in != STDIN_FILENO)
 	{
 		dup2(exec->in, STDIN_FILENO);

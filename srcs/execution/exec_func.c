@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:11 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 13:55:09 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/06 09:35:19 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,30 @@ void	exec_func(t_command *command, t_vars *vars, t_exec *exec)
 }
 
 /*
+**	function which decides if the function is a internal of builtin function
+*/
+
+void	close_pipes(t_vars *vars)
+{
+	int n;
+
+	n = 1;
+	if (vars->pipes)
+	{
+		if (vars->pipes[n] && vars->pipes[n][1] > 1)
+		{
+			close(vars->pipes[n][1]);
+			vars->pipes[n][1] = -1;
+		}
+		if (n > 0 && vars->pipes[n - 1] && vars->pipes[n - 1][0] > 1)
+		{
+			close(vars->pipes[n - 1][0]);
+			vars->pipes[n - 1][0] = -1;
+		}
+	}
+}
+
+/*
 **	Main loop for execution of commands
 */
 
@@ -83,25 +107,20 @@ void	iterate_command(t_list *command_list, t_vars *vars)
 	t_exec	exec;
 	int		tmp_fd[2];
 
-	exec.in = STDIN_FILENO;
-	exec.fd[WRITE_END] = STDOUT_FILENO;
+	// exec.in = STDIN_FILENO;
+	// exec.fd[WRITE_END] = STDOUT_FILENO;
 	while (command_list)
 	{
 		exec.bin_path = NULL;
-		tmp_fd[READ_END] = dup(STDIN_FILENO);
-		tmp_fd[WRITE_END] = dup(STDOUT_FILENO);
-		set_pipes(&exec, command_list);
+		tmp_fd[READ_END] = vars->pipes[n - 1][1];
+		tmp_fd[WRITE_END] = vars->pipes[n - 1][0];
+		set_pipes(&exec, command_list, vars);
 		if (input_redir(((t_command*)command_list->content)))
 			return ;
 		if (output_redir(((t_command*)command_list->content)))
 			return ;
 		exec_func(((t_command*)command_list->content), vars, &exec);
-		if (command_list->next)
-			exec.in = exec.fd[READ_END];
-		dup2(tmp_fd[READ_END], STDIN_FILENO);
-		dup2(tmp_fd[WRITE_END], STDOUT_FILENO);
-		close(tmp_fd[READ_END]);
-		close(tmp_fd[WRITE_END]);
+		close_pipes(vars);
 		command_list = command_list->next;
 	}
 }
