@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:20 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 14:49:13 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/06 08:29:19 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ char	*get_bin_path(char *tmp, char *token)
 
 int		absolute_path_check(t_command *command, t_exec *exec)
 {
-	if (ft_strnstr(command->args[0], "./", 4))
+	if (ft_strchr(command->args[0], '/'))
 	{
 		exec->bin_path = ft_strdup(command->args[0]);
+		if (!exec->bin_path)
+			error_malloc();
 		return (1);
 	}
 	return (0);
