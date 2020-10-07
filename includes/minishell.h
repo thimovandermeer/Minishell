@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/07 08:35:58 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/07 11:44:16 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct	s_vars {
 	char		*token;
 	int			commands;
 	int			ret;
+	int			signal;
 	t_builtin	builtin;
 	t_status	status;
 	t_quote		quote;
@@ -183,8 +184,9 @@ int				unset_builtin(t_vars *vars, t_command *command);
 */
 
 void			open_files(int *fd, char *file, int type, mode_t mode);
-void			is_internal(t_command *command, t_vars *vars, t_exec *exec);
-void			exec_func(t_command *command, t_vars *vars, t_exec *exec);
+void			wait_process(t_vars *vars, t_exec *exec);
+void			exec_command(t_command *command, t_vars *vars, t_exec *exec);
+void			duplicate_fd(int tmp_fd[2]);
 void			iterate_command(t_list *command_list, t_vars *vars);
 
 /*
@@ -333,9 +335,9 @@ void			free_parse_line(t_list **list);
 **		Util functions signals
 */
 
-void			ctrl_c(int signal);
-void			ctrl_esc(int signal);
-void			signal_activation(void);
+void			signal_handler(int sig_num);
+void			signal_exec(int sig_num);
+void			signal_write_exec(t_vars *vars);
 
 /*
 **		parse functions expansion status
