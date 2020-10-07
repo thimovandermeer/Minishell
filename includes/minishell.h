@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 14:08:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 13:43:18 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/07 08:35:58 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "libft.h"
 # include <stddef.h>
-# include <stdio.h>//
 
 # define READ_END 0
 # define WRITE_END 1
