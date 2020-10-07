@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:46:43 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/01 13:46:43 by thvan-de      ########   odam.nl         */
+/*   Updated: 2020/10/07 10:50:52 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	command_handler(int sig_num)
 	if (sig_num == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
-		command_prompt();
 		signal(SIGINT, command_handler);
 	}
 }
@@ -39,6 +38,7 @@ void	fork_handler(int sig_num)
 	if (sig_num == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
+		command_prompt();
 		signal(SIGINT, fork_handler);
 	}
 }

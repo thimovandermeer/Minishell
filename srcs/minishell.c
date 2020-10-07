@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/07 08:33:38 by rpet          ########   odam.nl         */
+/*   Updated: 2020/10/07 10:58:30 by rpet          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void	minishell_loop(t_vars *vars)
 
 	while (vars->status == RUNNING)
 	{
-		signal_activation();
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 		command_prompt();
 		if (!get_next_line(0, &line))
 			break ;
