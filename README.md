@@ -42,11 +42,10 @@ In here you find all functions not necesarrily related to one specific stage of 
 * minishell (the executable after making the project)
 
 ## How it works
-Once you clone this repository run make a executable named minishell will be created. If you run this command your command prompt will change to the following
-![Image of command prompt]
-()
+Once you clone this repository run make a executable named minishell will be created. If you run this command your command prompt will change to the following:
 
-## file structure
+![Image of command prompt](https://github.com/thimovandermeer/Minishell/blob/master/Schermafbeelding%202021-07-09%20om%2011.38.27.png)
 
-## Used principles
+In here you can type any of the bash commands and the executable will handle them. 
+
 
