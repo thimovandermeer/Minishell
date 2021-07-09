@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:47:14 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/07 10:58:30 by rpet          ########   odam.nl         */
+/*   Updated: 2021/07/09 11:47:12 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include "libft.h"
 #include <signal.h>
 #include <unistd.h>
+
+/*
+**	This function checks if the current command is a builtin or not. 
+** the function will be executed and the return status will be saved in the vars->ret
+*/
 
 int		is_builtin(t_command *command, t_vars *vars)
 {
@@ -39,6 +44,11 @@ int		is_builtin(t_command *command, t_vars *vars)
 	return (vars->ret);
 }
 
+/*
+**	This function iterates over the entire create command_list and executes them one by one
+*/
+
+
 void	process_list(t_list *list, t_vars *vars)
 {
 	t_list		*command_list;
@@ -55,6 +65,11 @@ void	process_list(t_list *list, t_vars *vars)
 		free_command_table(&command_list);
 	}
 }
+
+/*
+**	This is the main loop, as long as exit is not being typed in the command prompt
+** this loop continues working
+*/
 
 void	minishell_loop(t_vars *vars)
 {
@@ -76,6 +91,11 @@ void	minishell_loop(t_vars *vars)
 		free(line);
 	}
 }
+
+/*
+**	Starting point of the entire program the environment will be created and the main loop will start
+**	after exiting the environment array is being freed and exit is being printed to the console
+*/
 
 int		main(int argc, char **argv, char **env)
 {

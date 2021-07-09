@@ -6,13 +6,18 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/02 14:48:51 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 14:48:52 by thvan-de      ########   odam.nl         */
+/*   Updated: 2021/07/09 11:52:38 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
+
+/*
+**	this functions replaces the old environment for the newly created one
+*/
+
 
 int		replace_env(t_vars *vars, char *replace, int i)
 {
@@ -38,6 +43,11 @@ int		replace_env(t_vars *vars, char *replace, int i)
 	return (path_len);
 }
 
+/*
+**	This function retrieves the length of the environment
+*/
+
+
 int		env_len(char *env)
 {
 	int		len;
@@ -52,6 +62,11 @@ int		env_len(char *env)
 		len++;
 	return (len);
 }
+
+/*
+**	This functions finds and safes the environment
+*/
+
 
 char	*find_env(t_vars *vars, int i)
 {

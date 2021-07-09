@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/02 14:48:35 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/02 14:48:36 by thvan-de      ########   odam.nl         */
+/*   Updated: 2021/07/09 11:51:31 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ int		shell_sign(t_vars *vars, int i)
 	return (replace_env(vars, tmp, i + 1) - 1);
 }
 
+/*
+**	This function checks if double quotes are set
+*/
+
+
 void	shell_double_quote(t_vars *vars)
 {
 	if (vars->quote == NO_QUOTE && vars->escape != ESCAPE)
@@ -44,6 +49,11 @@ void	shell_double_quote(t_vars *vars)
 		vars->quote = NO_QUOTE;
 }
 
+/*
+**	This functions check if single quotes are set
+*/
+
+
 void	shell_single_quote(t_vars *vars)
 {
 	if (vars->quote == NO_QUOTE && vars->escape != ESCAPE)
@@ -51,6 +61,11 @@ void	shell_single_quote(t_vars *vars)
 	else if (vars->quote == SINGLE_QUOTE)
 		vars->quote = NO_QUOTE;
 }
+
+/*
+**	This functions checks if the escape character is being set
+*/
+
 
 void	shell_escape(t_vars *vars)
 {
