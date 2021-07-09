@@ -6,7 +6,7 @@
 /*   By: thvan-de <thvan-de@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/10/01 13:44:44 by thvan-de      #+#    #+#                 */
-/*   Updated: 2020/10/05 13:20:36 by rpet          ########   odam.nl         */
+/*   Updated: 2021/07/09 11:53:57 by thvan-de      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int		syntax_seperators(t_list *list, t_vars *vars)
 }
 
 /*
-**	this function checks if the input is valid
+**	this function checks if the user does not try to create a multi line command
 */
 
 void	check_multi_line(t_list *list, t_vars *vars)
@@ -103,6 +103,11 @@ void	check_multi_line(t_list *list, t_vars *vars)
 		exit(1);
 	}
 }
+
+
+/*
+**	this function checks if the input is valid
+*/
 
 int		check_valid_input(t_list *list, t_vars *vars)
 {
